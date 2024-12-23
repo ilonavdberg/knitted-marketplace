@@ -1,11 +1,9 @@
 package com.knitted.marketplace.models.item;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="items")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
