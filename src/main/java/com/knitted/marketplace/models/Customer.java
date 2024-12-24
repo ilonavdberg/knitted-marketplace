@@ -7,15 +7,23 @@ import jakarta.persistence.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String firstName;
-    String lastName;
+    private String firstName;
+    private String lastName;
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
-    Address address;
+    private Address address;
 
-    String email;
-    String phone;
+    private String email;
+    private String phone;
+
+    @OneToOne (mappedBy = "customer")
+    private User user;
+
+    //Do not update existing address - always create new Address object
+    public void changeAddress(String street, String houseNumber, String door, String zipcode, String city) {
+        this.address = new Address(street, houseNumber, door, zipcode, city);
+    }
 }
