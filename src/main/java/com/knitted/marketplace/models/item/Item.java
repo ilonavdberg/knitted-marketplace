@@ -1,5 +1,6 @@
 package com.knitted.marketplace.models.item;
 
+import com.knitted.marketplace.models.Shop;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,11 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    private Shop shop;
+
     private ItemStatus status;
 
     private String title;
