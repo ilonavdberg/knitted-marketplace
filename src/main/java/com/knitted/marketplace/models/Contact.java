@@ -3,8 +3,8 @@ package com.knitted.marketplace.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="customers")
-public class Customer {
+@Table(name="contacts")
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +19,7 @@ public class Customer {
     private String email;
     private String phone;
 
-    @OneToOne (mappedBy = "customer")
+    @OneToOne (mappedBy = "contact")
     private User user;
 
     //Do not update existing address - always create new Address object

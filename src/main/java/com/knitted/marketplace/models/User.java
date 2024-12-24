@@ -10,6 +10,6 @@ public class User {
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer customer;
+    @JoinColumn(name = "contact_id", referencedColumnName = "id")
+    private Contact contact;
 }
