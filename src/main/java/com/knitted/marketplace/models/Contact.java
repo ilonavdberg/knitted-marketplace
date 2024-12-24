@@ -19,8 +19,10 @@ public class Contact {
     private String email;
     private String phone;
 
-    @OneToOne (mappedBy = "contact")
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
 
     //Do not update existing address - always create new Address object
     public void changeAddress(String street, String houseNumber, String door, String zipcode, String city) {

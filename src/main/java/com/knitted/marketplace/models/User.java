@@ -9,7 +9,8 @@ public class User {
     private String username;
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
+
     private Contact contact;
 }
