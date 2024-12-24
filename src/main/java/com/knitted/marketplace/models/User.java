@@ -13,6 +13,5 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
 }
