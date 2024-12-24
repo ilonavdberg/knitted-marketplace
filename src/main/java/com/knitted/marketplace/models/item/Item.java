@@ -1,6 +1,7 @@
 package com.knitted.marketplace.models.item;
 
 import com.knitted.marketplace.models.Shop;
+import com.knitted.marketplace.models.order.Order;
 import jakarta.persistence.*;
 
 @Entity
@@ -24,4 +25,7 @@ public class Item {
     private Subcategory subcategory;
     private TargetGroup targetgroup;
     private Size size;
+
+    @OneToOne(mappedBy = "soldItem")
+    private Order order;
 }

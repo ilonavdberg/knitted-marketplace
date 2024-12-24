@@ -1,16 +1,16 @@
-package com.knitted.marketplace.models.item;
+package com.knitted.marketplace.models;
 
-import com.knitted.marketplace.models.Contact;
+import com.knitted.marketplace.models.order.Order;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "customers")
 public class Customer extends Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private List<Order> orders;
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 }

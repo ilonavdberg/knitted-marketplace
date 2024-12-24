@@ -3,6 +3,7 @@ package com.knitted.marketplace.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "contacts")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Contact {
     @Id
