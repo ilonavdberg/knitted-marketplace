@@ -3,7 +3,7 @@ package com.knitted.marketplace.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table("customers")
+@Table(name="customers")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +13,7 @@ public class Customer {
     String lastName;
 
     @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     Address address;
 
     String email;
