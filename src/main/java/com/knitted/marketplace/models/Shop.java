@@ -19,6 +19,9 @@ public class Shop {
     @Column(length = 300)
     private String description;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private ImageFile shopPicture;
+
     @OneToMany(mappedBy = "shop")
     private List<Item> items = new ArrayList<>();
 
@@ -67,4 +70,7 @@ public class Shop {
         this.owner = owner;
     }
 
+    public void setShopPicture(ImageFile shopPicture) {
+        this.shopPicture = shopPicture;
+    }
 }

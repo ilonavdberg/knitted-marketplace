@@ -12,7 +12,18 @@ public class ShopRequestDto {
     @Size(min = 50, max = 300, message = "Shop description must be between 50 and 300 characters.")
     private String description;
 
-    //Getters
+    private ImageRequestDto imageRequest;
+
+    //Constructor
+
+    public ShopRequestDto(String name, String description, ImageRequestDto imageRequest) {
+        this.name = name;
+        this.description = description;
+        this.imageRequest = imageRequest;
+    }
+
+
+    //Getters and Setters
 
     public String getName() {
         return name;
@@ -20,5 +31,9 @@ public class ShopRequestDto {
 
     public String getDescription() {
         return description;
+    }
+
+    public ImageRequestDto getImageRequest() {
+        return imageRequest;
     }
 }
