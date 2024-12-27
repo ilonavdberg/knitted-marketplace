@@ -1,7 +1,9 @@
 package com.knitted.marketplace.dtos;
 
+import com.knitted.marketplace.models.ImageFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
 
 public class ShopRequestDto {
     @NotBlank(message = "The name cannot be blank.")
@@ -12,14 +14,14 @@ public class ShopRequestDto {
     @Size(min = 50, max = 300, message = "Shop description must be between 50 and 300 characters.")
     private String description;
 
-    private ImageRequestDto imageRequest;
+    private ImageFile image;
 
     //Constructor
 
-    public ShopRequestDto(String name, String description, ImageRequestDto imageRequest) {
+    public ShopRequestDto(String name, String description, ImageFile image) {
         this.name = name;
         this.description = description;
-        this.imageRequest = imageRequest;
+        this.image = image;
     }
 
 
@@ -33,7 +35,7 @@ public class ShopRequestDto {
         return description;
     }
 
-    public ImageRequestDto getImageRequest() {
-        return imageRequest;
+    public ImageFile getImage() {
+        return image;
     }
 }

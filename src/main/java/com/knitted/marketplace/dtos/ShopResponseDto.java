@@ -7,6 +7,7 @@ public record ShopResponseDto(
         String name,
         String description,
         List<String> items,
-        String owner
+        String owner,
+        String shopPicture
 ) {
 }

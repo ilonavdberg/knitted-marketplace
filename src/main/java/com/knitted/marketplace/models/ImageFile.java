@@ -9,20 +9,19 @@ public class ImageFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String filename;
 
     @Lob
     private byte[] imageData;
 
     //Getters and Setters
 
-
     public String getName() {
-        return name != null ? name : "Shop has no picture";
+        return filename != null ? filename : "Shop has no picture";
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.filename = name;
     }
 
     public void setImageData(byte[] imageData) {

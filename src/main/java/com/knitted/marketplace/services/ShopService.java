@@ -4,6 +4,7 @@ import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.repositories.ShopRepository;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ShopService {
     private final ShopRepository shopRepository;

@@ -1,10 +1,10 @@
 package com.knitted.marketplace.services;
 
-import com.knitted.marketplace.dtos.ImageRequestDto;
 import com.knitted.marketplace.mappers.ImageMapper;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.repositories.ImageRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -15,8 +15,8 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public ImageFile uploadImage(ImageRequestDto request) {
-        ImageFile image = ImageMapper.toImage(request);
+    public ImageFile uploadImage(MultipartFile file) {
+        ImageFile image = ImageMapper.toImage(file);
         return imageRepository.save(image);
     }
 }

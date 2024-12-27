@@ -1,8 +1,8 @@
 package com.knitted.marketplace.models;
 
 import com.knitted.marketplace.models.item.Item;
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +43,10 @@ public class Shop {
 
     public String getDescription() {
         return description;
+    }
+
+    public ImageFile getShopPicture() {
+        return shopPicture;
     }
 
     public List<String> getItems() {

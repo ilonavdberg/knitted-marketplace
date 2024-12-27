@@ -1,8 +1,10 @@
 package com.knitted.marketplace.models.item;
 
 import com.knitted.marketplace.models.Shop;
+
 import com.knitted.marketplace.models.order.Order;
 import jakarta.persistence.*;
+
 
 @Entity
 @Table(name="items")
