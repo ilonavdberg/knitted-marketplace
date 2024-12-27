@@ -28,4 +28,11 @@ public class Item {
 
     @OneToOne(mappedBy = "soldItem")
     private Order order;
+
+    // Getters and Setters
+
+    @Override
+    public String toString() {
+        return title + "(id: " + id + ")";
+    }
 }

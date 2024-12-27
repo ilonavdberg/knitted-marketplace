@@ -33,4 +33,9 @@ public class Contact {
     public void changeAddress(String street, String houseNumber, String door, String zipcode, String city) {
         this.address = new Address(street, houseNumber, door, zipcode, city);
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
