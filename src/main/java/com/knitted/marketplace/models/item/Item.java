@@ -1,8 +1,10 @@
 package com.knitted.marketplace.models.item;
 
 import com.knitted.marketplace.models.Shop;
+
 import com.knitted.marketplace.models.order.Order;
 import jakarta.persistence.*;
+
 
 @Entity
 @Table(name="items")
@@ -28,4 +30,11 @@ public class Item {
 
     @OneToOne(mappedBy = "soldItem")
     private Order order;
+
+    // Getters and Setters
+
+    @Override
+    public String toString() {
+        return title + "(id: " + id + ")";
+    }
 }
