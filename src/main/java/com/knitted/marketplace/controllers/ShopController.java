@@ -14,9 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
+
 
 @RestController
-@RequestMapping("/v1/shops")
+@RequestMapping(BASE_URL + "/shops")
 public class ShopController {
     private final ShopService shopService;
 
