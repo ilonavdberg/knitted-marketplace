@@ -1,6 +1,6 @@
 package com.knitted.marketplace.models.item;
 
-public enum Size {
+public enum ClothingSize {
     XS("Extra small"),
     S("Small"),
     M("Medium"),
@@ -43,7 +43,7 @@ public enum Size {
 
     private final String sizeLabel;
 
-    Size(String sizeLabel) {
+    ClothingSize(String sizeLabel) {
         this.sizeLabel = sizeLabel;
     }
 

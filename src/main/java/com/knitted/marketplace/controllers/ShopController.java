@@ -29,12 +29,11 @@ public class ShopController {
 
     @PostMapping()
     public ResponseEntity<ShopResponseDto> createShop(
-        @RequestParam("name") String name,
-        @RequestParam("description") String description,
-        @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage) {
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage) {
 
         ImageFile image = uploadedImage != null ? ImageMapper.toImage(uploadedImage) : null;
-        System.out.println("Image file: " + image);
 
         ShopRequestDto request = new ShopRequestDto(name, description, image);
         Shop shop = ShopMapper.toShop(request);

@@ -4,6 +4,7 @@ import com.knitted.marketplace.models.ImageFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ImageMapper {
     public static ImageFile toImage(MultipartFile file) {
@@ -17,5 +18,9 @@ public class ImageMapper {
         }
 
         return image;
+    }
+
+    public static List<ImageFile> toImageList(List<MultipartFile> files) {
+        return files.stream().map(ImageMapper::toImage).toList();
     }
 }

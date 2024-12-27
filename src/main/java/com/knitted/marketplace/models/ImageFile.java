@@ -14,6 +14,7 @@ public class ImageFile {
     @Lob
     private byte[] imageData;
 
+
     //Getters and Setters
 
     public String getName() {
