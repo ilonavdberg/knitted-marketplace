@@ -1,5 +1,7 @@
 package com.knitted.marketplace.models.item;
 
+import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
+
 public enum Subcategory {
     //Clothing
     SWEATERS("sweaters"),
@@ -32,7 +34,9 @@ public enum Subcategory {
     DOLLS("dolls"),
     TOY_CLOTHING("toy clothing"),
     INTERACTIVE_TOYS("interactive toys"),
-    BABY_TOYS("baby toys");
+    BABY_TOYS("baby toys"),
+
+    UNSPECIFIED("unspecified");
 
     private final String value;
 
@@ -43,5 +47,19 @@ public enum Subcategory {
     @Override
     public String toString() {
         return value;
+    }
+
+    public static Subcategory fromString(String input) {
+        if (input.isEmpty()) {
+            return Subcategory.UNSPECIFIED;
+        }
+
+        for (Subcategory subcategory : Subcategory.values()) {
+            if (subcategory.value.equalsIgnoreCase(input)) {
+                return subcategory;
+            }
+        }
+
+        throw new InvalidEnumValueException(input);
     }
 }

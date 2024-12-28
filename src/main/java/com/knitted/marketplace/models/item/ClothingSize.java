@@ -1,5 +1,7 @@
 package com.knitted.marketplace.models.item;
 
+import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
+
 public enum ClothingSize {
     XS("XS"),
     S("S"),
@@ -39,16 +41,32 @@ public enum ClothingSize {
     S_39_42("Socks 39-42"),
     S_43_46("Socks 43-46"),
 
-    ONE_SIZE("One Size");
+    ONE_SIZE("One Size"),
 
-    private final String sizeLabel;
+    UNSPECIFIED("unspecified");
+
+    private final String value;
 
     ClothingSize(String sizeLabel) {
-        this.sizeLabel = sizeLabel;
+        this.value = sizeLabel;
     }
 
     @Override
     public String toString() {
-        return sizeLabel;
+        return value;
+    }
+
+    public static ClothingSize fromString(String input) {
+        if (input.isEmpty()) {
+            return ClothingSize.UNSPECIFIED;
+        }
+
+        for (ClothingSize size : ClothingSize.values()) {
+            if (size.value.equalsIgnoreCase(input)) {
+                return size;
+            }
+        }
+
+        throw new InvalidEnumValueException(input);
     }
 }

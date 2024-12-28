@@ -1,5 +1,6 @@
 package com.knitted.marketplace.exception;
 
+import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<String> handleNumberFormatException(NumberFormatException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid number format: " + e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidEnumValueException.class)
+    public ResponseEntity<String> handleInvalidEnumValueException(InvalidEnumValueException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
 }

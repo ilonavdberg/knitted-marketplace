@@ -39,13 +39,13 @@ public class ItemController {
     @PostMapping("shops/{shopId}/items")
     public ResponseEntity<ItemResponseDto> createItem(
             @PathVariable Long shopId,
-            @RequestParam(value = "title", required = false) String title,
-            @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "price", required = false) String priceInput,
-            @RequestParam(value = "category", required = false) Category category,
-            @RequestParam(value = "subcategory", required = false) Subcategory subcategory,
-            @RequestParam(value = "target", required = false)TargetGroup targetGroup,
-            @RequestParam(value = "size", required = false) ClothingSize clothingSize,
+            @RequestParam(value = "title", required = false, defaultValue = "") String title,
+            @RequestParam(value = "description", required = false, defaultValue = "") String description,
+            @RequestParam(value = "price", required = false, defaultValue = "0") String priceInput,
+            @RequestParam(value = "category", required = false, defaultValue = "") String category,
+            @RequestParam(value = "subcategory", required = false, defaultValue = "") String subcategory,
+            @RequestParam(value = "target", required = false, defaultValue = "") String targetGroup,
+            @RequestParam(value = "size", required = false, defaultValue = "") String clothingSize,
             @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
         Shop shop = shopService.getShop(shopId);
@@ -58,10 +58,10 @@ public class ItemController {
                 title,
                 description,
                 price,
-                category,
-                subcategory,
-                targetGroup,
-                clothingSize,
+                Category.fromString(category),
+                Subcategory.fromString(subcategory),
+                TargetGroup.fromString(targetGroup),
+                ClothingSize.fromString(clothingSize),
                 photos
         );
 
