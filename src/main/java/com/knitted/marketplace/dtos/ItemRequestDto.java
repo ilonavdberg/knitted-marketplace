@@ -7,25 +7,19 @@ import com.knitted.marketplace.models.item.ClothingSize;
 import com.knitted.marketplace.models.item.Subcategory;
 import com.knitted.marketplace.models.item.TargetGroup;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.util.List;
+
 
 public class ItemRequestDto {
     @NotNull
     private Shop shop;
 
-    @NotBlank
-    @Size(min = 6, max = 30, message = "Item name must be between 6 and 30 characters.")
     private String title;
-
-    @NotBlank
-    @Size(min = 30, max = 300, message = "Item description must be between 30 and 300 characters.")
     private String description;
-
     private Double price;
+
     private Category category;
     private Subcategory subcategory;
     private TargetGroup targetGroup;

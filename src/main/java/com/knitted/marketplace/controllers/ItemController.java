@@ -11,12 +11,15 @@ import com.knitted.marketplace.services.ItemService;
 import com.knitted.marketplace.services.ShopService;
 
 import com.knitted.marketplace.utils.Parser;
+import org.hibernate.annotations.Collate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 
@@ -36,18 +39,18 @@ public class ItemController {
     @PostMapping("shops/{shopId}/items")
     public ResponseEntity<ItemResponseDto> createItem(
             @PathVariable Long shopId,
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("price") String priceInput,
-            @RequestParam("category") Category category,
-            @RequestParam("subcategory") Subcategory subcategory,
-            @RequestParam("targetGroup")TargetGroup targetGroup,
-            @RequestParam("clothingSize") ClothingSize clothingSize,
-            @RequestPart("photos") List<MultipartFile> uploadedPhotos
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "price", required = false) String priceInput,
+            @RequestParam(value = "category", required = false) Category category,
+            @RequestParam(value = "subcategory", required = false) Subcategory subcategory,
+            @RequestParam(value = "target", required = false)TargetGroup targetGroup,
+            @RequestParam(value = "size", required = false) ClothingSize clothingSize,
+            @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
         Shop shop = shopService.getShop(shopId);
         Double price = Parser.toDouble(priceInput);
-        List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos);
+        List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos.orElse(Collections.emptyList()));
 
 
         ItemRequestDto request = new ItemRequestDto(
