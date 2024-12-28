@@ -17,15 +17,13 @@ public class ShopMapper {
     }
 
     public static ShopResponseDto toResponseDto(Shop shop) {
-        String imageName = (shop.getShopPicture() != null) ? shop.getShopPicture().getName() : "Shop has no image";
-
         return new ShopResponseDto(
                 shop.getId(),
                 shop.getName(),
                 shop.getDescription(),
-                shop.getItems(),
-                shop.getOwner(),
-                imageName
+                shop.getItemsToString(),
+                shop.getOwnerToString(),
+                shop.getShopPictureToString()
         );
     }
 }

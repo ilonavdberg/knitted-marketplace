@@ -1,13 +1,13 @@
 package com.knitted.marketplace.models.item;
 
 public enum ClothingSize {
-    XS("Extra small"),
-    S("Small"),
-    M("Medium"),
-    L("Large"),
-    XL("Extra Large"),
-    XXL("2x Extra Large"),
-    XXXL("3x Extra Large"),
+    XS("XS"),
+    S("S"),
+    M("M"),
+    L("L"),
+    XL("XL"),
+    XXL("XXL"),
+    XXXL("3XL"),
 
     K_50("Kids 50"),
     K_56("Kids 56"),
@@ -45,10 +45,6 @@ public enum ClothingSize {
 
     ClothingSize(String sizeLabel) {
         this.sizeLabel = sizeLabel;
-    }
-
-    public String getSizeLabel() {
-        return sizeLabel;
     }
 
     @Override

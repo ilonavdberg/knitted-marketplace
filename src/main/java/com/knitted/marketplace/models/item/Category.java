@@ -14,14 +14,14 @@ public enum Category {
             Subcategory.HATS_HEADBANDS,
             Subcategory.SCARVES,
             Subcategory.GLOVES
-    )),
+    ), "clothing"),
 
     ACCESSORIES(EnumSet.of(
             Subcategory.BAGS,
             Subcategory.PURSES,
             Subcategory.WALLETS,
             Subcategory.JEWELRY
-    )),
+    ), "accessories"),
 
     HOME(EnumSet.of(
             Subcategory.BLANKETS,
@@ -31,7 +31,7 @@ public enum Category {
             Subcategory.HOME_DECOR,
             Subcategory.KITCHEN_ITEMS,
             Subcategory.COZIES
-    )),
+    ), "home"),
 
     TOYS(EnumSet.of(
             Subcategory.STUFFED_ANIMALS,
@@ -39,11 +39,18 @@ public enum Category {
             Subcategory.TOY_CLOTHING,
             Subcategory.INTERACTIVE_TOYS,
             Subcategory.BABY_TOYS
-    ));
+    ), "toys");
 
     private final Set<Subcategory> subcategories;
+    private final String value;
 
-    Category(EnumSet<Subcategory> subcategories) {
+    Category(EnumSet<Subcategory> subcategories, String value) {
         this.subcategories = subcategories;
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }

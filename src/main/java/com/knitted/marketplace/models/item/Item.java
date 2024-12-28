@@ -17,11 +17,12 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private ItemStatus status = ItemStatus.NOT_PUBLISHED;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 
-    private ItemStatus status;
     private String title;
 
     @Column(length = 300)
@@ -43,6 +44,59 @@ public class Item {
 
 
     // Getters and Setters
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public ItemStatus getStatus() {
+        return status;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Subcategory getSubcategory() {
+        return subcategory;
+    }
+
+    public TargetGroup getTargetgroup() {
+        return targetgroup;
+    }
+
+    public ClothingSize getClothingSize() {
+        return clothingSize;
+    }
+
+    public List<ImageFile> getPhotos() {
+        return photos;
+    }
+
+    public List<String> getPhotosToString() {
+        return photos.stream().map(ImageFile::getName).toList();
+    }
+
+    public Order getOrder() {
+        return order;
+    }
 
     public void setShop(Shop shop) {
         this.shop = shop;
