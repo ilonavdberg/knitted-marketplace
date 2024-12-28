@@ -22,6 +22,7 @@ public class ItemService {
 
     public void updateItem(Long id, Item updatedItem) {
         Item item = getItem(id);
+        System.out.println("Inside updateItem method id is: " + item.getId());
 
         item.setTitle(updatedItem.getTitle());
         item.setDescription(updatedItem.getDescription());
@@ -30,7 +31,7 @@ public class ItemService {
         item.setSubcategory(updatedItem.getSubcategory());
         item.setTargetgroup(updatedItem.getTargetgroup());
         item.setClothingSize(updatedItem.getClothingSize());
-        // item.addPhotos(updatedItem.getPhotos());
+        item.addPhotos(updatedItem.getPhotos());
 
         itemRepository.save(item);
     }

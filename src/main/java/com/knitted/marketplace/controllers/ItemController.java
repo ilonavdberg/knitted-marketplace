@@ -70,7 +70,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    //FIXME: item id is set to null after update
+    //FIXME: item id is set to null after mapping to response dto
     @PutMapping("items/{id}")
     public ResponseEntity<ItemResponseDto> updateItem(
             @PathVariable Long id,
@@ -98,9 +98,12 @@ public class ItemController {
                 photos
         );
 
+        //This item has no id
         Item item = ItemMapper.toItem(request);
+        //Inside the update method the database item has the id
         itemService.updateItem(id, item);
 
+        //The response dto should be based on the updated item
         ItemResponseDto response = ItemMapper.toResponseDto(item);
         return ResponseEntity.ok(response);
     }

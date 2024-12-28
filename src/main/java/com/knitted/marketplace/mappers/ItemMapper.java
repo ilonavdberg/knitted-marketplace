@@ -4,7 +4,6 @@ import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.models.item.Item;
 
-import java.sql.SQLOutput;
 
 public class ItemMapper {
     public static Item toItem(ItemRequestDto request) {
