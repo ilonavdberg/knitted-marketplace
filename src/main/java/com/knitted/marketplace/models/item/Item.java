@@ -43,6 +43,10 @@ public class Item {
     private Order order;
 
 
+    public void addPhotos(List<ImageFile> newPhotos) {
+        photos.addAll(newPhotos);
+    }
+
     // Getters and Setters
 
 
@@ -134,9 +138,10 @@ public class Item {
         this.clothingSize = clothingSize;
     }
 
-    //TODO: change this method to add all the photos to the existing list (flatmap?)
+    //TODO: clear method is causing issues which might be caused by the database persistence
     public void setPhotos(List<ImageFile> photos) {
-        this.photos = photos;
+        this.photos.clear();
+        addPhotos(photos);
     }
 
     public void setOrder(Order order) {

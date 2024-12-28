@@ -4,6 +4,8 @@ import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.models.item.Item;
 
+import java.sql.SQLOutput;
+
 public class ItemMapper {
     public static Item toItem(ItemRequestDto request) {
         Item item = new Item();
@@ -22,6 +24,9 @@ public class ItemMapper {
     }
 
     public static ItemResponseDto toResponseDto(Item item) {
+        System.out.println("Converting item to ItemResponseDto...");
+        System.out.println("Item Id: " + item.getId());
+
         return new ItemResponseDto(
                 item.getId(),
                 item.getTitle(),

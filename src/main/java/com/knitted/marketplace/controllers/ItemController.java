@@ -48,16 +48,14 @@ public class ItemController {
             @RequestParam(value = "size", required = false, defaultValue = "") String clothingSize,
             @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
-        Shop shop = shopService.getShop(shopId);
-        Double price = Parser.toDouble(priceInput);
+
         List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos.orElse(Collections.emptyList()));
 
-
         ItemRequestDto request = new ItemRequestDto(
-                shop,
+                shopService.getShop(shopId),
                 title,
                 description,
-                price,
+                Parser.toDouble(priceInput),
                 Category.fromString(category),
                 Subcategory.fromString(subcategory),
                 TargetGroup.fromString(targetGroup),
@@ -70,5 +68,40 @@ public class ItemController {
 
         ItemResponseDto response = ItemMapper.toResponseDto(item);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    //FIXME: item id is set to null after update
+    @PutMapping("items/{id}")
+    public ResponseEntity<ItemResponseDto> updateItem(
+            @PathVariable Long id,
+            @RequestParam(value = "title", required = false, defaultValue = "") String title,
+            @RequestParam(value = "description", required = false, defaultValue = "") String description,
+            @RequestParam(value = "price", required = false, defaultValue = "0") String priceInput,
+            @RequestParam(value = "category", required = false, defaultValue = "") String category,
+            @RequestParam(value = "subcategory", required = false, defaultValue = "") String subcategory,
+            @RequestParam(value = "target", required = false, defaultValue = "") String targetGroup,
+            @RequestParam(value = "size", required = false, defaultValue = "") String clothingSize,
+            @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
+    ) {
+
+        List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos.orElse(Collections.emptyList()));
+
+        ItemRequestDto request = new ItemRequestDto(
+                itemService.getItem(id).getShop(),
+                title,
+                description,
+                Parser.toDouble(priceInput),
+                Category.fromString(category),
+                Subcategory.fromString(subcategory),
+                TargetGroup.fromString(targetGroup),
+                ClothingSize.fromString(clothingSize),
+                photos
+        );
+
+        Item item = ItemMapper.toItem(request);
+        itemService.updateItem(id, item);
+
+        ItemResponseDto response = ItemMapper.toResponseDto(item);
+        return ResponseEntity.ok(response);
     }
 }
