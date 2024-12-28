@@ -29,10 +29,10 @@ public class ItemMapper {
                 item.getPrice(),
                 item.getStatus().toString(),
                 ShopMapper.toResponseDto(item.getShop()),
-                item.getCategory().toString(),
-                item.getSubcategory().toString(),
-                item.getTargetgroup().toString(),
-                item.getClothingSize().toString(),
+                (item.getCategory() != null) ? item.getCategory().toString() : "unspecified",
+                (item.getSubcategory() != null) ? item.getSubcategory().toString() : "unspecified",
+                (item.getTargetgroup() != null) ? item.getTargetgroup().toString() : "unspecified",
+                (item.getClothingSize() != null) ? item.getClothingSize().toString() : "unspecified",
                 item.getPhotosToString()
         );
     }

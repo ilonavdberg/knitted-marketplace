@@ -10,6 +10,7 @@ import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.services.ItemService;
 import com.knitted.marketplace.services.ShopService;
 
+import com.knitted.marketplace.utils.Parser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,15 +38,17 @@ public class ItemController {
             @PathVariable Long shopId,
             @RequestParam("title") String title,
             @RequestParam("description") String description,
-            @RequestParam("price") Double price,
+            @RequestParam("price") String priceInput,
             @RequestParam("category") Category category,
             @RequestParam("subcategory") Subcategory subcategory,
             @RequestParam("targetGroup")TargetGroup targetGroup,
             @RequestParam("clothingSize") ClothingSize clothingSize,
             @RequestPart("photos") List<MultipartFile> uploadedPhotos
     ) {
-        List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos);
         Shop shop = shopService.getShop(shopId);
+        Double price = Parser.toDouble(priceInput);
+        List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos);
+
 
         ItemRequestDto request = new ItemRequestDto(
                 shop,

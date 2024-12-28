@@ -134,6 +134,7 @@ public class Item {
         this.clothingSize = clothingSize;
     }
 
+    //TODO: change this method to add all the photos to the existing list (flatmap?)
     public void setPhotos(List<ImageFile> photos) {
         this.photos = photos;
     }
