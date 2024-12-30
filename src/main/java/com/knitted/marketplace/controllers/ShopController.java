@@ -14,9 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
+
 
 @RestController
-@RequestMapping("/v1/shops")
+@RequestMapping(BASE_URL + "/shops")
 public class ShopController {
     private final ShopService shopService;
 
@@ -27,18 +29,18 @@ public class ShopController {
 
     @PostMapping()
     public ResponseEntity<ShopResponseDto> createShop(
-        @RequestParam("name") String name,
-        @RequestParam("description") String description,
-        @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage) {
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage) {
 
         ImageFile image = uploadedImage != null ? ImageMapper.toImage(uploadedImage) : null;
-        System.out.println("Image file: " + image);
 
         ShopRequestDto request = new ShopRequestDto(name, description, image);
         Shop shop = ShopMapper.toShop(request);
-        shopService.saveShop(shop);
 
-        ShopResponseDto response = ShopMapper.toResponseDto(shop);
+        Shop updatedShop = shopService.saveShop(shop);
+
+        ShopResponseDto response = ShopMapper.toResponseDto(updatedShop);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

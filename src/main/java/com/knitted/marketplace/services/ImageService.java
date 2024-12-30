@@ -1,5 +1,6 @@
 package com.knitted.marketplace.services;
 
+import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.mappers.ImageMapper;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.repositories.ImageRepository;
@@ -19,4 +20,7 @@ public class ImageService {
         ImageFile image = ImageMapper.toImage(file);
         return imageRepository.save(image);
     }
+
+
+
 }

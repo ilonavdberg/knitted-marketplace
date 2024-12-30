@@ -49,12 +49,16 @@ public class Shop {
         return shopPicture;
     }
 
-    public List<String> getItems() {
+    public String getShopPictureToString() {
+        return (getShopPicture() != null) ? getShopPicture().getFilename() : "Shop has no image";
+    }
+
+    public List<String> getItemsToString() {
         return items.stream().map(Object::toString).toList();
     }
 
     //TODO: Remove this fallback once user authentication guarantees that every shop has an owner.
-    public String getOwner() {
+    public String getOwnerToString() {
         return (owner == null) ? "No owner assigned" : owner.toString();
     }
 

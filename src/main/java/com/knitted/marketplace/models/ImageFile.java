@@ -3,7 +3,7 @@ package com.knitted.marketplace.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "images")
+@Table(name = "image_files")
 public class ImageFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,14 +14,24 @@ public class ImageFile {
     @Lob
     private byte[] imageData;
 
+
     //Getters and Setters
 
-    public String getName() {
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFilename() {
         return filename != null ? filename : "Shop has no picture";
     }
 
-    public void setName(String name) {
-        this.filename = name;
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public void setImageData(byte[] imageData) {
