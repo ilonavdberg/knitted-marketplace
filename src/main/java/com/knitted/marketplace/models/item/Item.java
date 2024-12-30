@@ -94,10 +94,6 @@ public class Item {
         return photos;
     }
 
-    public List<String> getPhotosToString() {
-        return photos.stream().map(ImageFile::getName).toList();
-    }
-
     public Order getOrder() {
         return order;
     }
@@ -136,12 +132,6 @@ public class Item {
 
     public void setClothingSize(ClothingSize clothingSize) {
         this.clothingSize = clothingSize;
-    }
-
-    //TODO: clear method is causing issues which might be caused by the database persistence
-    public void setPhotos(List<ImageFile> photos) {
-        this.photos.clear();
-        addPhotos(photos);
     }
 
     public void setOrder(Order order) {

@@ -50,7 +50,7 @@ public class Shop {
     }
 
     public String getShopPictureToString() {
-        return (getShopPicture() != null) ? getShopPicture().getName() : "Shop has no image";
+        return (getShopPicture() != null) ? getShopPicture().getFilename() : "Shop has no image";
     }
 
     public List<String> getItemsToString() {

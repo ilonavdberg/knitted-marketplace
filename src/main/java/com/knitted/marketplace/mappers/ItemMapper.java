@@ -17,7 +17,7 @@ public class ItemMapper {
         item.setSubcategory(request.getSubcategory());
         item.setTargetgroup(request.getTargetGroup());
         item.setClothingSize(request.getClothingSize());
-        item.setPhotos(request.getPhotos());
+        item.addPhotos(request.getPhotos());
 
         return item;
     }
@@ -37,7 +37,7 @@ public class ItemMapper {
                 item.getSubcategory().toString(),
                 item.getTargetgroup().toString(),
                 item.getClothingSize().toString(),
-                item.getPhotosToString()
+                ImageMapper.toResponseDtoList(item.getPhotos())
         );
     }
 }

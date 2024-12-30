@@ -17,12 +17,21 @@ public class ImageFile {
 
     //Getters and Setters
 
-    public String getName() {
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFilename() {
         return filename != null ? filename : "Shop has no picture";
     }
 
-    public void setName(String name) {
-        this.filename = name;
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public void setImageData(byte[] imageData) {

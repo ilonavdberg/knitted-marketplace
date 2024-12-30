@@ -5,13 +5,11 @@ import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.mappers.ImageMapper;
 import com.knitted.marketplace.mappers.ItemMapper;
 import com.knitted.marketplace.models.ImageFile;
-import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.services.ItemService;
 import com.knitted.marketplace.services.ShopService;
-
 import com.knitted.marketplace.utils.Parser;
-import org.hibernate.annotations.Collate;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -100,11 +98,18 @@ public class ItemController {
 
         //This item has no id
         Item item = ItemMapper.toItem(request);
+        System.out.println("request mapped to item object from request dto");
         //Inside the update method the database item has the id
         itemService.updateItem(id, item);
+        System.out.println("item in database is updated");
 
-        //The response dto should be based on the updated item
-        ItemResponseDto response = ItemMapper.toResponseDto(item);
+        //The response dto should be based on the updated item, but this is not possible:
+        Item savedItem = itemService.getItem(id);
+        System.out.println("retrieved item from the database");
+
+        //change input to item and remove above statement to get rid of error
+        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        System.out.println("map database item to response dto");
         return ResponseEntity.ok(response);
     }
 }
