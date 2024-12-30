@@ -5,6 +5,7 @@ import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.repositories.ItemRepository;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,10 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+    @Transactional
     public Item getItem(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+        Item item = itemRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+        Hibernate.initialize(item.getPhotos());
+        return item;
     }
 }
