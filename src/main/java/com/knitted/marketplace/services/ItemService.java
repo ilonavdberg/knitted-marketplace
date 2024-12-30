@@ -1,5 +1,7 @@
 package com.knitted.marketplace.services;
 
+import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException;
+import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
@@ -18,14 +20,13 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public void saveItem(Item item) {
+    public void createItem(Item item) {
         item.setStatus(ItemStatus.NOT_PUBLISHED);
         itemRepository.save(item);
     }
 
     public void updateItem(Long id, Item updatedItem) {
         Item item = getItem(id);
-        System.out.println("Inside updateItem method id is: " + item.getId());
 
         item.setTitle(updatedItem.getTitle());
         item.setDescription(updatedItem.getDescription());
@@ -35,6 +36,34 @@ public class ItemService {
         item.setTargetgroup(updatedItem.getTargetgroup());
         item.setClothingSize(updatedItem.getClothingSize());
         item.addPhotos(updatedItem.getPhotos());
+
+        itemRepository.save(item);
+    }
+
+    @Transactional
+    public void updateItemStatus(Long id, ItemStatus newStatus) {
+        Item item = getItem(id);
+        if (item.getStatus() == ItemStatus.SOLD) {
+            throw new ItemAlreadySoldException("Item has already been sold. Status cannot be changed.");
+        }
+
+        switch (newStatus) {
+            case PUBLISHED:
+                if (!item.getStatus().equals(ItemStatus.NOT_PUBLISHED)) {
+                    throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
+                }
+                item.setStatus(ItemStatus.PUBLISHED);
+                break;
+            case NOT_PUBLISHED:
+                if (!item.getStatus().equals(ItemStatus.PUBLISHED)) {
+                    throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
+                }
+                item.setStatus(ItemStatus.NOT_PUBLISHED);
+                break;
+            case ARCHIVED:
+                item.setStatus(ItemStatus.ARCHIVED);
+                break;
+        }
 
         itemRepository.save(item);
     }

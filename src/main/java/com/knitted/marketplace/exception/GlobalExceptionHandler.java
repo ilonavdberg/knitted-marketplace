@@ -1,6 +1,8 @@
 package com.knitted.marketplace.exception;
 
 import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
+import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException;
+import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidEnumValueException.class)
     public ResponseEntity<String> handleInvalidEnumValueException(InvalidEnumValueException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+    @ExceptionHandler(ItemAlreadySoldException.class)
+    public ResponseEntity<String> handleItemAlreadySoldException(ItemAlreadySoldException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidStatusChangeException.class)
+    public ResponseEntity<String> handleInvalidStatusChangeException(InvalidStatusChangeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 

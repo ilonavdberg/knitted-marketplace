@@ -62,7 +62,7 @@ public class ItemController {
         );
 
         Item item = ItemMapper.toItem(request);
-        itemService.saveItem(item);
+        itemService.createItem(item);
 
         ItemResponseDto response = ItemMapper.toResponseDto(item);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -99,6 +99,33 @@ public class ItemController {
         Item item = ItemMapper.toItem(request);
 
         itemService.updateItem(id, item);
+        Item savedItem = itemService.getItem(id);
+
+        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("items/{id}/publish")
+    public ResponseEntity<ItemResponseDto> publishItem(@PathVariable Long id) {
+        itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
+        Item savedItem = itemService.getItem(id);
+
+        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("items/{id}/unpublish")
+    public ResponseEntity<ItemResponseDto> unpublishItem(@PathVariable Long id) {
+        itemService.updateItemStatus(id, ItemStatus.NOT_PUBLISHED);
+        Item savedItem = itemService.getItem(id);
+
+        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("items/{id}/archive")
+    public ResponseEntity<ItemResponseDto> archiveItem(@PathVariable Long id) {
+        itemService.updateItemStatus(id, ItemStatus.ARCHIVED);
         Item savedItem = itemService.getItem(id);
 
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
