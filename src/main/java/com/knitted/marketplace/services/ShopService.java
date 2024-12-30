@@ -14,8 +14,8 @@ public class ShopService {
         this.shopRepository = shopRepository;
     }
 
-    public void saveShop(Shop shop) {
-        shopRepository.save(shop);
+    public Shop saveShop(Shop shop) {
+        return shopRepository.save(shop);
     }
 
     public Shop getShop(Long id) {

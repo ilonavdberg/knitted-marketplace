@@ -14,6 +14,6 @@ public record ItemResponseDto(
         String subcategory,
         String targetGroup,
         String size,
-        List<ImageResponseDto> photos
+        List<String> photos
 ) {
 }

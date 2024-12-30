@@ -37,9 +37,10 @@ public class ShopController {
 
         ShopRequestDto request = new ShopRequestDto(name, description, image);
         Shop shop = ShopMapper.toShop(request);
-        shopService.saveShop(shop);
 
-        ShopResponseDto response = ShopMapper.toResponseDto(shop);
+        Shop updatedShop = shopService.saveShop(shop);
+
+        ShopResponseDto response = ShopMapper.toResponseDto(updatedShop);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

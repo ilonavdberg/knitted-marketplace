@@ -2,7 +2,10 @@ package com.knitted.marketplace.mappers;
 
 import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
+import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.Item;
+
+import java.util.List;
 
 
 public class ItemMapper {
@@ -23,8 +26,7 @@ public class ItemMapper {
     }
 
     public static ItemResponseDto toResponseDto(Item item) {
-        System.out.println("Converting item to ItemResponseDto...");
-        System.out.println("Item Id: " + item.getId());
+        List<String> imageFilenames = item.getPhotos().stream().map(ImageFile::getFilename).toList();
 
         return new ItemResponseDto(
                 item.getId(),
@@ -37,7 +39,7 @@ public class ItemMapper {
                 item.getSubcategory().toString(),
                 item.getTargetgroup().toString(),
                 item.getClothingSize().toString(),
-                ImageMapper.toResponseDtoList(item.getPhotos())
+                imageFilenames
         );
     }
 }
