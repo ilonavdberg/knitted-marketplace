@@ -2,11 +2,14 @@ package com.knitted.marketplace.services;
 
 import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException;
 import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
+import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.repositories.ItemRepository;
 
+import com.knitted.marketplace.utils.validation.ItemValidator;
+import com.knitted.marketplace.utils.validation.ValidationResult;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,17 +52,27 @@ public class ItemService {
 
         switch (newStatus) {
             case PUBLISHED:
+                // Check if item has the correct status
                 if (!item.getStatus().equals(ItemStatus.NOT_PUBLISHED)) {
                     throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
                 }
+
+                // Check if item meets the validation criteria
+                ValidationResult check = ItemValidator.validateForPublishing(item);
+                if (!check.isValid()) {
+                    throw new ItemPublicationValidationException(id, check.errors());
+                }
+
                 item.setStatus(ItemStatus.PUBLISHED);
                 break;
+
             case NOT_PUBLISHED:
                 if (!item.getStatus().equals(ItemStatus.PUBLISHED)) {
                     throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
                 }
                 item.setStatus(ItemStatus.NOT_PUBLISHED);
                 break;
+
             case ARCHIVED:
                 item.setStatus(ItemStatus.ARCHIVED);
                 break;

@@ -105,6 +105,7 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
+    //TODO: add validation check before publishing
     @PutMapping("items/{id}/publish")
     public ResponseEntity<ItemResponseDto> publishItem(@PathVariable Long id) {
         itemService.updateItemStatus(id, ItemStatus.PUBLISHED);

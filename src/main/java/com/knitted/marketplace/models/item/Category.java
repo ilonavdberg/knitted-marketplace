@@ -54,6 +54,10 @@ public enum Category {
         this.value = value;
     }
 
+    public Set<Subcategory> getSubcategories() {
+        return subcategories;
+    }
+
     @Override
     public String toString() {
         return value;
