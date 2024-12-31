@@ -13,6 +13,7 @@ import com.knitted.marketplace.utils.validation.ValidationResult;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,11 +92,20 @@ public class ItemService {
     }
 
     @Transactional
-    public Page<Item> getItemsForSale(Pageable pageable) {
-        Page<Item> items = itemRepository.findByStatus(ItemStatus.PUBLISHED, pageable);
-        for (Item item : items) {
-            Hibernate.initialize(item.getPhotos());
-        }
-        return items;
+    public Page<Item> getItemsForSale(String category, Pageable pageable) {
+        Specification<Item> spec = Specification.where(((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED)));
+
+        Page<Item> itemPage = itemRepository.findAll(spec, pageable);
+
+        itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
+
+        return itemPage;
+
+//        Page<Item> items = itemRepository.findByStatus(ItemStatus.PUBLISHED, pageable);
+//        for (Item item : items) {
+//            Hibernate.initialize(item.getPhotos());
+//        }
+//        return items;
     }
 }

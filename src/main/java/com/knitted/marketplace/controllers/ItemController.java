@@ -138,9 +138,10 @@ public class ItemController {
 
     @GetMapping("items")
     public ResponseEntity<Page<ItemResponseDto>> getAllItemsForSale(
+            @RequestParam(required = false, defaultValue = "") String category,
             @PageableDefault(size = 24) Pageable pageable
             ) {
-        Page<Item> items = itemService.getItemsForSale(pageable);
+        Page<Item> items = itemService.getItemsForSale(category, pageable);
         Page<ItemResponseDto> response = ItemMapper.toResponseDtoPage(items);
         return ResponseEntity.ok(response);
     }
