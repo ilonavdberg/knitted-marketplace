@@ -4,6 +4,7 @@ import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException
 import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
+import com.knitted.marketplace.models.item.Category;
 import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.repositories.ItemRepository;
@@ -93,19 +94,20 @@ public class ItemService {
 
     @Transactional
     public Page<Item> getItemsForSale(String category, Pageable pageable) {
-        Specification<Item> spec = Specification.where(((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED)));
+        // standard filter: only get published items
+        Specification<Item> spec = Specification.where((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED));
+
+        //optional filters
+        if (!category.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("category"), Category.fromString(category)));
+        }
 
         Page<Item> itemPage = itemRepository.findAll(spec, pageable);
 
         itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
 
         return itemPage;
-
-//        Page<Item> items = itemRepository.findByStatus(ItemStatus.PUBLISHED, pageable);
-//        for (Item item : items) {
-//            Hibernate.initialize(item.getPhotos());
-//        }
-//        return items;
     }
 }

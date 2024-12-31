@@ -86,6 +86,7 @@ public class ItemController {
 
         List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos.orElse(Collections.emptyList()));
 
+        //TODO: pass Strings and do the transforming in the ItemRequest constructor
         ItemRequestDto request = new ItemRequestDto(
                 itemService.getItem(id).getShop(),
                 title,
