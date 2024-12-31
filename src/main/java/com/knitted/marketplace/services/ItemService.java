@@ -7,14 +7,14 @@ import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.repositories.ItemRepository;
-
 import com.knitted.marketplace.utils.validation.ItemValidator;
 import com.knitted.marketplace.utils.validation.ValidationResult;
+
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Service
@@ -91,8 +91,8 @@ public class ItemService {
     }
 
     @Transactional
-    public List<Item> getItemsForSale() {
-        List<Item> items = itemRepository.findAll();
+    public Page<Item> getItemsForSale(Pageable pageable) {
+        Page<Item> items = itemRepository.findByStatus(ItemStatus.PUBLISHED, pageable);
         for (Item item : items) {
             Hibernate.initialize(item.getPhotos());
         }

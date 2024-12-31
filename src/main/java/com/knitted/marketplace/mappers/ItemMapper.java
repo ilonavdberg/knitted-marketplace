@@ -5,6 +5,8 @@ import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.Item;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 
@@ -43,7 +45,7 @@ public class ItemMapper {
         );
     }
 
-    public static List<ItemResponseDto> toResponseDtoList(List<Item> items) {
-        return items.stream().map(ItemMapper::toResponseDto).toList();
+    public static Page<ItemResponseDto> toResponseDtoPage(Page<Item> items) {
+        return items.map(ItemMapper::toResponseDto);
     }
 }
