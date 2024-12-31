@@ -10,6 +10,7 @@ import com.knitted.marketplace.services.ItemService;
 import com.knitted.marketplace.services.ShopService;
 import com.knitted.marketplace.utils.Parser;
 
+import org.hibernate.event.spi.ResolveNaturalIdEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -130,6 +131,13 @@ public class ItemController {
         Item savedItem = itemService.getItem(id);
 
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("items")
+    public ResponseEntity<List<ItemResponseDto>> getAllItemsForSale() {
+        List<Item> items = itemService.getItemsForSale();
+        List<ItemResponseDto> response = ItemMapper.toResponseDtoList(items);
         return ResponseEntity.ok(response);
     }
 }

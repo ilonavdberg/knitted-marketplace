@@ -14,6 +14,8 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 public class ItemService {
@@ -86,5 +88,14 @@ public class ItemService {
         Item item = itemRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
         Hibernate.initialize(item.getPhotos());
         return item;
+    }
+
+    @Transactional
+    public List<Item> getItemsForSale() {
+        List<Item> items = itemRepository.findAll();
+        for (Item item : items) {
+            Hibernate.initialize(item.getPhotos());
+        }
+        return items;
     }
 }

@@ -42,4 +42,8 @@ public class ItemMapper {
                 imageFilenames
         );
     }
+
+    public static List<ItemResponseDto> toResponseDtoList(List<Item> items) {
+        return items.stream().map(ItemMapper::toResponseDto).toList();
+    }
 }
