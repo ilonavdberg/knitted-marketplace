@@ -140,9 +140,12 @@ public class ItemController {
     @GetMapping("items")
     public ResponseEntity<Page<ItemResponseDto>> getAllItemsForSale(
             @RequestParam(required = false, defaultValue = "") String category,
+            @RequestParam(required = false, defaultValue = "") String subcategory,
+            @RequestParam(required = false, defaultValue = "") String target,
+            @RequestParam(required = false, defaultValue = "") String priceRange,
             @PageableDefault(size = 24) Pageable pageable
             ) {
-        Page<Item> items = itemService.getItemsForSale(category, pageable);
+        Page<Item> items = itemService.getItemsForSale(category, subcategory, target, priceRange, pageable);
         Page<ItemResponseDto> response = ItemMapper.toResponseDtoPage(items);
         return ResponseEntity.ok(response);
     }

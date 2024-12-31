@@ -4,9 +4,7 @@ import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException
 import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
-import com.knitted.marketplace.models.item.Category;
-import com.knitted.marketplace.models.item.Item;
-import com.knitted.marketplace.models.item.ItemStatus;
+import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
 import com.knitted.marketplace.utils.validation.ItemValidator;
 import com.knitted.marketplace.utils.validation.ValidationResult;
@@ -93,7 +91,7 @@ public class ItemService {
     }
 
     @Transactional
-    public Page<Item> getItemsForSale(String category, Pageable pageable) {
+    public Page<Item> getItemsForSale(String category, String subcategory, String target, String priceRange, Pageable pageable) {
         // standard filter: only get published items
         Specification<Item> spec = Specification.where((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED));
@@ -102,6 +100,33 @@ public class ItemService {
         if (!category.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get("category"), Category.fromString(category)));
+        }
+
+        if (!subcategory.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("subcategory"), Subcategory.fromString(subcategory)));
+        }
+
+        if (!target.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("targetgroup"), TargetGroup.fromString(target)));
+        }
+
+        if (priceRange.contains(",")) {
+            String[] priceLimits = priceRange.split(",");
+            Double minPrice = !priceLimits[0].isEmpty() ? Double.parseDouble(priceLimits[0]) : null;
+            Double maxPrice = !priceLimits[1].isEmpty() ? Double.parseDouble(priceLimits[1]) : null;
+
+            if (minPrice != null && maxPrice != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.between(root.get("price"), minPrice, maxPrice));
+            } else if (minPrice != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
+            } else if (maxPrice != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
+            }
         }
 
         Page<Item> itemPage = itemRepository.findAll(spec, pageable);
