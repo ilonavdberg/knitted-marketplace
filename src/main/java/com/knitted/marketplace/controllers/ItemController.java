@@ -1,5 +1,6 @@
 package com.knitted.marketplace.controllers;
 
+import com.knitted.marketplace.dtos.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.mappers.ImageMapper;
@@ -10,6 +11,9 @@ import com.knitted.marketplace.services.ItemService;
 import com.knitted.marketplace.services.ShopService;
 import com.knitted.marketplace.utils.Parser;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -83,6 +87,7 @@ public class ItemController {
 
         List<ImageFile> photos = ImageMapper.toImageList(uploadedPhotos.orElse(Collections.emptyList()));
 
+        //TODO: pass Strings and do the transforming in the ItemRequest constructor
         ItemRequestDto request = new ItemRequestDto(
                 itemService.getItem(id).getShop(),
                 title,
@@ -130,6 +135,21 @@ public class ItemController {
         Item savedItem = itemService.getItem(id);
 
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("items")
+    public ResponseEntity<Page<CatalogItemResponseDto>> getAllItemsForSale(
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "") String category,
+            @RequestParam(required = false, defaultValue = "") String subcategory,
+            @RequestParam(required = false, defaultValue = "") String target,
+            @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
+            @RequestParam(required = false, defaultValue = "") String sizes,
+            @PageableDefault(size = 24) Pageable pageable
+    ) {
+        Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
+        Page<CatalogItemResponseDto> response = ItemMapper.toCatalogResponseDtoPage(items);
         return ResponseEntity.ok(response);
     }
 }

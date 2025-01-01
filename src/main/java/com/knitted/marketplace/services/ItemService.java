@@ -4,15 +4,21 @@ import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException
 import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
-import com.knitted.marketplace.models.item.Item;
-import com.knitted.marketplace.models.item.ItemStatus;
+import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
-
+import com.knitted.marketplace.utils.Parser;
 import com.knitted.marketplace.utils.validation.ItemValidator;
 import com.knitted.marketplace.utils.validation.ValidationResult;
+
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Service
@@ -87,4 +93,68 @@ public class ItemService {
         Hibernate.initialize(item.getPhotos());
         return item;
     }
+
+    @Transactional
+    public Page<Item> getItemsForSale(String keyword, String category, String subcategory, String target, String priceRange, String sizes, Pageable pageable) {
+        Category categoryEnum = Category.fromString(category);
+
+        // standard filter: only get published items
+        Specification<Item> spec = Specification.where((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED));
+
+        //search criteria
+        if (!keyword.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.or(
+                            criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + keyword + "%"),
+                            criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + keyword + "%")
+                    ));
+        }
+
+
+        //optional filters
+        if (!category.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("category"), categoryEnum));
+        }
+
+        if (!subcategory.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("subcategory"), Subcategory.fromString(subcategory)));
+        }
+
+        if (priceRange.contains(",")) {
+            String[] priceLimits = priceRange.split(",");
+            Double minPrice = !priceLimits[0].isEmpty() ? Double.parseDouble(priceLimits[0]) : null;
+            Double maxPrice = priceLimits.length > 1 ? Double.parseDouble(priceLimits[1]) : null;
+
+            if (minPrice != null && maxPrice != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.between(root.get("price"), minPrice, maxPrice));
+            } else if (minPrice != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
+            } else if (maxPrice != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
+            }
+        }
+
+        if (categoryEnum.equals(Category.CLOTHING) && !target.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("targetgroup"), TargetGroup.fromString(target)));
+        }
+
+        if (categoryEnum.equals(Category.CLOTHING) && !sizes.isEmpty()) {
+            List<ClothingSize> sizeList = Parser.toSizeList(sizes);
+            spec = spec.and((root, query, criteriaBuilder) -> root.get("clothing_size").in(sizeList));
+        }
+
+        Page<Item> itemPage = itemRepository.findAll(spec, pageable);
+
+        itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
+
+        return itemPage;
+    }
+
 }

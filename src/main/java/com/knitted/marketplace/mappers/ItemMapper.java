@@ -1,9 +1,12 @@
 package com.knitted.marketplace.mappers;
 
+import com.knitted.marketplace.dtos.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.Item;
+
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -41,5 +44,22 @@ public class ItemMapper {
                 item.getClothingSize().toString(),
                 imageFilenames
         );
+    }
+
+    public static CatalogItemResponseDto toCatalogResponseDto(Item item) {
+        ImageFile image = item.getPhotos().getFirst();
+
+        return new CatalogItemResponseDto(
+                item.getId(),
+                item.getTitle(),
+                item.getPrice(),
+                image,
+                item.getShop().getName(),
+                item.getShop().getShopPicture()
+        );
+    }
+
+    public static Page<CatalogItemResponseDto> toCatalogResponseDtoPage(Page<Item> items) {
+        return items.map(ItemMapper::toCatalogResponseDto);
     }
 }
