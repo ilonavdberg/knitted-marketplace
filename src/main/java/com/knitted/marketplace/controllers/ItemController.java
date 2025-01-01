@@ -66,9 +66,9 @@ public class ItemController {
         );
 
         Item item = ItemMapper.toItem(request);
-        itemService.createItem(item);
+        Item savedItem = itemService.createItem(item);
 
-        ItemResponseDto response = ItemMapper.toResponseDto(item);
+        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -100,21 +100,18 @@ public class ItemController {
                 photos
         );
 
-
         Item item = ItemMapper.toItem(request);
 
-        itemService.updateItem(id, item);
-        Item savedItem = itemService.getItem(id);
-
+        Item savedItem = itemService.updateItem(id, item);
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+
         return ResponseEntity.ok(response);
     }
 
     //TODO: add validation check before publishing
     @PutMapping("items/{id}/publish")
     public ResponseEntity<ItemResponseDto> publishItem(@PathVariable Long id) {
-        itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
-        Item savedItem = itemService.getItem(id);
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
 
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
@@ -122,8 +119,7 @@ public class ItemController {
 
     @PutMapping("items/{id}/unpublish")
     public ResponseEntity<ItemResponseDto> unpublishItem(@PathVariable Long id) {
-        itemService.updateItemStatus(id, ItemStatus.NOT_PUBLISHED);
-        Item savedItem = itemService.getItem(id);
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.NOT_PUBLISHED);
 
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
@@ -131,8 +127,7 @@ public class ItemController {
 
     @PutMapping("items/{id}/archive")
     public ResponseEntity<ItemResponseDto> archiveItem(@PathVariable Long id) {
-        itemService.updateItemStatus(id, ItemStatus.ARCHIVED);
-        Item savedItem = itemService.getItem(id);
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.ARCHIVED);
 
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
