@@ -17,7 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -29,12 +28,13 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public void createItem(Item item) {
-        item.setStatus(ItemStatus.NOT_PUBLISHED);
-        itemRepository.save(item);
+    public Item createItem(Item item) {
+        item.setStatus(ItemStatus.NOT_PUBLISHED); //set initial status
+        return itemRepository.save(item);
     }
 
-    public void updateItem(Long id, Item updatedItem) {
+    @Transactional
+    public Item updateItem(Long id, Item updatedItem) {
         Item item = getItem(id);
 
         item.setTitle(updatedItem.getTitle());
@@ -46,11 +46,11 @@ public class ItemService {
         item.setClothingSize(updatedItem.getClothingSize());
         item.addPhotos(updatedItem.getPhotos());
 
-        itemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     @Transactional
-    public void updateItemStatus(Long id, ItemStatus newStatus) {
+    public Item updateItemStatus(Long id, ItemStatus newStatus) {
         Item item = getItem(id);
         if (item.getStatus() == ItemStatus.SOLD) {
             throw new ItemAlreadySoldException("Item has already been sold. Status cannot be changed.");
@@ -84,7 +84,7 @@ public class ItemService {
                 break;
         }
 
-        itemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     @Transactional
