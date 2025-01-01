@@ -1,5 +1,6 @@
 package com.knitted.marketplace.mappers;
 
+import com.knitted.marketplace.dtos.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
@@ -45,7 +46,20 @@ public class ItemMapper {
         );
     }
 
-    public static Page<ItemResponseDto> toResponseDtoPage(Page<Item> items) {
-        return items.map(ItemMapper::toResponseDto);
+    public static CatalogItemResponseDto toCatalogResponseDto(Item item) {
+        ImageFile image = item.getPhotos().getFirst();
+
+        return new CatalogItemResponseDto(
+                item.getId(),
+                item.getTitle(),
+                item.getPrice(),
+                image,
+                item.getShop().getName(),
+                item.getShop().getShopPicture()
+        );
+    }
+
+    public static Page<CatalogItemResponseDto> toResponseDtoPage(Page<Item> items) {
+        return items.map(ItemMapper::toCatalogResponseDto);
     }
 }

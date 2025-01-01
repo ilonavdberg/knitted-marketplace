@@ -1,5 +1,6 @@
 package com.knitted.marketplace.controllers;
 
+import com.knitted.marketplace.dtos.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.mappers.ImageMapper;
@@ -138,15 +139,17 @@ public class ItemController {
     }
 
     @GetMapping("items")
-    public ResponseEntity<Page<ItemResponseDto>> getAllItemsForSale(
+    public ResponseEntity<Page<CatalogItemResponseDto>> getAllItemsForSale(
+            @RequestParam(required = false, defaultValue = "") String keyword,
             @RequestParam(required = false, defaultValue = "") String category,
             @RequestParam(required = false, defaultValue = "") String subcategory,
             @RequestParam(required = false, defaultValue = "") String target,
-            @RequestParam(required = false, defaultValue = "") String priceRange,
+            @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
+            @RequestParam(required = false, defaultValue = "") String sizes,
             @PageableDefault(size = 24) Pageable pageable
-            ) {
-        Page<Item> items = itemService.getItemsForSale(category, subcategory, target, priceRange, pageable);
-        Page<ItemResponseDto> response = ItemMapper.toResponseDtoPage(items);
+    ) {
+        Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
+        Page<CatalogItemResponseDto> response = ItemMapper.toResponseDtoPage(items);
         return ResponseEntity.ok(response);
     }
 }

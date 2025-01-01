@@ -56,7 +56,7 @@ public enum ClothingSize {
         return value;
     }
 
-    public static ClothingSize fromString(String input) {
+    public static ClothingSize fromString(String input) throws InvalidEnumValueException {
         if (input.isEmpty()) {
             return ClothingSize.UNSPECIFIED;
         }
