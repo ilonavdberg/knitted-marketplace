@@ -1,7 +1,10 @@
 package com.knitted.marketplace.controllers;
 
+import com.knitted.marketplace.dtos.OrderResponseDto;
+import com.knitted.marketplace.mappers.OrderMapper;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.services.OrderService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +23,10 @@ public class OrderController {
     }
 
     @PostMapping("items/{id}/order")
-    public void orderItem(@PathVariable("id") Long itemId) {
+    public ResponseEntity<OrderResponseDto> orderItem(@PathVariable("id") Long itemId) {
         Order order = orderService.orderItem(itemId);
+
+        OrderResponseDto response = OrderMapper.toResponseDto(order);
+        return ResponseEntity.ok().body(response);
     }
 }
