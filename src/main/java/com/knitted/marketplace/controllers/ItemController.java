@@ -149,7 +149,7 @@ public class ItemController {
             @PageableDefault(size = 24) Pageable pageable
     ) {
         Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
-        Page<CatalogItemResponseDto> response = ItemMapper.toResponseDtoPage(items);
+        Page<CatalogItemResponseDto> response = ItemMapper.toCatalogResponseDtoPage(items);
         return ResponseEntity.ok(response);
     }
 }

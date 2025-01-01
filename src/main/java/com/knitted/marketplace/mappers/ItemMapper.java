@@ -59,7 +59,7 @@ public class ItemMapper {
         );
     }
 
-    public static Page<CatalogItemResponseDto> toResponseDtoPage(Page<Item> items) {
+    public static Page<CatalogItemResponseDto> toCatalogResponseDtoPage(Page<Item> items) {
         return items.map(ItemMapper::toCatalogResponseDto);
     }
 }
