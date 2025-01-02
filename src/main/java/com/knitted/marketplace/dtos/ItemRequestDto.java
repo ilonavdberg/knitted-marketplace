@@ -16,6 +16,7 @@ public class ItemRequestDto {
     @NotNull
     private Shop shop;
 
+    // Validation happens before publishing
     private String title;
     private String description;
     private Double price;
