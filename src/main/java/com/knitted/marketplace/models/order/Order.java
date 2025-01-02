@@ -1,6 +1,7 @@
 package com.knitted.marketplace.models.order;
 
 import com.knitted.marketplace.models.Customer;
+import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.models.item.Item;
 import jakarta.persistence.*;
 
@@ -25,6 +26,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
+
+    @OneToOne(mappedBy = "order")
+    private Review review;
 
     //Getters and Setters
 
