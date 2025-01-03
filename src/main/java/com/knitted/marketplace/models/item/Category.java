@@ -2,9 +2,9 @@ package com.knitted.marketplace.models.item;
 
 import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
 
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
+
 
 public enum Category {
     CLOTHING(EnumSet.of(

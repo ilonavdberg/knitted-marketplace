@@ -1,10 +1,14 @@
 package com.knitted.marketplace.models.item;
 
+import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
+
 public enum ItemStatus {
     NOT_PUBLISHED("not published"),
     PUBLISHED("published"),
     SOLD("sold"),
-    ARCHIVED("archived");
+    ARCHIVED("archived"),
+
+    UNSPECIFIED("unspecified");
 
     private final String value;
 
@@ -15,5 +19,19 @@ public enum ItemStatus {
     @Override
     public String toString() {
         return value;
+    }
+
+    public static ItemStatus fromString(String input) {
+        if (input.isEmpty()) {
+            return ItemStatus.UNSPECIFIED;
+        }
+
+        for (ItemStatus status : ItemStatus.values()) {
+            if (status.value.equalsIgnoreCase(input)) {
+                return status;
+            }
+        }
+
+        throw new InvalidEnumValueException(input);
     }
 }

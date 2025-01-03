@@ -112,16 +112,38 @@ public class ItemService {
         Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
 
         // add filter: only items for sale
-        spec.and((root, query, criteriaBuilder) ->
+        spec = spec.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED));
 
-        //add filter: search keyword
+        //add optional filter: search keyword
         if (!keyword.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.or(
                             criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + keyword + "%"),
                             criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + keyword + "%")
                     ));
+        }
+
+        Page<Item> itemPage = itemRepository.findAll(spec, pageable);
+
+        itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
+
+        return itemPage;
+    }
+
+    @Transactional
+    public Page<Item> getItemsInShop(Long shopId, String status, String category, String subcategory, String priceRange, String target, String sizes, Pageable pageable) {
+        // create basic filters
+        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
+
+        // add filter: only items in shop with id
+        spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("shop").get("id"), shopId));
+
+        // add optional filter: item status
+        if (!status.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("status"), ItemStatus.fromString(status)));
         }
 
         Page<Item> itemPage = itemRepository.findAll(spec, pageable);

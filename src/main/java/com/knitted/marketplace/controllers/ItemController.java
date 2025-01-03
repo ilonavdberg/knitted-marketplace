@@ -3,6 +3,7 @@ package com.knitted.marketplace.controllers;
 import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.item.ItemRequestDto;
 import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
+import com.knitted.marketplace.dtos.item.ShopItemResponseDto;
 import com.knitted.marketplace.mappers.ItemMapper;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.services.ItemService;
@@ -133,8 +134,8 @@ public class ItemController {
             @PageableDefault(size = 24) Pageable pageable
     ) {
 
-        Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
-        Page<CatalogItemResponseDto> response = ItemMapper.toCatalogResponseDtoPage(items);
+        Page<Item> itemPage = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
+        Page<CatalogItemResponseDto> response = ItemMapper.toCatalogItemResponseDtoPage(itemPage);
 
         return ResponseEntity.ok(response);
     }
@@ -147,7 +148,20 @@ public class ItemController {
     }
 
     @GetMapping("shops/{id}/items")
-    public void getItemsForShop(@PathVariable Long id) {
+    public ResponseEntity<Page<ShopItemResponseDto>> getItemsInShop(
+            @PathVariable("id") Long shopId,
+            @RequestParam(required = false, defaultValue = "") String status,
+            @RequestParam(required = false, defaultValue = "") String category,
+            @RequestParam(required = false, defaultValue = "") String subcategory,
+            @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
+            @RequestParam(required = false, defaultValue = "") String target,
+            @RequestParam(required = false, defaultValue = "") String sizes,
+            @PageableDefault(size = 24) Pageable pageable
+            ) {
 
+        Page<Item> itemPage = itemService.getItemsInShop(shopId, status, category, subcategory, priceRange, target, sizes, pageable);
+        Page<ShopItemResponseDto> response = ItemMapper.toShopItemResponseDtoPage(itemPage);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -3,6 +3,7 @@ package com.knitted.marketplace.mappers;
 import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.item.ItemRequestDto;
 import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
+import com.knitted.marketplace.dtos.item.ShopItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.*;
 
@@ -49,7 +50,7 @@ public class ItemMapper {
         );
     }
 
-    public static CatalogItemResponseDto toCatalogResponseDto(Item item) {
+    public static CatalogItemResponseDto toCatalogItemResponseDto(Item item) {
         ImageFile image = item.getPhotos().getFirst();
 
         return new CatalogItemResponseDto(
@@ -63,7 +64,23 @@ public class ItemMapper {
         );
     }
 
-    public static Page<CatalogItemResponseDto> toCatalogResponseDtoPage(Page<Item> items) {
-        return items.map(ItemMapper::toCatalogResponseDto);
+    public static Page<CatalogItemResponseDto> toCatalogItemResponseDtoPage(Page<Item> itemPage) {
+        return itemPage.map(ItemMapper::toCatalogItemResponseDto);
+    }
+
+    public static ShopItemResponseDto toShopItemResponseDto(Item item) {
+        ImageFile image = item.getPhotos().getFirst();
+
+        return new ShopItemResponseDto(
+                item.getId(),
+                item.getTitle(),
+                item.getPrice(),
+                item.getStatus().toString(),
+                image
+        );
+    }
+
+    public static Page<ShopItemResponseDto> toShopItemResponseDtoPage(Page<Item> itemPage) {
+        return itemPage.map(ItemMapper::toShopItemResponseDto);
     }
 }
