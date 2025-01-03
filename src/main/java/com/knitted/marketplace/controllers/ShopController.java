@@ -1,5 +1,6 @@
 package com.knitted.marketplace.controllers;
 
+import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.mappers.ShopMapper;
 import com.knitted.marketplace.dtos.shop.ShopRequestDto;
@@ -37,6 +38,13 @@ public class ShopController {
         ShopResponseDto response = ShopMapper.toResponseDto(updatedShop);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("{id}/profile")
+    public ResponseEntity<ShopSummaryResponseDto> getShopSummary(@PathVariable Long id) {
+        Shop shop = shopService.getShop(id);
+        ShopSummaryResponseDto response = ShopMapper.toSummaryResponseDto(shop);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -59,6 +59,7 @@ public class ShopMapper {
         return new ShopSummaryResponseDto(
                 shop.getId(),
                 shop.getName(),
+                shop.getDescription(),
                 shop.getShopPicture(),
                 numberOfReviews,
                 averageRating
