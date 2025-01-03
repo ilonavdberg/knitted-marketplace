@@ -4,8 +4,9 @@ import com.knitted.marketplace.dtos.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.ItemRequestDto;
 import com.knitted.marketplace.dtos.ItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
-import com.knitted.marketplace.models.item.Item;
+import com.knitted.marketplace.models.item.*;
 
+import com.knitted.marketplace.utils.Parser;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -18,12 +19,14 @@ public class ItemMapper {
         item.setShop(request.getShop());
         item.setTitle(request.getTitle());
         item.setDescription(request.getDescription());
-        item.setPrice(request.getPrice());
-        item.setCategory(request.getCategory());
-        item.setSubcategory(request.getSubcategory());
-        item.setTargetgroup(request.getTargetGroup());
-        item.setClothingSize(request.getClothingSize());
-        item.addPhotos(request.getPhotos());
+        item.setPrice(Parser.toDouble(request.getPriceInput()));
+        item.setCategory(Category.fromString(request.getCategory()));
+        item.setSubcategory(Subcategory.fromString(request.getSubcategory()));
+        item.setTargetgroup(TargetGroup.fromString(request.getTargetGroup()));
+        item.setClothingSize(ClothingSize.fromString(request.getClothingSize()));
+
+        List<ImageFile> photos = ImageMapper.toImageList(request.getPhotos());
+        item.addPhotos(photos);
 
         return item;
     }
