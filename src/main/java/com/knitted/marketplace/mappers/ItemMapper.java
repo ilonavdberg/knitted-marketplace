@@ -2,7 +2,7 @@ package com.knitted.marketplace.mappers;
 
 import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.item.ItemRequestDto;
-import com.knitted.marketplace.dtos.item.ItemResponseDto;
+import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.*;
 
@@ -31,10 +31,10 @@ public class ItemMapper {
         return item;
     }
 
-    public static ItemResponseDto toResponseDto(Item item) {
+    public static DetailedItemResponseDto toResponseDto(Item item) {
         List<String> imageFilenames = item.getPhotos().stream().map(ImageFile::getFilename).toList();
 
-        return new ItemResponseDto(
+        return new DetailedItemResponseDto(
                 item.getId(),
                 item.getTitle(),
                 item.getDescription(),
