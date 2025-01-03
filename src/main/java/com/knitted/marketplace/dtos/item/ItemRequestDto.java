@@ -1,4 +1,4 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.item;
 
 
 import com.knitted.marketplace.models.Shop;

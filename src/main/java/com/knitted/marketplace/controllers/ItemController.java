@@ -1,8 +1,8 @@
 package com.knitted.marketplace.controllers;
 
-import com.knitted.marketplace.dtos.CatalogItemResponseDto;
-import com.knitted.marketplace.dtos.ItemRequestDto;
-import com.knitted.marketplace.dtos.ItemResponseDto;
+import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
+import com.knitted.marketplace.dtos.item.ItemRequestDto;
+import com.knitted.marketplace.dtos.item.ItemResponseDto;
 import com.knitted.marketplace.mappers.ItemMapper;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.services.ItemService;
@@ -136,6 +136,13 @@ public class ItemController {
         Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
         Page<CatalogItemResponseDto> response = ItemMapper.toCatalogResponseDtoPage(items);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("items/{id}")
+    public ResponseEntity<ItemResponseDto> getItem(@PathVariable Long id) {
+        Item item = itemService.getItem(id);
+        ItemResponseDto response = ItemMapper.toResponseDto(item);
         return ResponseEntity.ok(response);
     }
 }

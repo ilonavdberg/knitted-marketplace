@@ -1,7 +1,7 @@
 package com.knitted.marketplace.mappers;
 
-import com.knitted.marketplace.dtos.ReviewRequestDto;
-import com.knitted.marketplace.dtos.ReviewResponseDto;
+import com.knitted.marketplace.dtos.review.ReviewRequestDto;
+import com.knitted.marketplace.dtos.review.ReviewResponseDto;
 import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.models.order.Order;
 

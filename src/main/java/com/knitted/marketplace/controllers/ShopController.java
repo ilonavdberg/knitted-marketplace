@@ -2,8 +2,8 @@ package com.knitted.marketplace.controllers;
 
 import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.mappers.ShopMapper;
-import com.knitted.marketplace.dtos.ShopRequestDto;
-import com.knitted.marketplace.dtos.ShopResponseDto;
+import com.knitted.marketplace.dtos.shop.ShopRequestDto;
+import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.services.ShopService;
 
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,8 @@
 package com.knitted.marketplace.mappers;
 
-import com.knitted.marketplace.dtos.CatalogItemResponseDto;
-import com.knitted.marketplace.dtos.ItemRequestDto;
-import com.knitted.marketplace.dtos.ItemResponseDto;
+import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
+import com.knitted.marketplace.dtos.item.ItemRequestDto;
+import com.knitted.marketplace.dtos.item.ItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.*;
 
@@ -40,7 +40,7 @@ public class ItemMapper {
                 item.getDescription(),
                 item.getPrice(),
                 item.getStatus().toString(),
-                ShopMapper.toResponseDto(item.getShop()),
+                ShopMapper.toSummaryResponseDto(item.getShop()),
                 item.getCategory().toString(),
                 item.getSubcategory().toString(),
                 item.getTargetgroup().toString(),
@@ -58,7 +58,8 @@ public class ItemMapper {
                 item.getPrice(),
                 image,
                 item.getShop().getName(),
-                item.getShop().getShopPicture()
+                item.getShop().getShopPicture(),
+                item.getStatus()
         );
     }
 

@@ -1,4 +1,7 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.item;
+
+import com.knitted.marketplace.dtos.shop.ShopResponseDto;
+import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 
 import java.util.List;
 
@@ -9,11 +12,12 @@ public record ItemResponseDto(
         String description,
         Double price,
         String status,
-        ShopResponseDto shop,
+        ShopSummaryResponseDto shop,
         String category,
         String subcategory,
         String targetGroup,
         String size,
         List<String> filenames
 ) {
+
 }

@@ -53,6 +53,10 @@ public class Shop {
         return (getShopPicture() != null) ? getShopPicture().getFilename() : "Shop has no image";
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
     public List<String> getItemsToString() {
         return items.stream().map(Object::toString).toList();
     }
@@ -61,6 +65,8 @@ public class Shop {
     public String getOwnerToString() {
         return (owner == null) ? "No owner assigned" : owner.toString();
     }
+
+
 
     public void setName(String name) {
         this.name = name;

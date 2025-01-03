@@ -1,4 +1,4 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.reaction;
 
 import java.time.LocalDateTime;
 

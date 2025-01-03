@@ -56,6 +56,10 @@ public class Order {
         return customer;
     }
 
+    public Review getReview() {
+        return review;
+    }
+
     public void setStatus(OrderStatus status) {
         this.status = status;
     }

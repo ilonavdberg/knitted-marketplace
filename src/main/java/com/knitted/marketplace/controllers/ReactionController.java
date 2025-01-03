@@ -1,7 +1,7 @@
 package com.knitted.marketplace.controllers;
 
-import com.knitted.marketplace.dtos.ReactionRequestDto;
-import com.knitted.marketplace.dtos.ReactionResponseDto;
+import com.knitted.marketplace.dtos.reaction.ReactionRequestDto;
+import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
 import com.knitted.marketplace.mappers.ReactionMapper;
 import com.knitted.marketplace.models.Reaction;
 import com.knitted.marketplace.services.ReactionService;

@@ -1,4 +1,4 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.review;
 
 import com.knitted.marketplace.models.order.Order;
 import jakarta.persistence.Column;

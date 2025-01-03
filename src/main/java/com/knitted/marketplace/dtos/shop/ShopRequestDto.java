@@ -1,4 +1,4 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.shop;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

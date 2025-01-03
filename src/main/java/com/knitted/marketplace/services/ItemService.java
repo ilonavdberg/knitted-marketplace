@@ -1,6 +1,6 @@
 package com.knitted.marketplace.services;
 
-import com.knitted.marketplace.dtos.ItemRequestDto;
+import com.knitted.marketplace.dtos.item.ItemRequestDto;
 import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException;
 import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
@@ -86,6 +86,13 @@ public class ItemService {
 
             case ARCHIVED:
                 item.setStatus(ItemStatus.ARCHIVED);
+                break;
+
+            case SOLD:
+                if (!item.getStatus().equals(ItemStatus.PUBLISHED)) {
+                    throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
+                }
+                item.setStatus(ItemStatus.SOLD);
                 break;
         }
 

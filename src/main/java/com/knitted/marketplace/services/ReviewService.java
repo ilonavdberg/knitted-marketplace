@@ -1,6 +1,6 @@
 package com.knitted.marketplace.services;
 
-import com.knitted.marketplace.dtos.ReviewRequestDto;
+import com.knitted.marketplace.dtos.review.ReviewRequestDto;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.mappers.ReviewMapper;
 import com.knitted.marketplace.models.Review;
