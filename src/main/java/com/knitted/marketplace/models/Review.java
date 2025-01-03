@@ -44,7 +44,7 @@ public class Review {
         return id;
     }
 
-    public @NotNull Order getOrder() {
+    public Order getOrder() {
         return order;
     }
 
@@ -68,7 +68,7 @@ public class Review {
         return comment;
     }
 
-    public @NotNull LocalDateTime getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
@@ -76,7 +76,7 @@ public class Review {
         return lastModifiedDate;
     }
 
-    public void setOrder(@NotNull Order order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 
@@ -96,7 +96,7 @@ public class Review {
         this.comment = comment;
     }
 
-    public void setCreatedDate(@NotNull LocalDateTime createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 

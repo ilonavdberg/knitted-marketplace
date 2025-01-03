@@ -35,6 +35,7 @@ public class ShopController {
 
         ImageFile image = uploadedImage != null ? ImageMapper.toImage(uploadedImage) : null;
 
+        //TODO: handle mapper logic in service
         ShopRequestDto request = new ShopRequestDto(name, description, image);
         Shop shop = ShopMapper.toShop(request);
 
