@@ -79,7 +79,6 @@ public class ItemController {
             @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
 
-        //TODO: pass Strings and do the transforming in the ItemRequest constructor
         ItemRequestDto request = new ItemRequestDto(
                 itemService.getItem(id).getShop(),
                 title,
@@ -92,10 +91,7 @@ public class ItemController {
                 uploadedPhotos.orElse(Collections.emptyList())
         );
 
-        //TODO: handle mapper logic in the service
-        Item item = ItemMapper.toItem(request);
-
-        Item savedItem = itemService.updateItem(id, item);
+        Item savedItem = itemService.updateItem(id, request);
         ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.ok(response);
@@ -136,10 +132,10 @@ public class ItemController {
             @RequestParam(required = false, defaultValue = "") String sizes,
             @PageableDefault(size = 24) Pageable pageable
     ) {
-        //TODO: create request dto
-        //TODO: send request dto to itemService
+
         Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
         Page<CatalogItemResponseDto> response = ItemMapper.toCatalogResponseDtoPage(items);
+
         return ResponseEntity.ok(response);
     }
 }

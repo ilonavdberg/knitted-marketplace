@@ -33,12 +33,14 @@ public class ItemService {
     public Item createItem(ItemRequestDto request) {
         Item item = ItemMapper.toItem(request);
         item.setStatus(ItemStatus.NOT_PUBLISHED); //set initial status
+
         return itemRepository.save(item);
     }
 
     @Transactional
-    public Item updateItem(Long id, Item updatedItem) {
+    public Item updateItem(Long id, ItemRequestDto request) {
         Item item = getItem(id);
+        Item updatedItem = ItemMapper.toItem(request);
 
         item.setTitle(updatedItem.getTitle());
         item.setDescription(updatedItem.getDescription());

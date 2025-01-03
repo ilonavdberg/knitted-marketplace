@@ -2,6 +2,7 @@ package com.knitted.marketplace.mappers;
 
 import com.knitted.marketplace.dtos.ShopRequestDto;
 import com.knitted.marketplace.dtos.ShopResponseDto;
+import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.Shop;
 
 
@@ -11,7 +12,9 @@ public class ShopMapper {
 
         shop.setName(request.getName());
         shop.setDescription(request.getDescription());
-        shop.setShopPicture(request.getImage());
+
+        ImageFile image = request.getUploadedImage() != null ? ImageMapper.toImage(request.getUploadedImage()) : null;
+        shop.setShopPicture(image);
 
         return shop;
     }

@@ -1,8 +1,8 @@
 package com.knitted.marketplace.dtos;
 
-import com.knitted.marketplace.models.ImageFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public class ShopRequestDto {
@@ -14,14 +14,14 @@ public class ShopRequestDto {
     @Size(min = 50, max = 300, message = "Shop description must be between 50 and 300 characters.")
     private String description;
 
-    private ImageFile image;
+    private MultipartFile uploadedImage;
 
     //Constructor
 
-    public ShopRequestDto(String name, String description, ImageFile image) {
+    public ShopRequestDto(String name, String description, MultipartFile image) {
         this.name = name;
         this.description = description;
-        this.image = image;
+        this.uploadedImage = image;
     }
 
 
@@ -35,7 +35,7 @@ public class ShopRequestDto {
         return description;
     }
 
-    public ImageFile getImage() {
-        return image;
+    public MultipartFile getUploadedImage() {
+        return uploadedImage;
     }
 }
