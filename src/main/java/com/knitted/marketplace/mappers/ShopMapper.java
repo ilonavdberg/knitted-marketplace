@@ -1,8 +1,14 @@
 package com.knitted.marketplace.mappers;
 
-import com.knitted.marketplace.dtos.ShopRequestDto;
-import com.knitted.marketplace.dtos.ShopResponseDto;
+import com.knitted.marketplace.dtos.shop.ShopRequestDto;
+import com.knitted.marketplace.dtos.shop.ShopResponseDto;
+import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
+import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.Shop;
+import com.knitted.marketplace.models.item.ItemStatus;
+import org.hibernate.Hibernate;
+
+import java.util.stream.Collectors;
 
 
 public class ShopMapper {
@@ -11,7 +17,9 @@ public class ShopMapper {
 
         shop.setName(request.getName());
         shop.setDescription(request.getDescription());
-        shop.setShopPicture(request.getImage());
+
+        ImageFile image = request.getUploadedImage() != null ? ImageMapper.toImage(request.getUploadedImage()) : null;
+        shop.setShopPicture(image);
 
         return shop;
     }
@@ -24,6 +32,36 @@ public class ShopMapper {
                 shop.getItemsToString(),
                 shop.getOwnerToString(),
                 shop.getShopPictureToString()
+        );
+    }
+
+    public static ShopSummaryResponseDto toSummaryResponseDto(Shop shop) {
+        Hibernate.initialize(shop.getItems());
+
+        shop.getItems().forEach(item -> {
+            Hibernate.initialize(item.getOrder());
+            if (item.getOrder() != null) {
+                Hibernate.initialize(item.getOrder().getReview());
+            }
+        });
+
+        Long numberOfReviews = shop.getItems().stream()
+                .filter(item -> item.getStatus().equals(ItemStatus.SOLD))
+                .filter(item -> item.getOrder().getReview() != null)
+                .count();
+
+        Double averageRating = shop.getItems().stream()
+                .filter(item -> item.getStatus().equals(ItemStatus.SOLD))
+                .mapToInt(item -> item.getOrder().getReview().getRating())
+                .average()
+                .orElse(0);
+
+        return new ShopSummaryResponseDto(
+                shop.getId(),
+                shop.getName(),
+                shop.getShopPicture(),
+                numberOfReviews,
+                averageRating
         );
     }
 }

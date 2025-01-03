@@ -1,6 +1,7 @@
 package com.knitted.marketplace.models.order;
 
 import com.knitted.marketplace.models.Customer;
+import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.models.item.Item;
 import jakarta.persistence.*;
 
@@ -26,6 +27,9 @@ public class Order {
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
+    @OneToOne(mappedBy = "order")
+    private Review review;
+
     //Getters and Setters
 
     public Long getId() {
@@ -50,6 +54,10 @@ public class Order {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public Review getReview() {
+        return review;
     }
 
     public void setStatus(OrderStatus status) {

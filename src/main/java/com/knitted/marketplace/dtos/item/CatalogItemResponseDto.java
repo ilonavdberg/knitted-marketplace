@@ -1,6 +1,7 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.item;
 
 import com.knitted.marketplace.models.ImageFile;
+import com.knitted.marketplace.models.item.ItemStatus;
 
 public record CatalogItemResponseDto(
         Long id,
@@ -8,6 +9,7 @@ public record CatalogItemResponseDto(
         Double price,
         ImageFile itemPhoto,
         String shopName,
-        ImageFile shopPicture
+        ImageFile shopPicture,
+        ItemStatus itemStatus
 ) {
 }

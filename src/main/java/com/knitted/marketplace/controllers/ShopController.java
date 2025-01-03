@@ -1,12 +1,9 @@
 package com.knitted.marketplace.controllers;
 
-
-import com.knitted.marketplace.mappers.ImageMapper;
-import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.mappers.ShopMapper;
-import com.knitted.marketplace.dtos.ShopRequestDto;
-import com.knitted.marketplace.dtos.ShopResponseDto;
+import com.knitted.marketplace.dtos.shop.ShopRequestDto;
+import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.services.ShopService;
 
 import org.springframework.http.HttpStatus;
@@ -31,16 +28,14 @@ public class ShopController {
     public ResponseEntity<ShopResponseDto> createShop(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage) {
+            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage
+    ) {
 
-        ImageFile image = uploadedImage != null ? ImageMapper.toImage(uploadedImage) : null;
+        ShopRequestDto request = new ShopRequestDto(name, description, uploadedImage);
 
-        ShopRequestDto request = new ShopRequestDto(name, description, image);
-        Shop shop = ShopMapper.toShop(request);
-
-        Shop updatedShop = shopService.saveShop(shop);
-
+        Shop updatedShop = shopService.saveShop(request);
         ShopResponseDto response = ShopMapper.toResponseDto(updatedShop);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

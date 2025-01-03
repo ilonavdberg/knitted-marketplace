@@ -1,5 +1,6 @@
 package com.knitted.marketplace.services;
 
+import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.models.order.Order;
@@ -38,5 +39,10 @@ public class OrderService {
         order.setCustomer(null); //TODO: change to active user's customer account
 
         return orderRepository.save(order);
+    }
+
+
+    public Order getOrder(Long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 }

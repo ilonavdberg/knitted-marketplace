@@ -1,9 +1,11 @@
 package com.knitted.marketplace.services;
 
+import com.knitted.marketplace.dtos.item.ItemRequestDto;
 import com.knitted.marketplace.exception.exceptions.InvalidStatusChangeException;
 import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
+import com.knitted.marketplace.mappers.ItemMapper;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
 import com.knitted.marketplace.utils.Parser;
@@ -28,14 +30,17 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public Item createItem(Item item) {
+    public Item createItem(ItemRequestDto request) {
+        Item item = ItemMapper.toItem(request);
         item.setStatus(ItemStatus.NOT_PUBLISHED); //set initial status
+
         return itemRepository.save(item);
     }
 
     @Transactional
-    public Item updateItem(Long id, Item updatedItem) {
+    public Item updateItem(Long id, ItemRequestDto request) {
         Item item = getItem(id);
+        Item updatedItem = ItemMapper.toItem(request);
 
         item.setTitle(updatedItem.getTitle());
         item.setDescription(updatedItem.getDescription());
@@ -81,6 +86,13 @@ public class ItemService {
 
             case ARCHIVED:
                 item.setStatus(ItemStatus.ARCHIVED);
+                break;
+
+            case SOLD:
+                if (!item.getStatus().equals(ItemStatus.PUBLISHED)) {
+                    throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
+                }
+                item.setStatus(ItemStatus.SOLD);
                 break;
         }
 
