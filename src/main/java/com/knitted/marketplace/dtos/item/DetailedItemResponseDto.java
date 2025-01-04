@@ -1,12 +1,12 @@
 package com.knitted.marketplace.dtos.item;
 
-import com.knitted.marketplace.dtos.shop.ShopResponseDto;
+import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 
 import java.util.List;
 
 //TODO: add OrderResponseDto in this response
-public record ItemResponseDto(
+public record DetailedItemResponseDto(
         Long id,
         String title,
         String description,
@@ -17,7 +17,7 @@ public record ItemResponseDto(
         String subcategory,
         String targetGroup,
         String size,
-        List<String> filenames
+        List<ImageResponseDto> photos
 ) {
 
 }

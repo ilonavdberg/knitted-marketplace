@@ -34,8 +34,9 @@ public class Review {
     @NotNull
     private LocalDateTime lastModifiedDate;
 
-    @OneToOne(mappedBy = "review")
-    Reaction reaction;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "reaction_id", referencedColumnName = "id")
+    private Reaction reaction;
 
 
     // Getters and Setters
@@ -102,5 +103,9 @@ public class Review {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setReaction(Reaction reaction) {
+        this.reaction = reaction;
     }
 }

@@ -9,20 +9,19 @@ import java.time.LocalDateTime;
 public class Reaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "review_id", referencedColumnName = "id")
-    Review review;
+    @OneToOne(mappedBy = "reaction")
+    private Review review;
 
     @OneToOne
     @JoinColumn(name="author_id", referencedColumnName = "id")
-    Contact author;
+    private Contact author;
 
-    String comment;
+    private String comment;
 
-    LocalDateTime createdDate;
-    LocalDateTime lastModifiedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 
 
     // Getters and Setters

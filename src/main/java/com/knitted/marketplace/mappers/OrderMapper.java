@@ -11,7 +11,7 @@ public class OrderMapper {
                 order.getStatus().toString(),
                 order.getCreatedDate().toString(),
                 order.getClosedDate().toString(),
-                ItemMapper.toCatalogResponseDto(order.getSoldItem())
+                ItemMapper.toCatalogItemResponseDto(order.getSoldItem())
         );
     }
 }

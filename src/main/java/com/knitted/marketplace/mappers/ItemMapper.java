@@ -1,8 +1,10 @@
 package com.knitted.marketplace.mappers;
 
+import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.item.ItemRequestDto;
-import com.knitted.marketplace.dtos.item.ItemResponseDto;
+import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
+import com.knitted.marketplace.dtos.item.ShopItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.*;
 
@@ -31,10 +33,10 @@ public class ItemMapper {
         return item;
     }
 
-    public static ItemResponseDto toResponseDto(Item item) {
-        List<String> imageFilenames = item.getPhotos().stream().map(ImageFile::getFilename).toList();
+    public static DetailedItemResponseDto toResponseDto(Item item) {
+        List<ImageResponseDto> photos = item.getPhotos().stream().map(ImageMapper::toResponseDto).toList();
 
-        return new ItemResponseDto(
+        return new DetailedItemResponseDto(
                 item.getId(),
                 item.getTitle(),
                 item.getDescription(),
@@ -45,25 +47,46 @@ public class ItemMapper {
                 item.getSubcategory().toString(),
                 item.getTargetgroup().toString(),
                 item.getClothingSize().toString(),
-                imageFilenames
+                photos
         );
     }
 
-    public static CatalogItemResponseDto toCatalogResponseDto(Item item) {
-        ImageFile image = item.getPhotos().getFirst();
+    public static CatalogItemResponseDto toCatalogItemResponseDto(Item item) {
+        ImageFile itemImageFile = item.getPhotos().getFirst();
+        ImageResponseDto itemPhoto = ImageMapper.toResponseDto(itemImageFile);
+
+        ImageFile shopImageFile = item.getShop().getShopPicture();
+        ImageResponseDto shopPicture = ImageMapper.toResponseDto(shopImageFile);
 
         return new CatalogItemResponseDto(
                 item.getId(),
                 item.getTitle(),
                 item.getPrice(),
-                image,
+                itemPhoto,
                 item.getShop().getName(),
-                item.getShop().getShopPicture(),
+                shopPicture,
                 item.getStatus()
         );
     }
 
-    public static Page<CatalogItemResponseDto> toCatalogResponseDtoPage(Page<Item> items) {
-        return items.map(ItemMapper::toCatalogResponseDto);
+    public static Page<CatalogItemResponseDto> toCatalogItemResponseDtoPage(Page<Item> itemPage) {
+        return itemPage.map(ItemMapper::toCatalogItemResponseDto);
+    }
+
+    public static ShopItemResponseDto toShopItemResponseDto(Item item) {
+        ImageFile imageFile = item.getPhotos().getFirst();
+        ImageResponseDto image = ImageMapper.toResponseDto(imageFile);
+
+        return new ShopItemResponseDto(
+                item.getId(),
+                item.getTitle(),
+                item.getPrice(),
+                item.getStatus().toString(),
+                image
+        );
+    }
+
+    public static Page<ShopItemResponseDto> toShopItemResponseDtoPage(Page<Item> itemPage) {
+        return itemPage.map(ItemMapper::toShopItemResponseDto);
     }
 }

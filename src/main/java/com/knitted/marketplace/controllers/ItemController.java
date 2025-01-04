@@ -2,7 +2,8 @@ package com.knitted.marketplace.controllers;
 
 import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.item.ItemRequestDto;
-import com.knitted.marketplace.dtos.item.ItemResponseDto;
+import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
+import com.knitted.marketplace.dtos.item.ShopItemResponseDto;
 import com.knitted.marketplace.mappers.ItemMapper;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.services.ItemService;
@@ -36,7 +37,7 @@ public class ItemController {
 
     //TODO: check if shopId can be derived from User token instead of path variable
     @PostMapping("shops/{shopId}/items")
-    public ResponseEntity<ItemResponseDto> createItem(
+    public ResponseEntity<DetailedItemResponseDto> createItem(
             @PathVariable Long shopId,
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "description", required = false, defaultValue = "") String description,
@@ -61,13 +62,13 @@ public class ItemController {
         );
 
         Item savedItem = itemService.createItem(request);
-        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("items/{id}")
-    public ResponseEntity<ItemResponseDto> updateItem(
+    public ResponseEntity<DetailedItemResponseDto> updateItem(
             @PathVariable Long id,
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "description", required = false, defaultValue = "") String description,
@@ -92,33 +93,33 @@ public class ItemController {
         );
 
         Item savedItem = itemService.updateItem(id, request);
-        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.ok(response);
     }
 
     //TODO: add validation check before publishing
     @PutMapping("items/{id}/publish")
-    public ResponseEntity<ItemResponseDto> publishItem(@PathVariable Long id) {
+    public ResponseEntity<DetailedItemResponseDto> publishItem(@PathVariable Long id) {
         Item savedItem = itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
 
-        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("items/{id}/unpublish")
-    public ResponseEntity<ItemResponseDto> unpublishItem(@PathVariable Long id) {
+    public ResponseEntity<DetailedItemResponseDto> unpublishItem(@PathVariable Long id) {
         Item savedItem = itemService.updateItemStatus(id, ItemStatus.NOT_PUBLISHED);
 
-        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("items/{id}/archive")
-    public ResponseEntity<ItemResponseDto> archiveItem(@PathVariable Long id) {
+    public ResponseEntity<DetailedItemResponseDto> archiveItem(@PathVariable Long id) {
         Item savedItem = itemService.updateItemStatus(id, ItemStatus.ARCHIVED);
 
-        ItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
@@ -133,16 +134,34 @@ public class ItemController {
             @PageableDefault(size = 24) Pageable pageable
     ) {
 
-        Page<Item> items = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
-        Page<CatalogItemResponseDto> response = ItemMapper.toCatalogResponseDtoPage(items);
+        Page<Item> itemPage = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
+        Page<CatalogItemResponseDto> response = ItemMapper.toCatalogItemResponseDtoPage(itemPage);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("items/{id}")
-    public ResponseEntity<ItemResponseDto> getItem(@PathVariable Long id) {
+    public ResponseEntity<DetailedItemResponseDto> getItem(@PathVariable Long id) {
         Item item = itemService.getItem(id);
-        ItemResponseDto response = ItemMapper.toResponseDto(item);
+        DetailedItemResponseDto response = ItemMapper.toResponseDto(item);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("shops/{id}/items")
+    public ResponseEntity<Page<ShopItemResponseDto>> getItemsForShop(
+            @PathVariable("id") Long shopId,
+            @RequestParam(required = false, defaultValue = "") String status,
+            @RequestParam(required = false, defaultValue = "") String category,
+            @RequestParam(required = false, defaultValue = "") String subcategory,
+            @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
+            @RequestParam(required = false, defaultValue = "") String target,
+            @RequestParam(required = false, defaultValue = "") String sizes,
+            @PageableDefault(size = 24) Pageable pageable
+            ) {
+
+        Page<Item> itemPage = itemService.getItemsForShop(shopId, status, category, subcategory, priceRange, target, sizes, pageable);
+        Page<ShopItemResponseDto> response = ItemMapper.toShopItemResponseDtoPage(itemPage);
+
         return ResponseEntity.ok(response);
     }
 }

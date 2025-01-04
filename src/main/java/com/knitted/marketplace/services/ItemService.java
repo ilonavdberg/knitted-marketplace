@@ -108,13 +108,14 @@ public class ItemService {
 
     @Transactional
     public Page<Item> getItemsForSale(String keyword, String category, String subcategory, String target, String priceRange, String sizes, Pageable pageable) {
-        Category categoryEnum = Category.fromString(category);
+        // create basic filters
+        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
 
-        // standard filter: only get published items
-        Specification<Item> spec = Specification.where((root, query, criteriaBuilder) ->
+        // add filter: only items for sale
+        spec = spec.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("status"), ItemStatus.PUBLISHED));
 
-        //search criteria
+        //add optional filter: search keyword
         if (!keyword.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.or(
@@ -123,18 +124,58 @@ public class ItemService {
                     ));
         }
 
+        Page<Item> itemPage = itemRepository.findAll(spec, pageable);
 
-        //optional filters
+        itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
+
+        return itemPage;
+    }
+
+    @Transactional
+    public Page<Item> getItemsForShop(Long shopId, String status, String category, String subcategory, String priceRange, String target, String sizes, Pageable pageable) {
+        // create basic filters
+        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
+
+        // add filter: only items in shop with id
+        spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("shop").get("id"), shopId));
+
+        // add optional filter: item status
+        if (!status.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("status"), ItemStatus.fromString(status)));
+        }
+
+        Page<Item> itemPage = itemRepository.findAll(spec, pageable);
+
+        itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
+
+        return itemPage;
+    }
+
+    private Specification<Item> buildCommonSpecification(
+            String category,
+            String subcategory,
+            String priceRange,
+            String target,
+            String sizes
+    ) {
+        Specification<Item> spec = Specification.where(null);
+
+        // Filter by category
+        Category categoryEnum = Category.fromString(category);
         if (!category.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get("category"), categoryEnum));
         }
 
+        // Filter by subcategory
         if (!subcategory.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get("subcategory"), Subcategory.fromString(subcategory)));
         }
 
+        // Filter by price range
         if (priceRange.contains(",")) {
             String[] priceLimits = priceRange.split(",");
             Double minPrice = !priceLimits[0].isEmpty() ? Double.parseDouble(priceLimits[0]) : null;
@@ -152,21 +193,19 @@ public class ItemService {
             }
         }
 
+        // Filter by target group
         if (categoryEnum.equals(Category.CLOTHING) && !target.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get("targetgroup"), TargetGroup.fromString(target)));
         }
 
+        // Filter by size
         if (categoryEnum.equals(Category.CLOTHING) && !sizes.isEmpty()) {
             List<ClothingSize> sizeList = Parser.toSizeList(sizes);
             spec = spec.and((root, query, criteriaBuilder) -> root.get("clothing_size").in(sizeList));
         }
 
-        Page<Item> itemPage = itemRepository.findAll(spec, pageable);
-
-        itemPage.getContent().forEach(item -> Hibernate.initialize(item.getPhotos()));
-
-        return itemPage;
+        return spec;
     }
 
 }

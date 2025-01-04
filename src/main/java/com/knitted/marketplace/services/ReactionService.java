@@ -6,6 +6,7 @@ import com.knitted.marketplace.models.Reaction;
 import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.repositories.ReactionRepository;
 
+import com.knitted.marketplace.repositories.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,12 +14,12 @@ import java.time.LocalDateTime;
 
 @Service
 public class ReactionService {
-    public final ReactionRepository reactionRepository;
     public final ReviewService reviewService;
+    private final ReviewRepository reviewRepository;
 
-    public ReactionService(ReactionRepository reactionRepository, ReviewService reviewService) {
-        this.reactionRepository = reactionRepository;
+    public ReactionService(ReviewService reviewService, ReviewRepository reviewRepository) {
         this.reviewService = reviewService;
+        this.reviewRepository = reviewRepository;
     }
 
     public Reaction save(Long reviewId, ReactionRequestDto request) {
@@ -30,6 +31,9 @@ public class ReactionService {
         }
         reaction.setLastModifiedDate(LocalDateTime.now());
 
-        return reactionRepository.save(reaction);
+        review.setReaction(reaction);
+        Review savedReview = reviewRepository.save(review); // This will also persist the Reaction due to cascading
+
+        return savedReview.getReaction();
     }
 }
