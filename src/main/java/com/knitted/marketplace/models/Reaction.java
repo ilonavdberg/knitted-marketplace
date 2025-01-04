@@ -11,8 +11,7 @@ public class Reaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne
-    @JoinColumn(name = "review_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "reaction")
     Review review;
 
     @OneToOne

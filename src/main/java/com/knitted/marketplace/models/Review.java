@@ -34,7 +34,8 @@ public class Review {
     @NotNull
     private LocalDateTime lastModifiedDate;
 
-    @OneToOne(mappedBy = "review")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "reaction_id", referencedColumnName = "id")
     Reaction reaction;
 
 
