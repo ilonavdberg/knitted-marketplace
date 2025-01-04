@@ -7,6 +7,8 @@ import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.repositories.ReviewRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +38,16 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Review> getReviewsForShop(Long shopId, Pageable pageable) {
+        Page<Review> reviewPage = reviewRepository.findByShopId(shopId, pageable);
+        return reviewPage;
+    }
+
     public Review getReview(Long id) {
         return reviewRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
+
+
 
 }

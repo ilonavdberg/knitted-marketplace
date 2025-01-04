@@ -1,5 +1,6 @@
 package com.knitted.marketplace.mappers;
 
+import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.dtos.item.CatalogItemResponseDto;
 import com.knitted.marketplace.dtos.item.ItemRequestDto;
 import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
@@ -33,7 +34,7 @@ public class ItemMapper {
     }
 
     public static DetailedItemResponseDto toResponseDto(Item item) {
-        List<String> imageFilenames = item.getPhotos().stream().map(ImageFile::getFilename).toList();
+        List<ImageResponseDto> photos = item.getPhotos().stream().map(ImageMapper::toResponseDto).toList();
 
         return new DetailedItemResponseDto(
                 item.getId(),
@@ -46,20 +47,24 @@ public class ItemMapper {
                 item.getSubcategory().toString(),
                 item.getTargetgroup().toString(),
                 item.getClothingSize().toString(),
-                imageFilenames
+                photos
         );
     }
 
     public static CatalogItemResponseDto toCatalogItemResponseDto(Item item) {
-        ImageFile image = item.getPhotos().getFirst();
+        ImageFile itemImageFile = item.getPhotos().getFirst();
+        ImageResponseDto itemPhoto = ImageMapper.toResponseDto(itemImageFile);
+
+        ImageFile shopImageFile = item.getShop().getShopPicture();
+        ImageResponseDto shopPicture = ImageMapper.toResponseDto(shopImageFile);
 
         return new CatalogItemResponseDto(
                 item.getId(),
                 item.getTitle(),
                 item.getPrice(),
-                image,
+                itemPhoto,
                 item.getShop().getName(),
-                item.getShop().getShopPicture(),
+                shopPicture,
                 item.getStatus()
         );
     }
@@ -69,7 +74,8 @@ public class ItemMapper {
     }
 
     public static ShopItemResponseDto toShopItemResponseDto(Item item) {
-        ImageFile image = item.getPhotos().getFirst();
+        ImageFile imageFile = item.getPhotos().getFirst();
+        ImageResponseDto image = ImageMapper.toResponseDto(imageFile);
 
         return new ShopItemResponseDto(
                 item.getId(),

@@ -1,5 +1,6 @@
 package com.knitted.marketplace.mappers;
 
+import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopRequestDto;
 import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
@@ -8,6 +9,7 @@ import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.item.ItemStatus;
 import org.hibernate.Hibernate;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 
@@ -25,13 +27,16 @@ public class ShopMapper {
     }
 
     public static ShopResponseDto toResponseDto(Shop shop) {
+        ImageFile imageFile = shop.getShopPicture();
+        ImageResponseDto image = ImageMapper.toResponseDto(imageFile);
+
         return new ShopResponseDto(
                 shop.getId(),
                 shop.getName(),
                 shop.getDescription(),
                 shop.getItemsToString(),
                 shop.getOwnerToString(),
-                shop.getShopPictureToString()
+                image
         );
     }
 
@@ -56,11 +61,13 @@ public class ShopMapper {
                 .average()
                 .orElse(0);
 
+        ImageResponseDto image = ImageMapper.toResponseDto(shop.getShopPicture());
+
         return new ShopSummaryResponseDto(
                 shop.getId(),
                 shop.getName(),
                 shop.getDescription(),
-                shop.getShopPicture(),
+                image,
                 numberOfReviews,
                 averageRating
         );

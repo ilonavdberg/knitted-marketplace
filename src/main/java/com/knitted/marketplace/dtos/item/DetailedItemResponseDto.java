@@ -1,5 +1,6 @@
 package com.knitted.marketplace.dtos.item;
 
+import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public record DetailedItemResponseDto(
         String subcategory,
         String targetGroup,
         String size,
-        List<String> filenames
+        List<ImageResponseDto> photos
 ) {
 
 }

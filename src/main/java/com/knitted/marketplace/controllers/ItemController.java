@@ -148,7 +148,7 @@ public class ItemController {
     }
 
     @GetMapping("shops/{id}/items")
-    public ResponseEntity<Page<ShopItemResponseDto>> getItemsInShop(
+    public ResponseEntity<Page<ShopItemResponseDto>> getItemsForShop(
             @PathVariable("id") Long shopId,
             @RequestParam(required = false, defaultValue = "") String status,
             @RequestParam(required = false, defaultValue = "") String category,
@@ -159,7 +159,7 @@ public class ItemController {
             @PageableDefault(size = 24) Pageable pageable
             ) {
 
-        Page<Item> itemPage = itemService.getItemsInShop(shopId, status, category, subcategory, priceRange, target, sizes, pageable);
+        Page<Item> itemPage = itemService.getItemsForShop(shopId, status, category, subcategory, priceRange, target, sizes, pageable);
         Page<ShopItemResponseDto> response = ItemMapper.toShopItemResponseDtoPage(itemPage);
 
         return ResponseEntity.ok(response);

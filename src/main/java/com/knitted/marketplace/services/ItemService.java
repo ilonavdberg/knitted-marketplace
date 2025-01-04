@@ -132,7 +132,7 @@ public class ItemService {
     }
 
     @Transactional
-    public Page<Item> getItemsInShop(Long shopId, String status, String category, String subcategory, String priceRange, String target, String sizes, Pageable pageable) {
+    public Page<Item> getItemsForShop(Long shopId, String status, String category, String subcategory, String priceRange, String target, String sizes, Pageable pageable) {
         // create basic filters
         Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
 

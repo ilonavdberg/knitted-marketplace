@@ -1,5 +1,7 @@
 package com.knitted.marketplace.dtos.shop;
 
+import com.knitted.marketplace.dtos.ImageResponseDto;
+
 import java.util.List;
 
 public record ShopResponseDto(
@@ -8,7 +10,7 @@ public record ShopResponseDto(
         String description,
         List<String> items,
         String owner,
-        String shopPicture
+        ImageResponseDto shopPicture
 ) {
 
 }
