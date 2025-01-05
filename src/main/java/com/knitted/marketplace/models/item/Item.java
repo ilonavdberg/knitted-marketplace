@@ -30,9 +30,16 @@ public class Item {
 
     private Double price;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
     private Subcategory subcategory;
+
+    @Enumerated(EnumType.STRING)
     private TargetGroup targetgroup;
+
+    @Enumerated(EnumType.STRING)
     private ClothingSize clothingSize;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
