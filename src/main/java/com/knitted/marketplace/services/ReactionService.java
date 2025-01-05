@@ -4,7 +4,6 @@ import com.knitted.marketplace.dtos.reaction.ReactionRequestDto;
 import com.knitted.marketplace.mappers.ReactionMapper;
 import com.knitted.marketplace.models.Reaction;
 import com.knitted.marketplace.models.Review;
-import com.knitted.marketplace.repositories.ReactionRepository;
 
 import com.knitted.marketplace.repositories.ReviewRepository;
 import org.springframework.stereotype.Service;

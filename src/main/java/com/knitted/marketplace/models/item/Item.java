@@ -47,6 +47,8 @@ public class Item {
         photos.addAll(newPhotos);
     }
 
+
+
     // Getters and Setters
 
 
