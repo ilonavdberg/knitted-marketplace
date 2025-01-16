@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 
+//TODO: add @Valid annotations to all Controller methods that receive client input
 
 @RestController
 @RequestMapping(BASE_URL)
@@ -130,11 +131,11 @@ public class ItemController {
             @RequestParam(required = false, defaultValue = "") String subcategory,
             @RequestParam(required = false, defaultValue = "") String target,
             @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
-            @RequestParam(required = false, defaultValue = "") String sizes,
-            @PageableDefault(size = 24) Pageable pageable
+            @RequestParam(required = false, defaultValue = "") String size,
+            @PageableDefault(size = 20) Pageable pageable
     ) {
 
-        Page<Item> itemPage = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, sizes, pageable);
+        Page<Item> itemPage = itemService.getItemsForSale(keyword, category, subcategory, target, priceRange, size, pageable);
         Page<CatalogItemResponseDto> response = ItemMapper.toCatalogItemResponseDtoPage(itemPage);
 
         return ResponseEntity.ok(response);
@@ -155,11 +156,11 @@ public class ItemController {
             @RequestParam(required = false, defaultValue = "") String subcategory,
             @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
             @RequestParam(required = false, defaultValue = "") String target,
-            @RequestParam(required = false, defaultValue = "") String sizes,
+            @RequestParam(required = false, defaultValue = "") String size,
             @PageableDefault(size = 24) Pageable pageable
             ) {
 
-        Page<Item> itemPage = itemService.getItemsForShop(shopId, status, category, subcategory, priceRange, target, sizes, pageable);
+        Page<Item> itemPage = itemService.getItemsForShop(shopId, status, category, subcategory, priceRange, target, size, pageable);
         Page<ShopItemResponseDto> response = ItemMapper.toShopItemResponseDtoPage(itemPage);
 
         return ResponseEntity.ok(response);

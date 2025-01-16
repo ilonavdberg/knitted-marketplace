@@ -39,10 +39,6 @@ public class ItemDataGenerator {
             item.setPrice(generateRandomPrice(10.0, 50.0));
             item.setShop(shops.get(i % shops.size()));
 
-//            // Reattach the Shop entity to the current session
-//            Shop managedShop = entityManager.merge(shops.get(i % shops.size()));
-//            item.setShop(managedShop);
-
             Category category = pickRandomEnum(Category.class);
             item.setCategory(category);
             item.setSubcategory(pickRandomSubcategory(category));
@@ -50,7 +46,7 @@ public class ItemDataGenerator {
                 item.setTargetgroup(pickRandomEnum(TargetGroup.class));
                 item.setClothingSize(pickRandomEnum(ClothingSize.class));
             }
-            item.addPhotos(Collections.singletonList(ImageMapper.toImage("static/sampledata/images/item_photo_default.jpg")));
+            item.addPhotos(Collections.singletonList(ImageMapper.toImage("static/sampledata/images/item_photo_default.png")));
 
             itemRepository.save(item);
             itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
@@ -58,7 +54,8 @@ public class ItemDataGenerator {
     }
 
     private double generateRandomPrice(double min, double max) {
-        return ThreadLocalRandom.current().nextDouble(min, max);
+        double price = ThreadLocalRandom.current().nextDouble(min, max);
+        return Math.round(price * 100.0) / 100.0;
     }
 
     private <E extends Enum<E>> E pickRandomEnum(Class<E> enumClass) {

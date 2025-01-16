@@ -107,9 +107,11 @@ public class ItemService {
     }
 
     @Transactional
-    public Page<Item> getItemsForSale(String keyword, String category, String subcategory, String target, String priceRange, String sizes, Pageable pageable) {
+    public Page<Item> getItemsForSale(String keyword, String category, String subcategory, String target, String priceRange, String size, Pageable pageable) {
         // create basic filters
-        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
+        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, size);
+
+        System.out.println("Received size: " + size);
 
         // add filter: only items for sale
         spec = spec.and((root, query, criteriaBuilder) ->
@@ -201,9 +203,17 @@ public class ItemService {
 
         // Filter by size
         if (categoryEnum.equals(Category.CLOTHING) && !sizes.isEmpty()) {
-            List<ClothingSize> sizeList = Parser.toSizeList(sizes);
-            spec = spec.and((root, query, criteriaBuilder) -> root.get("clothing_size").in(sizeList));
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("clothingSize"), ClothingSize.fromString(sizes)));
+            System.out.println("size filter is run...");
+            System.out.println("size is: " + ClothingSize.fromString(sizes));
         }
+
+        // Filter by sizes - list method
+//        if (categoryEnum.equals(Category.CLOTHING) && !sizes.isEmpty()) {
+//            List<ClothingSize> sizeList = Parser.toSizeList(sizes);
+//            spec = spec.and((root, query, criteriaBuilder) -> root.get("clothing_size").in(sizeList));
+//        }
 
         return spec;
     }
