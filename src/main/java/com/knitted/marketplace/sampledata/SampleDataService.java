@@ -24,6 +24,7 @@ public class SampleDataService {
         itemDataGenerator.generate();
         System.out.println("Start generating review data");
         reviewDataGenerator.generate();
+
         System.out.println("Finished generating sample data...");
     }
 

@@ -9,6 +9,5 @@ public record ShopSummaryResponseDto(
         ImageResponseDto shopPicture,
         Long numberOfReviews,
         Double averageRating
-) {
-
+    ) {
 }
