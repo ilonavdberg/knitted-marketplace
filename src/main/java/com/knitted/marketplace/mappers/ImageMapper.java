@@ -2,16 +2,13 @@ package com.knitted.marketplace.mappers;
 
 import com.knitted.marketplace.dtos.ImageResponseDto;
 import com.knitted.marketplace.models.ImageFile;
-import com.knitted.marketplace.utils.FileNameUtils;
+import com.knitted.marketplace.utils.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
@@ -19,7 +16,9 @@ public class ImageMapper {
     public static ImageFile toImage(MultipartFile file) {
         ImageFile image = new ImageFile();
 
-        image.setFilename(FileNameUtils.generateUniqueFileName(file));
+        image.setExtension(FileUtils.getFileExtension(file));
+        image.setFilename(FileUtils.generateUniqueFileName(file));
+
         try {
             image.setImageData(file.getBytes());
         } catch (IOException e) {
@@ -37,6 +36,7 @@ public class ImageMapper {
         try (InputStream inputStream = resource.getInputStream()) {
             byte[] imageData = inputStream.readAllBytes();
             image.setFilename(resource.getFilename());
+            image.setExtension(resource.getFilename().substring(resource.getFilename().lastIndexOf(".") + 1));
             image.setImageData(imageData);
         } catch (IOException e) {
             throw new RuntimeException("Error while reading the file at " + imagePath, e);
@@ -59,6 +59,7 @@ public class ImageMapper {
         return new ImageResponseDto(
                 imageFile.getId(),
                 imageFile.getFilename(),
+                imageFile.getExtension(),
                 base64Image
         );
     }
