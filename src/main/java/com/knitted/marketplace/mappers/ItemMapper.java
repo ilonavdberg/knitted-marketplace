@@ -43,10 +43,6 @@ public class ItemMapper {
                 item.getPrice(),
                 item.getStatus().toString(),
                 ShopMapper.toSummaryResponseDto(item.getShop()),
-                item.getCategory().toString(),
-                item.getSubcategory().toString(),
-                item.getTargetgroup().toString(),
-                item.getClothingSize().toString(),
                 photos
         );
     }

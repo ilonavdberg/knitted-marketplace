@@ -209,12 +209,6 @@ public class ItemService {
             System.out.println("size is: " + ClothingSize.fromString(sizes));
         }
 
-        // Filter by sizes - list method
-//        if (categoryEnum.equals(Category.CLOTHING) && !sizes.isEmpty()) {
-//            List<ClothingSize> sizeList = Parser.toSizeList(sizes);
-//            spec = spec.and((root, query, criteriaBuilder) -> root.get("clothing_size").in(sizeList));
-//        }
-
         return spec;
     }
 
