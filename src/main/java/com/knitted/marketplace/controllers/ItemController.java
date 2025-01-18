@@ -110,7 +110,7 @@ public class ItemController {
 
     @PutMapping("items/{id}/unpublish")
     public ResponseEntity<DetailedItemResponseDto> unpublishItem(@PathVariable Long id) {
-        Item savedItem = itemService.updateItemStatus(id, ItemStatus.NOT_PUBLISHED);
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.DRAFT);
 
         DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);

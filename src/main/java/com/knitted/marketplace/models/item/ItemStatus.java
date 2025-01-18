@@ -3,7 +3,7 @@ package com.knitted.marketplace.models.item;
 import com.knitted.marketplace.exception.exceptions.InvalidEnumValueException;
 
 public enum ItemStatus {
-    NOT_PUBLISHED("not published"),
+    DRAFT("draft"),
     PUBLISHED("published"),
     SOLD("sold"),
     ARCHIVED("archived"),

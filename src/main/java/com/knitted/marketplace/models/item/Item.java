@@ -17,7 +17,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private ItemStatus status = ItemStatus.NOT_PUBLISHED;
+    private ItemStatus status = ItemStatus.DRAFT;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
