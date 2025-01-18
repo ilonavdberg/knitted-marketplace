@@ -57,6 +57,7 @@ public class ShopMapper {
 
         Double averageRating = shop.getItems().stream()
                 .filter(item -> item.getStatus().equals(ItemStatus.SOLD))
+                .filter(item -> item.getOrder().getReview() != null)
                 .mapToInt(item -> item.getOrder().getReview().getRating())
                 .average()
                 .orElse(0);
