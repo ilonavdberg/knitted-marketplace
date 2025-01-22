@@ -13,10 +13,10 @@ public record DetailedItemResponseDto(
         Double price,
         String status,
         ShopSummaryResponseDto shop,
-//        String category,
-//        String subcategory,
-//        String targetGroup,
-//        String size,
+        String category,
+        String subcategory,
+        String target,
+        String size,
         List<ImageResponseDto> photos
 ) {
 

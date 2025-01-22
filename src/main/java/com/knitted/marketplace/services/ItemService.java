@@ -139,6 +139,10 @@ public class ItemService {
         spec = spec.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("shop").get("id"), shopId));
 
+        // Add filter: exclude items that are archived
+        spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.notEqual(root.get("status"), ItemStatus.ARCHIVED));
+
         // add optional filter: item status
         if (!status.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->

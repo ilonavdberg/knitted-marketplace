@@ -43,12 +43,16 @@ public class ItemMapper {
                 item.getPrice(),
                 item.getStatus().toString(),
                 ShopMapper.toSummaryResponseDto(item.getShop()),
+                item.getCategory().toString(),
+                item.getSubcategory().toString(),
+                item.getTargetgroup() != null ? item.getTargetgroup().toString() : "",
+                item.getClothingSize() != null ? item.getClothingSize().toString() : "",
                 photos
         );
     }
 
     public static CatalogItemResponseDto toCatalogItemResponseDto(Item item) {
-        ImageFile itemImageFile = item.getPhotos().getFirst();
+        ImageFile itemImageFile = item.getPhotos().getLast();
         ImageResponseDto itemPhoto = ImageMapper.toResponseDto(itemImageFile);
 
         ImageFile shopImageFile = item.getShop().getShopPicture();
@@ -70,7 +74,7 @@ public class ItemMapper {
     }
 
     public static ShopItemResponseDto toShopItemResponseDto(Item item) {
-        ImageFile imageFile = item.getPhotos().getFirst();
+        ImageFile imageFile = item.getPhotos().getLast();
         ImageResponseDto image = ImageMapper.toResponseDto(imageFile);
 
         return new ShopItemResponseDto(
