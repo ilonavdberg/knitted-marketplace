@@ -8,7 +8,6 @@ import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.mappers.ItemMapper;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
-import com.knitted.marketplace.utils.Parser;
 import com.knitted.marketplace.utils.validation.ItemValidator;
 import com.knitted.marketplace.utils.validation.ValidationResult;
 
@@ -18,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Service
@@ -32,7 +29,7 @@ public class ItemService {
 
     public Item createItem(ItemRequestDto request) {
         Item item = ItemMapper.toItem(request);
-        item.setStatus(ItemStatus.NOT_PUBLISHED); //set initial status
+        item.setStatus(ItemStatus.DRAFT); //set initial status
 
         return itemRepository.save(item);
     }
@@ -64,7 +61,7 @@ public class ItemService {
         switch (newStatus) {
             case PUBLISHED:
                 // Check if item has the correct status
-                if (!item.getStatus().equals(ItemStatus.NOT_PUBLISHED)) {
+                if (!item.getStatus().equals(ItemStatus.DRAFT)) {
                     throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
                 }
 
@@ -77,11 +74,11 @@ public class ItemService {
                 item.setStatus(ItemStatus.PUBLISHED);
                 break;
 
-            case NOT_PUBLISHED:
+            case DRAFT:
                 if (!item.getStatus().equals(ItemStatus.PUBLISHED)) {
                     throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
                 }
-                item.setStatus(ItemStatus.NOT_PUBLISHED);
+                item.setStatus(ItemStatus.DRAFT);
                 break;
 
             case ARCHIVED:
@@ -107,9 +104,11 @@ public class ItemService {
     }
 
     @Transactional
-    public Page<Item> getItemsForSale(String keyword, String category, String subcategory, String target, String priceRange, String sizes, Pageable pageable) {
+    public Page<Item> getItemsForSale(String keyword, String category, String subcategory, String target, String priceRange, String size, Pageable pageable) {
         // create basic filters
-        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, sizes);
+        Specification<Item> spec = buildCommonSpecification(category, subcategory, priceRange, target, size);
+
+        System.out.println("Received size: " + size);
 
         // add filter: only items for sale
         spec = spec.and((root, query, criteriaBuilder) ->
@@ -139,6 +138,10 @@ public class ItemService {
         // add filter: only items in shop with id
         spec = spec.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("shop").get("id"), shopId));
+
+        // Add filter: exclude items that are archived
+        spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.notEqual(root.get("status"), ItemStatus.ARCHIVED));
 
         // add optional filter: item status
         if (!status.isEmpty()) {
@@ -201,8 +204,10 @@ public class ItemService {
 
         // Filter by size
         if (categoryEnum.equals(Category.CLOTHING) && !sizes.isEmpty()) {
-            List<ClothingSize> sizeList = Parser.toSizeList(sizes);
-            spec = spec.and((root, query, criteriaBuilder) -> root.get("clothing_size").in(sizeList));
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("clothingSize"), ClothingSize.fromString(sizes)));
+            System.out.println("size filter is run...");
+            System.out.println("size is: " + ClothingSize.fromString(sizes));
         }
 
         return spec;

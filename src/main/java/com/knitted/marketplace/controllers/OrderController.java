@@ -4,6 +4,7 @@ import com.knitted.marketplace.dtos.OrderResponseDto;
 import com.knitted.marketplace.mappers.OrderMapper;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.services.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,6 @@ public class OrderController {
         Order order = orderService.orderItem(itemId);
 
         OrderResponseDto response = OrderMapper.toResponseDto(order);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

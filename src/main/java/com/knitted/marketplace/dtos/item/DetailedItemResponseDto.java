@@ -15,7 +15,7 @@ public record DetailedItemResponseDto(
         ShopSummaryResponseDto shop,
         String category,
         String subcategory,
-        String targetGroup,
+        String target,
         String size,
         List<ImageResponseDto> photos
 ) {

@@ -14,6 +14,7 @@ public class Parser {
         if (sizes.isEmpty()) {
             return List.of(); // Return an empty list if the input is empty
         }
+
         return Arrays.stream(sizes.split(","))
                 .map(ClothingSize::fromString)
                 .toList();

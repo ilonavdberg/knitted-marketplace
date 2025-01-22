@@ -10,16 +10,19 @@ public class ImageFile {
     private Long id;
 
     private String filename;
+    private String extension;
 
     @Lob
     private byte[] imageData;
 
 
     //Getters and Setters
-
-
     public Long getId() {
         return id;
+    }
+
+    public String getExtension() {
+        return extension;
     }
 
     public String getFilename() {
@@ -28,6 +31,10 @@ public class ImageFile {
 
     public byte[] getImageData() {
         return imageData;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public void setFilename(String filename) {

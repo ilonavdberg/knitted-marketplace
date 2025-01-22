@@ -10,7 +10,7 @@ public enum Subcategory {
     PANTS("pants"),
     SKIRTS("skirts"),
     SOCKS("socks"),
-    HATS_HEADBANDS("hats and headbands"),
+    HATS_HEADBANDS("hats_eadbands"),
     SCARVES("scarves"),
     GLOVES("gloves"),
 
@@ -24,17 +24,17 @@ public enum Subcategory {
     BLANKETS("blankets"),
     PILLOWS("pillows"),
     BASKETS("baskets"),
-    WALL_HANGINGS("wall hangings"),
-    HOME_DECOR("home decor"),
-    KITCHEN_ITEMS("kitchen items"),
+    WALL_HANGINGS("wall_hangings"),
+    HOME_DECOR("home_decor"),
+    KITCHEN_ITEMS("kitchen_items"),
     COZIES("cozies"),
 
     //TOYS
-    STUFFED_ANIMALS("stuffed animals"),
+    STUFFED_ANIMALS("stuffed_animals"),
     DOLLS("dolls"),
-    TOY_CLOTHING("toy clothing"),
-    INTERACTIVE_TOYS("interactive toys"),
-    BABY_TOYS("baby toys"),
+    TOY_CLOTHING("toy_clothing"),
+    INTERACTIVE_TOYS("interactive_toys"),
+    BABY_TOYS("baby_toys"),
 
     UNSPECIFIED("unspecified");
 

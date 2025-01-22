@@ -17,7 +17,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private ItemStatus status = ItemStatus.NOT_PUBLISHED;
+    private ItemStatus status = ItemStatus.DRAFT;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
@@ -30,9 +30,16 @@ public class Item {
 
     private Double price;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
     private Subcategory subcategory;
+
+    @Enumerated(EnumType.STRING)
     private TargetGroup targetgroup;
+
+    @Enumerated(EnumType.STRING)
     private ClothingSize clothingSize;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,6 +53,8 @@ public class Item {
     public void addPhotos(List<ImageFile> newPhotos) {
         photos.addAll(newPhotos);
     }
+
+
 
     // Getters and Setters
 
