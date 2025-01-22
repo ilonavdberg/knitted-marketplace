@@ -38,4 +38,9 @@ public class Contact {
     public String toString() {
         return firstName + " " + lastName;
     }
+
+    //Getters and Setters
+    public Shop getShop() {
+        return shop;
+    }
 }

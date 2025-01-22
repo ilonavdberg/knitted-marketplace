@@ -37,4 +37,7 @@ public class User {
         return roles;
     }
 
+    public Contact getContact() {
+        return contact;
+    }
 }

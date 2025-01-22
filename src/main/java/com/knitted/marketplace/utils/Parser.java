@@ -1,9 +1,12 @@
 package com.knitted.marketplace.utils;
 
 import com.knitted.marketplace.models.item.ClothingSize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Parser {
     public static Double toDouble(String stringInput) throws NumberFormatException {
@@ -18,5 +21,11 @@ public class Parser {
         return Arrays.stream(sizes.split(","))
                 .map(ClothingSize::fromString)
                 .toList();
+    }
+
+    public static List<GrantedAuthority> toAuthorities(List<String> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE" + role.toUpperCase()))
+                .collect(Collectors.toList());
     }
 }
