@@ -33,6 +33,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequest) {
         String token = authService.authenticateAndGenerateToken(loginRequest);
+        System.out.println("Token: " + token);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body("Token generated");

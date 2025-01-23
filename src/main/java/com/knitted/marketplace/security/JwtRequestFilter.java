@@ -36,21 +36,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         String jwt = null;
         Long userId = null;
-        Long shopId = null;
         List<GrantedAuthority> roles = new ArrayList<>();
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             userId = jwtService.extractId(jwt);
-            shopId = jwtService.extractShopId(jwt);
             roles = Parser.toAuthorities(jwtService.extractRoles(jwt));
         }
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtService.validateToken(jwt)) {
-                CustomPrincipal principal = new CustomPrincipal(userId, shopId);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        principal, null, roles
+                        userId, null, roles
                 );
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

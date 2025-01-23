@@ -23,12 +23,9 @@ public class JwtService {
     public String generateToken(User user, List<String> roles) {
         Key signingKey = getSigningKey();
 
-        Long shopId = user.getContact().getShop() != null ? user.getContact().getShop().getId() : null;
-
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getId()))
                 .claim("roles", roles)
-                .claim("shop", shopId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
                 .signWith(signingKey, SignatureAlgorithm.HS512)
@@ -55,14 +52,11 @@ public class JwtService {
         return Long.valueOf(getClaim(token, Claims.SUBJECT, String.class));
     }
 
-    public Long extractShopId(String token) {
-        return getClaim(token, "shop", Long.class);
-    }
-
-
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET_KEY); // Decode the base64 secret key into bytes
-        return Keys.hmacShaKeyFor(keyBytes); // Use Keys.hmacShaKeyFor to create the signing key
+        System.out.println("Start of getSigningKey method");
+        byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET_KEY);
+        System.out.println("keyBytes: " + keyBytes);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private <T> T getClaim(String token, String key, Class<T> type) {
