@@ -26,6 +26,13 @@ public class Address {
         this.city = city;
     }
 
+    public Address(String street, String houseNumber, String zipcode, String city) {
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.zipcode = zipcode;
+        this.city = city;
+    }
+
     //Getters only (immutable datatype)
 
     public String getStreet() {

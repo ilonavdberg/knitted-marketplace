@@ -32,7 +32,7 @@ public class ReviewMapper {
         }
 
         if (reaction == null) {
-            System.out.println("Reaction is null");
+            System.out.println("No reaction");
         }
 
         return new ReviewResponseDto(

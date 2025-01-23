@@ -2,6 +2,7 @@ package com.knitted.marketplace.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,12 +16,18 @@ public class User {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
     private Contact contact;
 
-    //Getters
+
+    public void addRole(String role) {
+        roles.add(role);
+    }
+
+    //Getters & Setters
+
     public Long getId() {
         return id;
     }
@@ -39,5 +46,13 @@ public class User {
 
     public Contact getContact() {
         return contact;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

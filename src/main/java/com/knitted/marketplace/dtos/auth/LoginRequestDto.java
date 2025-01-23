@@ -1,4 +1,4 @@
-package com.knitted.marketplace.dtos;
+package com.knitted.marketplace.dtos.auth;
 
 public record LoginRequestDto(
         String username,
