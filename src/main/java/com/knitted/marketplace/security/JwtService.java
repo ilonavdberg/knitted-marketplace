@@ -17,7 +17,7 @@ public class JwtService {
     @Value("${jwt.secret.key")
     private String JWT_SECRET_KEY;
 
-    @Value("jwt.expiration")
+    @Value("#{T(java.lang.Long).valueOf('${jwt.expiration}')}")
     private Long JWT_EXPIRATION_MS;
 
     public String generateToken(User user, List<String> roles) {
