@@ -8,6 +8,7 @@ import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerResponseDto> register(@RequestBody RegistrationRequestDto request) {
+    public ResponseEntity<CustomerResponseDto> register(@Valid @RequestBody RegistrationRequestDto request) {
         Customer customer = authService.registerNewUser(request);
         CustomerResponseDto response = AuthMapper.toResponseDto(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
