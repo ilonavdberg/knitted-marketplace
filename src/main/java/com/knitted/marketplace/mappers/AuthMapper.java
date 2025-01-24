@@ -30,16 +30,4 @@ public class AuthMapper {
 
         return customer;
     }
-
-    public static CustomerResponseDto toResponseDto(Customer customer) {
-        return new CustomerResponseDto(
-                customer.getId(),
-                customer.getUser().getUsername(),
-                customer.getFirstName(),
-                customer.getLastName(),
-                customer.getAddress(),
-                customer.getEmail(),
-                customer.getPhone()
-        );
-    }
 }
