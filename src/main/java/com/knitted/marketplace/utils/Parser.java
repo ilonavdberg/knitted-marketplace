@@ -28,4 +28,8 @@ public class Parser {
                 .map(role -> new SimpleGrantedAuthority("ROLE" + role.toUpperCase()))
                 .collect(Collectors.toList());
     }
+
+    public static String toToken(String authHeader) {
+        return authHeader.replace("Bearer ", "");
+    }
 }

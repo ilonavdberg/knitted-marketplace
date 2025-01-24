@@ -46,6 +46,6 @@ public class AuthService {
         User user = userService.createUser(request);
         Customer customer = customerService.createCustomer(request);
         customer.setUser(user);
-        return customer;
+        return customerService.saveCustomer(customer);
     }
 }

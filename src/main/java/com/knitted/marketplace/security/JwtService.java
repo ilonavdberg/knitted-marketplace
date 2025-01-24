@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class JwtService {
-    @Value("${jwt.secret.key")
+    @Value("${jwt.secret.key}")
     private String JWT_SECRET_KEY;
 
     @Value("#{T(java.lang.Long).valueOf('${jwt.expiration}')}")

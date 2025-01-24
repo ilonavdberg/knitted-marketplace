@@ -15,7 +15,10 @@ public class CustomerService {
     }
 
     public Customer createCustomer(RegistrationRequestDto request) {
-        Customer customer = AuthMapper.toCustomer(request);
+        return AuthMapper.toCustomer(request);
+    }
+
+    public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
 }
