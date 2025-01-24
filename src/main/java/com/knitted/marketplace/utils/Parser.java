@@ -25,7 +25,7 @@ public class Parser {
 
     public static List<GrantedAuthority> toAuthorities(List<String> roles) {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE" + role.toUpperCase()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
                 .collect(Collectors.toList());
     }
 
