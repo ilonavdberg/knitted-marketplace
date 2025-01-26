@@ -4,6 +4,7 @@ import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.exception.exceptions.UserNotFoundException;
 import com.knitted.marketplace.mappers.AuthMapper;
+import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,5 +37,10 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+    }
+
+    public Long getShopIdForUser(User user) {
+        Shop shop = user.getContact().getShop();
+        return (shop != null) ? shop.getId() : null;
     }
 }

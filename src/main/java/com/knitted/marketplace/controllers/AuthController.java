@@ -2,12 +2,15 @@ package com.knitted.marketplace.controllers;
 
 import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.dtos.auth.LoginRequestDto;
+import com.knitted.marketplace.dtos.auth.LoginResponseDto;
 import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
 import com.knitted.marketplace.mappers.CustomerMapper;
 import com.knitted.marketplace.models.Customer;
+import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.services.AuthService;
+import com.knitted.marketplace.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,18 +28,24 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
-    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JwtService jwtService, UserRepository userRepository) {
+    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JwtService jwtService, UserRepository userRepository, UserService userService) {
         this.authService = authService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequest) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
         String token = authService.authenticateAndGenerateToken(loginRequest);
-        System.out.println("Token: " + token);
+        User user = userService.getUserByUsername(loginRequest.username());
+        Long shopId = userService.getShopIdForUser(user);
+
+        LoginResponseDto response = new LoginResponseDto(token, shopId);
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .body("Token generated");
+                .body(response);
     }
 
     @PostMapping("/register")
