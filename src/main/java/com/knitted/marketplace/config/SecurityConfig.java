@@ -48,24 +48,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 //TODO: add authorization rules and change permitAll to denyAll
                                 //public endpoints
-                        .anyRequest().permitAll()
-//                                .requestMatchers(BASE_URL + "/auth/**").permitAll() // authentication
-//                                .requestMatchers(HttpMethod.GET, BASE_URL + "customer").permitAll() // get account details
-//                                .requestMatchers(HttpMethod.GET, BASE_URL + "/items/**").permitAll() // view product catalog
-//                                .requestMatchers(HttpMethod.GET, BASE_URL + "/shops/*/*").permitAll() // view shop content
-//
-//
-//                                //secure endpoints - all users
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/items/*/order").hasAuthority("ROLE_USER") // order item
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "order/*/review").hasAuthority("ROLE_USER") // create review
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops").hasAuthority("ROLE_USER") // create shop
-//
-//                                //secure endpoints - shop owners
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops/*/items").hasAuthority("ROLE_SHOP_OWNER") // create item
-//                                .requestMatchers(HttpMethod.PUT, BASE_URL + "/items/*/**").hasAuthority("ROLE_SHOP_OWNER") // update item
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "reviews/*/reaction").hasAuthority("ROLE_SHOP_OWNER") // react to review
-//
-//                                .anyRequest().denyAll()
+                                .requestMatchers(BASE_URL + "/auth/**").permitAll() // authentication
+                                .requestMatchers(HttpMethod.GET, BASE_URL + "/customer").permitAll() // get account details
+                                .requestMatchers(HttpMethod.GET, BASE_URL + "/items/**").permitAll() // view product catalog
+                                .requestMatchers(HttpMethod.GET, BASE_URL + "/shops/*/*").permitAll() // view shop content
+
+
+                                //secure endpoints - all users
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/items/*/order").hasAuthority("ROLE_USER") // order item
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/order/*/review").hasAuthority("ROLE_USER") // create review
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops").hasAuthority("ROLE_USER") // create shop
+
+                                //secure endpoints - shop owners
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops/*/items").hasAuthority("ROLE_SHOP_OWNER") // create item
+                                .requestMatchers(HttpMethod.PUT, BASE_URL + "/items/*/**").hasAuthority("ROLE_SHOP_OWNER") // update item
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/reviews/*/reaction").hasAuthority("ROLE_SHOP_OWNER") // react to review
+
+                                .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtRequestFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> {
