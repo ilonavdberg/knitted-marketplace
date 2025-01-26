@@ -10,7 +10,7 @@ public class CustomerMapper {
                 customer.getUser().getUsername(),
                 customer.getFirstName(),
                 customer.getLastName(),
-                customer.getAddress(),
+//                customer.getAddress(),
                 customer.getEmail(),
                 customer.getPhone()
         );

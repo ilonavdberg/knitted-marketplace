@@ -29,8 +29,11 @@ public class CustomerService {
     }
 
     public Customer getCustomerByAuthHeader(String authHeader) {
+        System.out.println("start of getCustomerByAuthHeader method");
         String token = Parser.toToken(authHeader);
+        System.out.println("Token: " + token);
         Long id = jwtService.extractId(token);
+        System.out.println("id: " + id);
         return customerRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 }

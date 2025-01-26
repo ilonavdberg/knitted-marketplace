@@ -24,7 +24,11 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<CustomerResponseDto> getCustomer(@RequestHeader("Authorization") String authHeader) {
+        System.out.println("getCustomer method is called");
         Customer customer = customerService.getCustomerByAuthHeader(authHeader);
+        System.out.println("Customer: " + customer);
+        System.out.println("Customer id: " + customer.getId());
+        System.out.println("Username: " + customer.getUser().getUsername());
         CustomerResponseDto response = CustomerMapper.toResponseDto(customer);
         return ResponseEntity.ok(response);
     }

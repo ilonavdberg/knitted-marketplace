@@ -14,9 +14,11 @@ public class GlobalCorsConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("*") // Replace "*" with specific origins in production
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                        .exposedHeaders("Authorization");
+                        .allowedHeaders("*") // Allow all headers, especially custom ones like Authorization
+                        .exposedHeaders("Authorization") // Expose Authorization header for clients
+                        .allowCredentials(false); // Set to true if you allow cookies or credentials
             }
         };
     }
