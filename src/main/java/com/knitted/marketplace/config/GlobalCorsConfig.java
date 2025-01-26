@@ -17,7 +17,6 @@ public class GlobalCorsConfig {
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .exposedHeaders("Authorization");
-
             }
         };
     }

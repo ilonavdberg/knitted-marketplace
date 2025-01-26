@@ -3,7 +3,6 @@ package com.knitted.marketplace.controllers;
 import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.dtos.auth.LoginRequestDto;
 import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
-import com.knitted.marketplace.mappers.AuthMapper;
 import com.knitted.marketplace.mappers.CustomerMapper;
 import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.repositories.UserRepository;
