@@ -11,4 +11,9 @@ public class Customer extends Contact {
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
+
+    // Getters
+    public List<Order> getOrders() {
+        return orders;
+    }
 }
