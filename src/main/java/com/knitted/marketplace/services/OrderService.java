@@ -8,6 +8,7 @@ import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.models.order.OrderStatus;
 import com.knitted.marketplace.repositories.CustomerRepository;
 import com.knitted.marketplace.repositories.OrderRepository;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,17 @@ public class OrderService {
 
     @Transactional
     public List<Order> getOrdersForCustomer(Customer customer) {
-        return orderRepository.findByCustomerId(customer.getId());
+        List<Order> orders = orderRepository.findByCustomerId(customer.getId());
+
+        // Eagerly initialize photos for the soldItem of each order
+        for (Order order : orders) {
+            Item soldItem = order.getSoldItem();
+            if (soldItem != null) {
+                Hibernate.initialize(soldItem.getPhotos());
+            }
+        }
+
+        return orders;
     }
 
     private Order createOrder(Item item, Customer customer) {
