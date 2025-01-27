@@ -16,7 +16,6 @@ public class CustomerMapper {
                 customer.getAddress(),
                 customer.getEmail(),
                 customer.getPhone(),
-                customer.getOrders(),
                 shop != null ? shop.getId() : null,
                 shop != null ? shop.getName() : null
         );

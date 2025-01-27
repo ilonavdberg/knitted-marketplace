@@ -34,6 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         final String authorizationHeader = request.getHeader("Authorization");
+        System.out.println("Authorization header: " + authorizationHeader);
         String jwt = null;
         Long userId = null;
         List<GrantedAuthority> roles = new ArrayList<>();
