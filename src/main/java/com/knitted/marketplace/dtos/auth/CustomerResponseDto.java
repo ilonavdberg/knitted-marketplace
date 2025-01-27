@@ -13,6 +13,8 @@ public record CustomerResponseDto(
         Address address,
         String email,
         String phone,
-        List<Order> orders
+        List<Order> orders,
+        Long shopId,
+        String shopName
 ) {
 }
