@@ -55,10 +55,10 @@ public class SecurityConfig {
 //
 //
 //                                //secure endpoints - all users
-                                .requestMatchers(HttpMethod.GET, BASE_URL + "/customer").authenticated() // get account details
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/items/*/order").hasAuthority("ROLE_USER") // order item
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/order/*/review").hasAuthority("ROLE_USER") // create review
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops").hasAuthority("ROLE_USER") // create shop
+                                .requestMatchers(HttpMethod.GET, BASE_URL + "/customer").hasAuthority("ROLE_USER") // get account details
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/items/*/order").hasAuthority("ROLE_USER") // order item
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/order/*/review").hasAuthority("ROLE_USER") // create review
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops").hasAuthority("ROLE_USER") // create shop
 //
 //                                //secure endpoints - shop owners
 //                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops/*/items").hasAuthority("ROLE_SHOP_OWNER") // create item

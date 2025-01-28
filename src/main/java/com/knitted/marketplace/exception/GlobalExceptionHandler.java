@@ -52,4 +52,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Data integrity violation: " + message, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(RecordAlreadyExistsException.class)
+    public ResponseEntity<String> handleRecordAlreadyExistsException(RecordAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
 }

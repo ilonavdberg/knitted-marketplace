@@ -2,6 +2,7 @@ package com.knitted.marketplace.services;
 
 import com.knitted.marketplace.dtos.shop.ShopCreatedResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopRequestDto;
+import com.knitted.marketplace.exception.exceptions.RecordAlreadyExistsException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.mappers.ShopMapper;
 import com.knitted.marketplace.models.Contact;
@@ -26,10 +27,17 @@ public class ShopService {
     }
 
     public ShopCreatedResponseDto createShop(ShopRequestDto request, String authHeader) {
+        System.out.println("create shop method activated");
+
         // Get user
         String token = Parser.toToken(authHeader);
         Long userId = jwtService.extractId(token);
         User user = userService.getUserById(userId);
+
+        // validate if user has no shop yet
+        if (user.getContact().getShop() != null) {
+            throw new RecordAlreadyExistsException("A shop already exists for this user.");
+        }
 
         // Create shop
         Shop shop = ShopMapper.toShop(request);

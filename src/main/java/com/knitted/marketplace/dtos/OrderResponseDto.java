@@ -8,6 +8,7 @@ public record OrderResponseDto(
         String orderStatus,
         String createdDate,
         String closedDate,
-        CatalogItemResponseDto soldItem
+        CatalogItemResponseDto soldItem,
+        Long reviewId
 ) {
 }
