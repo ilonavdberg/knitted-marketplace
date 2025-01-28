@@ -51,8 +51,6 @@ public class SecurityConfig {
                                 .requestMatchers(BASE_URL + "/auth/**").permitAll() // authentication
                                 .requestMatchers(HttpMethod.GET, BASE_URL + "/items/**").permitAll() // view product catalog
                                 .requestMatchers(HttpMethod.GET, BASE_URL + "/shops/*/*").permitAll() // view shop content
-
-//
 //
 //                                //secure endpoints - all users
                                 .requestMatchers(HttpMethod.GET, BASE_URL + "/customer").hasAuthority("ROLE_USER") // get account details
@@ -61,9 +59,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, BASE_URL + "/shops").hasAuthority("ROLE_USER") // create shop
 //
 //                                //secure endpoints - shop owners
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops/*/items").hasAuthority("ROLE_SHOP_OWNER") // create item
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/shops/*/items").hasAuthority("ROLE_SHOP_OWNER") // create item
 //                                .requestMatchers(HttpMethod.PUT, BASE_URL + "/items/*/**").hasAuthority("ROLE_SHOP_OWNER") // update item
-//                                .requestMatchers(HttpMethod.POST, BASE_URL + "/reviews/*/reaction").hasAuthority("ROLE_SHOP_OWNER") // react to review
 //
 //                                .anyRequest().denyAll()
                                 .anyRequest().permitAll()
