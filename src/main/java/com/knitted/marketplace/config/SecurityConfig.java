@@ -60,10 +60,9 @@ public class SecurityConfig {
 //
 //                                //secure endpoints - shop owners
                                 .requestMatchers(HttpMethod.POST, BASE_URL + "/shops/*/items").hasAuthority("ROLE_SHOP_OWNER") // create item
-//                                .requestMatchers(HttpMethod.PUT, BASE_URL + "/items/*/**").hasAuthority("ROLE_SHOP_OWNER") // update item
+                                .requestMatchers(HttpMethod.PUT, BASE_URL + "/items/*/**").hasAuthority("ROLE_SHOP_OWNER") // update item
 //
-//                                .anyRequest().denyAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtRequestFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> {
