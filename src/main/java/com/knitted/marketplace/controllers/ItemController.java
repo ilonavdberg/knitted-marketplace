@@ -157,7 +157,7 @@ public class ItemController {
             @RequestParam(value = "price", required = false, defaultValue = "") String priceRange,
             @RequestParam(required = false, defaultValue = "") String target,
             @RequestParam(required = false, defaultValue = "") String size,
-            @PageableDefault(size = 24) Pageable pageable
+            @PageableDefault(size = 15) Pageable pageable
             ) {
 
         Page<Item> itemPage = itemService.getItemsForShop(shopId, status, category, subcategory, priceRange, target, size, pageable);

@@ -20,7 +20,7 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    public ReviewController(ReviewService reviewService, OrderService orderService) {
+    public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 

@@ -8,8 +8,12 @@ import java.util.List;
 
 @Entity
 public class Customer extends Contact {
-    private String test;
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
+
+    // Getters
+    public List<Order> getOrders() {
+        return orders;
+    }
 }

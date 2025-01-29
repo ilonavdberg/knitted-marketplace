@@ -2,10 +2,12 @@ package com.knitted.marketplace.exception;
 
 import com.knitted.marketplace.exception.exceptions.*;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.core.AuthenticationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -37,6 +39,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ItemPublicationValidationException.class)
     public ResponseEntity<String> handleItemPublicationValidationException(ItemPublicationValidationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        String message = (e.getRootCause() != null) ? e.getRootCause().getMessage() : "Unknown cause";
+        return new ResponseEntity<>("Data integrity violation: " + message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RecordAlreadyExistsException.class)
+    public ResponseEntity<String> handleRecordAlreadyExistsException(RecordAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
 }

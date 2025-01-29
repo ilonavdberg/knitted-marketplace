@@ -14,6 +14,6 @@ public class SampleDataInitializer {
 
     @PostConstruct
     public void initialize() {
-        sampleDataService.loadSampleData();
+//        sampleDataService.loadSampleData();
     }
 }
