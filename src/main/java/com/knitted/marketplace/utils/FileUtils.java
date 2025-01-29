@@ -7,8 +7,12 @@ import java.util.UUID;
 public class FileUtils {
     public static String getFileExtension(MultipartFile file) {
         String originalFileName = file.getOriginalFilename();
-        if (originalFileName != null && originalFileName.contains(".")) {
-            return originalFileName.substring(originalFileName.lastIndexOf("."));
+        return getFileExtension(originalFileName);
+    }
+
+    public static String getFileExtension(String filename) {
+        if (filename != null && filename.contains(".")) {
+            return filename.substring(filename.lastIndexOf("."));
         }
         return "";
     }

@@ -27,6 +27,7 @@ public class AuthService {
         this.customerService = customerService;
     }
 
+    @Transactional
     public String authenticateAndGenerateToken(LoginRequestDto loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

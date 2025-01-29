@@ -12,7 +12,7 @@ public class ImageFile {
     private String filename;
     private String extension;
 
-    @Lob
+//    @Lob
     private byte[] imageData;
 
 
