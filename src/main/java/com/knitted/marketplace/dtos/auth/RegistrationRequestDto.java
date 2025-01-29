@@ -1,8 +1,10 @@
 package com.knitted.marketplace.dtos.auth;
 
+import com.knitted.marketplace.models.ImageFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 public class RegistrationRequestDto {
 
@@ -15,6 +17,8 @@ public class RegistrationRequestDto {
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,20}$",
             message = "Password must contain at least one digit, one uppercase letter, one lowercase letter, and one special character.")
     private String password;
+
+    private MultipartFile uploadedImage;
 
     @NotBlank(message = "First name is mandatory.")
     private String firstName;
@@ -36,6 +40,34 @@ public class RegistrationRequestDto {
     @Pattern(regexp = "^(\\+\\d{2}\\s?|0)\\d{9}$", message = "Invalid phone number")
     private String phone;
 
+    public RegistrationRequestDto(
+            String username,
+            String password,
+            MultipartFile uploadedImage,
+            String firstName,
+            String lastName,
+            String street,
+            String houseNumber,
+            String door,
+            String zipcode,
+            String city,
+            String email,
+            String phone
+    ) {
+        this.username = username;
+        this.password = password;
+        this.uploadedImage = uploadedImage;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.door = door;
+        this.zip = zipcode;
+        this.city = city;
+        this.email = email;
+        this.phone = phone;
+    }
+
     //Getters
 
     public String getUsername() {
@@ -44,6 +76,10 @@ public class RegistrationRequestDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public MultipartFile getUploadedImage() {
+        return uploadedImage;
     }
 
     public String getFirstName() {

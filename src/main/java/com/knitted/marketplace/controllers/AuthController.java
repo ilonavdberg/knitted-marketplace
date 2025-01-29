@@ -16,10 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 
@@ -49,7 +47,40 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerResponseDto> register(@Valid @RequestBody RegistrationRequestDto request) {
+    public ResponseEntity<CustomerResponseDto> register(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("street") String street,
+            @RequestParam("houseNumber") String houseNumber,
+            @RequestParam(value = "door", required = false) String door,
+            @RequestParam("zipcode") String zipcode,
+            @RequestParam("city") String city,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage
+            ) {
+
+        System.out.println("Password: " + password);
+
+        RegistrationRequestDto request = new RegistrationRequestDto(
+                username,
+                password,
+                uploadedImage,
+                firstName,
+                lastName,
+                street,
+                houseNumber,
+                door,
+                zipcode,
+                city,
+                email,
+                phone
+        );
+
+        System.out.println("Password in the request dto: " + request.getPassword());
+
         Customer customer = authService.registerNewUser(request);
         CustomerResponseDto response = CustomerMapper.toResponseDto(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

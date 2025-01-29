@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -41,6 +42,7 @@ public class AuthService {
         return jwtService.generateToken(user, user.getRoles());
     }
 
+    @Transactional
     public Customer registerNewUser(RegistrationRequestDto request) {
         User user = userService.createUser(request);
         Customer customer = customerService.createCustomer(request);

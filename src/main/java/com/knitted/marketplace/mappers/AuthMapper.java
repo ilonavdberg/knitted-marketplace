@@ -3,6 +3,7 @@ package com.knitted.marketplace.mappers;
 import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
 import com.knitted.marketplace.models.Customer;
+import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.User;
 
 public class AuthMapper {
@@ -11,6 +12,9 @@ public class AuthMapper {
 
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
+
+        ImageFile image = request.getUploadedImage() != null ? ImageMapper.toImage(request.getUploadedImage()) : null;
+        user.setUserPicture(image);
 
         return user;
     }

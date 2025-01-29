@@ -17,6 +17,9 @@ public class User {
 
     private String password;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private ImageFile userPicture;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -42,6 +45,10 @@ public class User {
         return password;
     }
 
+    public ImageFile getUserPicture() {
+        return userPicture;
+    }
+
     public List<String> getRoles() {
         return roles;
     }
@@ -56,5 +63,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setUserPicture(ImageFile userPicture) {
+        this.userPicture = userPicture;
     }
 }
