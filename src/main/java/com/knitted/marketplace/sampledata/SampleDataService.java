@@ -22,7 +22,7 @@ public class SampleDataService {
         shopDataGenerator.generate();
         System.out.println("Start generating item data");
         itemDataGenerator.generate();
-        System.out.println("Start generating review data");
+//        System.out.println("Start generating review data");
 //        reviewDataGenerator.generate();
 
         System.out.println("Finished generating sample data...");
