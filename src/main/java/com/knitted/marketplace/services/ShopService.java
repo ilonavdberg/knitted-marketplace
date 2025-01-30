@@ -12,6 +12,7 @@ import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.utils.Parser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -26,6 +27,7 @@ public class ShopService {
         this.userService = userService;
     }
 
+    @Transactional
     public ShopCreatedResponseDto createShop(ShopRequestDto request, String authHeader) {
         System.out.println("create shop method activated");
 
@@ -47,6 +49,7 @@ public class ShopService {
 
         // Update user role
         user.addRole("SHOP_OWNER");
+        userService.saveUser(user);
 
         //generate new token
         String newToken = jwtService.generateToken(user, user.getRoles());
