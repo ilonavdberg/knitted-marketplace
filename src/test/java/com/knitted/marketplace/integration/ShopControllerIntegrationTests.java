@@ -103,7 +103,7 @@ public class ShopControllerIntegrationTests {
                 .andExpect(jsonPath("$.shopPicture").exists())
                 .andExpect(jsonPath("$.shopPicture.filename").value(shop.getShopPicture().getFilename()))
                 .andExpect(jsonPath("$.shopPicture.extension").value(shop.getShopPicture().getExtension()))
-                .andExpect(jsonPath("$.shopPicture.base64Image").exists());
+                .andExpect(jsonPath("$.shopPicture.base64Image").isNotEmpty());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class ShopControllerIntegrationTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Test Shop"))
                 .andExpect(jsonPath("$.description").value("shop description for the test shop"))
-                .andExpect(jsonPath("$.shopPicture").exists())
-                .andExpect(jsonPath("$.shopPicture.base64Image").exists());
+                .andExpect(jsonPath("$.shopPicture").isNotEmpty())
+                .andExpect(jsonPath("$.shopPicture.base64Image").isNotEmpty());
     }
 }
