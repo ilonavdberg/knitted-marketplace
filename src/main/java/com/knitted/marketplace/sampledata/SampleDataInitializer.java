@@ -25,8 +25,8 @@ public class SampleDataInitializer {
         }
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void initializeSampleData() {
-        sampleDataService.loadSampleData(); // This runs AFTER data.sql is loaded
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void initializeSampleData() {
+//        sampleDataService.loadSampleData(); // This runs AFTER data.sql is loaded
+//    }
 }

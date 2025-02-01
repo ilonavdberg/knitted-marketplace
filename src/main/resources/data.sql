@@ -52,5 +52,3 @@ VALUES
 
 SELECT setval(pg_get_serial_sequence('shops', 'id'), coalesce(max(id), 1), true) FROM shops;
 
--- Items
-

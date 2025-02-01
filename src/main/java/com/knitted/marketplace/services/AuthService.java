@@ -2,6 +2,7 @@ package com.knitted.marketplace.services;
 
 import com.knitted.marketplace.dtos.auth.LoginRequestDto;
 import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
+import com.knitted.marketplace.mappers.AuthMapper;
 import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.security.JwtService;
@@ -46,7 +47,7 @@ public class AuthService {
     @Transactional
     public Customer registerNewUser(RegistrationRequestDto request) {
         User user = userService.createUser(request);
-        Customer customer = customerService.createCustomer(request);
+        Customer customer = AuthMapper.toCustomer(request);
         customer.setUser(user);
         return customerService.saveCustomer(customer);
     }

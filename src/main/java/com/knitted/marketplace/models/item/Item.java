@@ -54,7 +54,26 @@ public class Item {
         photos.addAll(newPhotos);
     }
 
+    //Constructors
+    public Item() {};
 
+    public Item(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    };
+
+    public Item(Long id, String title, String description, Double price, Category category, Subcategory subcategory, TargetGroup targetgroup, ClothingSize clothingSize, List<ImageFile> photos, Order order) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.targetgroup = targetgroup;
+        this.clothingSize = clothingSize;
+        this.photos = photos;
+        this.order = order;
+    }
 
     // Getters and Setters
 

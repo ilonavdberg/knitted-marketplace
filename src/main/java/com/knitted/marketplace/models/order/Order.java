@@ -30,6 +30,20 @@ public class Order {
     @OneToOne(mappedBy = "order")
     private Review review;
 
+    // Constructors
+
+    public Order() {}
+
+    public Order(Long id, OrderStatus status, LocalDateTime createdDate, LocalDateTime closedDate, Item soldItem, Customer customer, Review review) {
+        this.id = id;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.closedDate = closedDate;
+        this.soldItem = soldItem;
+        this.customer = customer;
+        this.review = review;
+    }
+
     //Getters and Setters
 
     public Long getId() {

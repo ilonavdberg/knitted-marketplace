@@ -18,8 +18,6 @@ public class SampleDataService {
     public void loadSampleData() {
         System.out.println("Initializing loading sample data...");
 
-        System.out.println("Start generating shop data");
-        shopDataGenerator.generate();
         System.out.println("Start generating item data");
         itemDataGenerator.generate();
 //        System.out.println("Start generating review data");

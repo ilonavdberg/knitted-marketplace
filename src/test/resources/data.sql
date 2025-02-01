@@ -1,0 +1,55 @@
+-- -- Users
+-- INSERT INTO users (id, user_picture_id, password, username)
+-- VALUES
+--     (1, (SELECT id FROM image_files WHERE filename = 'user_avatar_1.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'yarayarn'),
+--     (2, (SELECT id FROM image_files WHERE filename = 'user_avatar_2.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'reactahook'),
+--     (3, (SELECT id FROM image_files WHERE filename = 'user_avatar_3.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'elizapostman'),
+--     (4, (SELECT id FROM image_files WHERE filename = 'user_avatar_4.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'claracould');
+--
+-- ALTER SEQUENCE users_id_seq RESTART WITH 5;
+--
+-- INSERT INTO user_roles (user_id, roles)
+-- VALUES
+--     (1, 'USER'),
+--     (2, 'USER'),
+--     (3, 'USER'),
+--     (4, 'USER');
+--
+-- -- Addresses
+-- INSERT INTO addresses (id, street, house_number, door, zipcode, city)
+-- VALUES
+--     (1, 'Javalaan', '21', null, '1888YY', 'Scriptstad'),
+--     (2, 'Nodepad', '12', null, '2345AZ', 'Developerdam'),
+--     (3, 'Gitweg', '2', null, '1234AB', 'Techstad'),
+--     (4, 'Codecampus', '234', 'a', '8899TY', 'Fullstackerdorp');
+--
+-- ALTER SEQUENCE users_id_seq RESTART WITH 5;
+--
+-- -- Contacts
+-- INSERT INTO contacts (id, address_id, user_id, dtype, first_name, last_name, email, phone)
+-- VALUES
+--     (1, 1, 1, 'Customer', 'Yara', 'Yarn', 'yarayarn@gmail.com', '0612345678'),
+--     (2, 2, 2, 'Customer', 'Reacta', 'Hook', 'reacta.hook@gmail.com' , '0614725836'),
+--     (3, 3, 3, 'Customer', 'Eliza', 'Postman', 'e.postman@gmail.com', '0696385214'),
+--     (4, 4, 4, 'Customer', 'Clara', 'Cloud', 'cloud.clara@gmail.com', '0658624579');
+--
+-- ALTER SEQUENCE users_id_seq RESTART WITH 5;
+--
+-- -- Shops
+-- INSERT INTO shops (id, owner_id, shop_picture_id, description, name)
+-- VALUES
+--     (1, 1, (SELECT id FROM image_files WHERE filename = 'shop_logo_1.jpg'),
+--      'Discover unique, handcrafted items made with love by me. Perfect for adding charm to your life',
+--      'Knitting Handmade'),
+--     (2, 2, (SELECT id FROM image_files WHERE filename = 'shop_logo_2.jpg'),
+--      'Explore our collection of beautifully crafted, one-of-a-kind creations by skilled artisans. Each item is made with care and attention to detail, offering you a unique way to bring warmth and character to your home, wardrobe, or gift-giving. ',
+--      'Knitting with Love');
+--
+-- ALTER SEQUENCE users_id_seq RESTART WITH 3;
+--
+-- INSERT INTO user_roles (user_id, roles)
+-- VALUES
+--     (1, 'SHOP_OWNER'),
+--     (2, 'SHOP_OWNER');
+--
+-- ALTER SEQUENCE user_roles_id_seq RESTART WITH 7;

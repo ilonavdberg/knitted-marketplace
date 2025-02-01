@@ -26,12 +26,30 @@ public class Shop {
     private List<Item> items = new ArrayList<>();
 
     // TODO: Set optional is false when user authentication guarantees every shop has on owner.
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Contact owner;
 
 
-    //Getters and Setters
+    // Constructors
+
+    public Shop() {}
+
+    public Shop(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Shop(Long id, String name, String description, ImageFile shopPicture, List<Item> items, Contact owner) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.shopPicture = shopPicture;
+        this.items = items;
+        this.owner = owner;
+    }
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
