@@ -7,6 +7,7 @@ import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.ContactRepository;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.repositories.UserRepository;
+import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.services.ShopService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,17 +15,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,7 +51,14 @@ public class GetShopIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    private Long shopId;
+    @Autowired
+    private JwtService jwtService;
+
+    private ImageFile image;
+    private Shop shop;
+    private Contact contact;
+    private User user;
+
 
     @BeforeEach
     void setup() throws IOException {
@@ -55,6 +67,7 @@ public class GetShopIntegrationTest {
         user.setPassword("password");
         user.addRole("USER");
         user = userRepository.save(user);
+        this.user = user;
 
         Contact contact = new Contact();
         contact.setFirstName("John");
@@ -63,12 +76,10 @@ public class GetShopIntegrationTest {
         contact.setPhone("0612345678");
         contact.setUser(user);
         contact = contactRepository.save(contact);
+        this.contact = contact;
 
-        Shop shop = new Shop();
-        shop.setName("testShop");
-        shop.setDescription("shop description for the test shop");
-        shop.setOwner(contact);
-        shop = shopRepository.save(shop);
+        user.setContact(contact);
+        userRepository.save(user);
 
         Path imagePath = Paths.get("src/main/resources/static/images/shop_logo_1.jpg");
         byte[] imageBytes = Files.readAllBytes(imagePath);
@@ -78,14 +89,45 @@ public class GetShopIntegrationTest {
         shopImage.setExtension("jpg");
         shopImage.setImageData(imageBytes);
 
-        shop.setShopPicture(shopImage);
-
-        this.shopId = shop.getId();
+        this.image = shopImage;
     }
 
     @Test
     void testGetShopSummary() throws Exception {
-        mockMvc.perform(get(BASE_URL + "/shops/" + shopId + "/profile"))
-                .andExpect(status().isOk());
+        Shop shop = new Shop();
+        shop.setName("Test Shop");
+        shop.setDescription("shop description for the test shop");
+        shop.setOwner(contact);
+        shop.setShopPicture(image);
+        shop = shopRepository.save(shop);
+
+        mockMvc.perform(get(BASE_URL + "/shops/" + shop.getId() + "/profile"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Test Shop"))
+                .andExpect(jsonPath("$.description").value("shop description for the test shop"))
+                .andExpect(jsonPath("$.shopPicture.filename").value(shop.getShopPicture().getFilename()))
+                .andExpect(jsonPath("$.shopPicture.extension").value(shop.getShopPicture().getExtension()))
+                .andExpect(jsonPath("$.shopPicture.base64Image").exists());
+    }
+
+    @Test
+    void testCreateShop() throws Exception {
+        String fakeAuthHeader = "Bearer " + jwtService.generateToken(user, user.getRoles());
+
+        MockMultipartFile mockImage = new MockMultipartFile(
+                "uploadedImage",
+                image.getFilename(),
+                MediaType.IMAGE_JPEG_VALUE,
+                image.getImageData()
+        );
+
+        mockMvc.perform(multipart(BASE_URL + "/shops")
+                .file(mockImage)
+                .param("name", "Test Shop")
+                .param("description", "shop description for the test shop")
+                .header("Authorization", fakeAuthHeader)
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isCreated());
+
     }
 }

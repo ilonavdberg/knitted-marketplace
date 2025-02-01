@@ -68,4 +68,8 @@ public class User {
     public void setUserPicture(ImageFile userPicture) {
         this.userPicture = userPicture;
     }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
 }
