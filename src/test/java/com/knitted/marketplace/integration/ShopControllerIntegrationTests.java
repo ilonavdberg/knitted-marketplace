@@ -8,7 +8,6 @@ import com.knitted.marketplace.repositories.ContactRepository;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
-import com.knitted.marketplace.services.ShopService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,13 +33,10 @@ import java.nio.file.Paths;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class GetShopIntegrationTest {
+public class ShopControllerIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ShopService shopService;
 
     @Autowired
     private ShopRepository shopRepository;
@@ -55,7 +51,6 @@ public class GetShopIntegrationTest {
     private JwtService jwtService;
 
     private ImageFile image;
-    private Shop shop;
     private Contact contact;
     private User user;
 
