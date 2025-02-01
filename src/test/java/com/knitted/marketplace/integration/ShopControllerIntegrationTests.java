@@ -100,6 +100,7 @@ public class ShopControllerIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Test Shop"))
                 .andExpect(jsonPath("$.description").value("shop description for the test shop"))
+                .andExpect(jsonPath("$.shopPicture").exists())
                 .andExpect(jsonPath("$.shopPicture.filename").value(shop.getShopPicture().getFilename()))
                 .andExpect(jsonPath("$.shopPicture.extension").value(shop.getShopPicture().getExtension()))
                 .andExpect(jsonPath("$.shopPicture.base64Image").exists());
@@ -122,7 +123,10 @@ public class ShopControllerIntegrationTests {
                 .param("description", "shop description for the test shop")
                 .header("Authorization", fakeAuthHeader)
                 .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isCreated());
-
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Test Shop"))
+                .andExpect(jsonPath("$.description").value("shop description for the test shop"))
+                .andExpect(jsonPath("$.shopPicture").exists())
+                .andExpect(jsonPath("$.shopPicture.base64Image").exists());
     }
 }
