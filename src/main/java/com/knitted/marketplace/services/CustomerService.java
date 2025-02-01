@@ -21,20 +21,17 @@ public class CustomerService {
         this.jwtService = jwtService;
     }
 
-    public Customer createCustomer(RegistrationRequestDto request) {
-        return AuthMapper.toCustomer(request);
-    }
+//    public Customer createCustomer(RegistrationRequestDto request) {
+//        return AuthMapper.toCustomer(request);
+//    }
 
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
 
     public Customer getCustomerByAuthHeader(String authHeader) {
-        System.out.println("start of getCustomerByAuthHeader method");
         String token = Parser.toToken(authHeader);
-        System.out.println("Token: " + token);
         Long id = jwtService.extractId(token);
-        System.out.println("id: " + id);
         return customerRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 }

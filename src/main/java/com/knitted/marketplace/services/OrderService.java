@@ -6,7 +6,6 @@ import com.knitted.marketplace.models.item.Item;
 import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.models.order.OrderStatus;
-import com.knitted.marketplace.repositories.CustomerRepository;
 import com.knitted.marketplace.repositories.OrderRepository;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;

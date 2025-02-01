@@ -47,6 +47,7 @@ public class ItemDataGenerator {
                 item.setClothingSize(pickRandomEnum(ClothingSize.class));
             }
             item.addPhotos(Collections.singletonList(ImageMapper.toImage("static/sampledata/images/item_photo_default.png")));
+            System.out.println("Images: " + item.getPhotos());
 
             itemRepository.save(item);
             itemService.updateItemStatus(id, ItemStatus.PUBLISHED);

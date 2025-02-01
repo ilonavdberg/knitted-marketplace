@@ -27,12 +27,11 @@ public class ReviewService {
 
     @Transactional
     public Review save(Long orderId, ReviewRequestDto request) {
+
         Order order = orderService.getOrder(orderId);
         Review review = ReviewMapper.toReview(order, request);
 
-        if (review.getCreatedDate() == null) {
-            review.setCreatedDate(LocalDateTime.now());
-        }
+        review.setCreatedDate(LocalDateTime.now());
         review.setLastModifiedDate(LocalDateTime.now());
 
         return reviewRepository.save(review);
