@@ -1,5 +1,6 @@
 package com.knitted.marketplace.dtos.review;
 
+import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,6 @@ public record ReviewResponseDto(
         LocalDateTime lastModifiedDate,
         Long orderId,
         String itemName,
-        ReactionResponseDto reaction
+        CustomerResponseDto customer
 ) {
 }

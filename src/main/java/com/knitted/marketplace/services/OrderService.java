@@ -17,8 +17,8 @@ import java.util.List;
 
 @Service
 public class OrderService {
-    public final OrderRepository orderRepository;
-    public final ItemService itemService;
+    private final OrderRepository orderRepository;
+    private final ItemService itemService;
 
     public OrderService(OrderRepository orderRepository, ItemService itemService) {
         this.orderRepository = orderRepository;
@@ -28,7 +28,6 @@ public class OrderService {
     @Transactional
     public Order orderItem(Long itemId, Customer customer) {
         Item item = itemService.updateItemStatus(itemId, ItemStatus.SOLD);
-
         return createOrder(item, customer);
     }
 

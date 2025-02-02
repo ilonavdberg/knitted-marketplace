@@ -56,6 +56,7 @@ public class ShopService {
         return new ShopCreatedResponseDto(savedShop, newToken);
     }
 
+    @Transactional
     public Shop getShop(Long id) {
         return shopRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }

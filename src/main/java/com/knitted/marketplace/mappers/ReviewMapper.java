@@ -1,5 +1,6 @@
 package com.knitted.marketplace.mappers;
 
+import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
 import com.knitted.marketplace.dtos.review.ReviewRequestDto;
 import com.knitted.marketplace.dtos.review.ReviewResponseDto;
@@ -24,16 +25,6 @@ public class ReviewMapper {
     }
 
     public static ReviewResponseDto toResponseDto(Review review) {
-        Reaction reaction = review.getReaction();
-
-        ReactionResponseDto reactionResponseDto = null;
-        if (reaction != null) {
-            reactionResponseDto = ReactionMapper.toResponseDto(reaction);
-        }
-
-        if (reaction == null) {
-            System.out.println("No reaction");
-        }
 
         return new ReviewResponseDto(
                 review.getId(),
@@ -44,7 +35,7 @@ public class ReviewMapper {
                 review.getLastModifiedDate(),
                 review.getOrder().getId(),
                 review.getOrder().getSoldItem().getTitle(),
-                reactionResponseDto
+                CustomerMapper.toResponseDto(review.getAuthor())
         );
     }
 
