@@ -29,7 +29,6 @@ public class ShopService {
 
     @Transactional
     public ShopCreatedResponseDto createShop(ShopRequestDto request, String authHeader) {
-        System.out.println("create shop method activated");
 
         // Get user
         String token = Parser.toToken(authHeader);

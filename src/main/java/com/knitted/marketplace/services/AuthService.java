@@ -47,8 +47,6 @@ public class AuthService {
     @Transactional
     public Customer registerNewUser(RegistrationRequestDto request) {
         User user = userService.createUser(request);
-        Customer customer = AuthMapper.toCustomer(request);
-        customer.setUser(user);
-        return customerService.saveCustomer(customer);
+        return customerService.createCustomer(request, user);
     }
 }

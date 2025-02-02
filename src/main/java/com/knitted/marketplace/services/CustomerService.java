@@ -4,6 +4,7 @@ import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.mappers.AuthMapper;
 import com.knitted.marketplace.models.Customer;
+import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.CustomerRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.utils.Parser;
@@ -21,12 +22,16 @@ public class CustomerService {
         this.jwtService = jwtService;
     }
 
-//    public Customer createCustomer(RegistrationRequestDto request) {
-//        return AuthMapper.toCustomer(request);
-//    }
-
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
+    }
+
+    public Customer createCustomer(RegistrationRequestDto request, User user) {
+        Customer customer = AuthMapper.toCustomer(request);
+
+        customer.setUser(user);
+
+        return saveCustomer(customer);
     }
 
     public Customer getCustomerByAuthHeader(String authHeader) {

@@ -28,17 +28,17 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(ItemAlreadySoldException.class)
     public ResponseEntity<String> handleItemAlreadySoldException(ItemAlreadySoldException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler(InvalidStatusChangeException.class)
     public ResponseEntity<String> handleInvalidStatusChangeException(InvalidStatusChangeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler(ItemPublicationValidationException.class)
     public ResponseEntity<String> handleItemPublicationValidationException(ItemPublicationValidationException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         String message = (e.getRootCause() != null) ? e.getRootCause().getMessage() : "Unknown cause";
-        return new ResponseEntity<>("Data integrity violation: " + message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Data integrity violation: " + message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(RecordAlreadyExistsException.class)

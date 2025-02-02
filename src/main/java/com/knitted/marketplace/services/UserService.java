@@ -23,11 +23,8 @@ public class UserService {
 
     public User createUser(RegistrationRequestDto request) {
         User user = AuthMapper.toUser(request);
+
         user.addRole("USER");
-
-        System.out.println("Password in the request: " + request.getPassword());
-
-        // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return saveUser(user);
