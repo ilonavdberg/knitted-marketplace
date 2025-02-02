@@ -8,6 +8,7 @@ import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.services.CustomerService;
 import com.knitted.marketplace.services.OrderService;
 import com.knitted.marketplace.services.ReviewService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -31,7 +32,7 @@ public class ReviewController {
     @PostMapping("orders/{id}/review")
     public ResponseEntity<ReviewResponseDto> createReview(
             @RequestHeader("Authorization") String authHeader,
-            @PathVariable("id") Long orderId,
+            @Valid @PathVariable("id") Long orderId,
             @RequestBody ReviewRequestDto request
     ) {
         Customer customer = customerService.getCustomerByAuthHeader(authHeader);
