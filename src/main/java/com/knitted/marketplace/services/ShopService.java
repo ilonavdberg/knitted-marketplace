@@ -8,9 +8,11 @@ import com.knitted.marketplace.mappers.ShopMapper;
 import com.knitted.marketplace.models.Contact;
 import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.User;
+import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.utils.Parser;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +22,13 @@ public class ShopService {
     private final ShopRepository shopRepository;
     private final JwtService jwtService;
     private final UserService userService;
+    private final ShopMapper shopMapper;
 
-    public ShopService(ShopRepository shopRepository, JwtService jwtService, UserService userService) {
+    public ShopService(ShopRepository shopRepository, JwtService jwtService, UserService userService, ShopMapper shopMapper) {
         this.shopRepository = shopRepository;
         this.jwtService = jwtService;
         this.userService = userService;
+        this.shopMapper = shopMapper;
     }
 
     @Transactional
@@ -41,7 +45,7 @@ public class ShopService {
         }
 
         // Create shop
-        Shop shop = ShopMapper.toShop(request);
+        Shop shop = shopMapper.toShop(request);
         Contact owner = user.getContact();
         shop.setOwner(owner);
         Shop savedShop = shopRepository.save(shop);

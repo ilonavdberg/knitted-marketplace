@@ -21,12 +21,14 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 @RestController
 @RequestMapping(BASE_URL + "/shops")
 public class ShopController {
+
     private final ShopService shopService;
+    private final ShopMapper shopMapper;
 
-    public ShopController(ShopService shopService) {
+    public ShopController(ShopService shopService, ShopMapper shopMapper) {
         this.shopService = shopService;
+        this.shopMapper = shopMapper;
     }
-
 
     @PostMapping
     public ResponseEntity<ShopResponseDto> createShop(
@@ -37,7 +39,7 @@ public class ShopController {
         request.setUploadedImage(uploadedImage);
 
         ShopCreatedResponseDto response = shopService.createShop(request, authHeader);
-        ShopResponseDto updatedShop = ShopMapper.toResponseDto(response.shop());
+        ShopResponseDto updatedShop = shopMapper.toResponseDto(response.shop());
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + response.token());
@@ -48,7 +50,7 @@ public class ShopController {
     @GetMapping("{id}/profile")
     public ResponseEntity<ShopSummaryResponseDto> getShopSummary(@PathVariable Long id) {
         Shop shop = shopService.getShop(id);
-        ShopSummaryResponseDto response = ShopMapper.toSummaryResponseDto(shop);
+        ShopSummaryResponseDto response = shopMapper.toSummaryResponseDto(shop);
         return ResponseEntity.ok(response);
     }
 

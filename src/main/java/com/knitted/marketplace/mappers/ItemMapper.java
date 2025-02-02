@@ -10,11 +10,19 @@ import com.knitted.marketplace.models.item.*;
 
 import com.knitted.marketplace.utils.Parser;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
+@Component
 public class ItemMapper {
+
+    private final ShopMapper shopMapper;
+
+    public ItemMapper(ShopMapper shopMapper) {
+        this.shopMapper = shopMapper;
+    }
+
     public static Item toItem(ItemRequestDto request) {
         Item item = new Item();
 
@@ -33,7 +41,7 @@ public class ItemMapper {
         return item;
     }
 
-    public static DetailedItemResponseDto toResponseDto(Item item) {
+    public DetailedItemResponseDto toResponseDto(Item item) {
         List<ImageResponseDto> photos = item.getPhotos().stream().map(ImageMapper::toResponseDto).toList();
 
         return new DetailedItemResponseDto(
@@ -42,7 +50,7 @@ public class ItemMapper {
                 item.getDescription(),
                 item.getPrice(),
                 item.getStatus().toString(),
-                ShopMapper.toSummaryResponseDto(item.getShop()),
+                shopMapper.toSummaryResponseDto(item.getShop()),
                 item.getCategory().toString(),
                 item.getSubcategory().toString(),
                 item.getTargetgroup() != null ? item.getTargetgroup().toString() : "",

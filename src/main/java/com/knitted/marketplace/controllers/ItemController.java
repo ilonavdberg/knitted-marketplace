@@ -30,10 +30,12 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 public class ItemController {
     private final ItemService itemService;
     private final ShopService shopService;
+    private final ItemMapper itemMapper;
 
-    public ItemController(ItemService itemService, ShopService shopService) {
+    public ItemController(ItemService itemService, ShopService shopService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.shopService = shopService;
+        this.itemMapper = itemMapper;
     }
 
     //TODO: check if shopId can be derived from User token instead of path variable
@@ -63,7 +65,7 @@ public class ItemController {
         );
 
         Item savedItem = itemService.createItem(request);
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -94,7 +96,7 @@ public class ItemController {
         );
 
         Item savedItem = itemService.updateItem(id, request);
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.ok(response);
     }
@@ -104,7 +106,7 @@ public class ItemController {
     public ResponseEntity<DetailedItemResponseDto> publishItem(@PathVariable Long id) {
         Item savedItem = itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
 
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
@@ -112,7 +114,7 @@ public class ItemController {
     public ResponseEntity<DetailedItemResponseDto> unpublishItem(@PathVariable Long id) {
         Item savedItem = itemService.updateItemStatus(id, ItemStatus.DRAFT);
 
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
@@ -120,7 +122,7 @@ public class ItemController {
     public ResponseEntity<DetailedItemResponseDto> archiveItem(@PathVariable Long id) {
         Item savedItem = itemService.updateItemStatus(id, ItemStatus.ARCHIVED);
 
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
@@ -144,7 +146,7 @@ public class ItemController {
     @GetMapping("items/{id}")
     public ResponseEntity<DetailedItemResponseDto> getItem(@PathVariable Long id) {
         Item item = itemService.getItem(id);
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(item);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(item);
         return ResponseEntity.ok(response);
     }
 
