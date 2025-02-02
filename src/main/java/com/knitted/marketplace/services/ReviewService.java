@@ -3,6 +3,7 @@ package com.knitted.marketplace.services;
 import com.knitted.marketplace.dtos.review.ReviewRequestDto;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.mappers.ReviewMapper;
+import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.repositories.ReviewRepository;
@@ -26,13 +27,14 @@ public class ReviewService {
     }
 
     @Transactional
-    public Review save(Long orderId, ReviewRequestDto request) {
+    public Review save(Long orderId, ReviewRequestDto request, Customer customer) {
 
         Order order = orderService.getOrder(orderId);
         Review review = ReviewMapper.toReview(order, request);
 
         review.setCreatedDate(LocalDateTime.now());
         review.setLastModifiedDate(LocalDateTime.now());
+        review.setAuthor(customer);
 
         return reviewRepository.save(review);
     }

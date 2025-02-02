@@ -48,17 +48,6 @@ public class Review {
         this.title = title;
     }
 
-    public Review(Long id, int rating, String title, String comment, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Order order, Customer author, Reaction reaction) {
-        this.id = id;
-        this.rating = rating;
-        this.title = title;
-        this.comment = comment;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.order = order;
-        this.author = author;
-        this.reaction = reaction;
-    }
 
     // Getters and Setters
 
