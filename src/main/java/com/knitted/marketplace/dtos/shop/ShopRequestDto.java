@@ -38,4 +38,8 @@ public class ShopRequestDto {
     public MultipartFile getUploadedImage() {
         return uploadedImage;
     }
+
+    public void setUploadedImage(MultipartFile uploadedImage) {
+        this.uploadedImage = uploadedImage;
+    }
 }

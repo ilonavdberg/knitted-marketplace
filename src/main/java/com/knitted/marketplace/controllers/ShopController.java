@@ -8,6 +8,7 @@ import com.knitted.marketplace.dtos.shop.ShopRequestDto;
 import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.services.ShopService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +28,13 @@ public class ShopController {
     }
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ShopResponseDto> createShop(
             @RequestHeader("Authorization") String authHeader,
-            @RequestParam("name") String name,
-            @RequestParam("description") String description,
-            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage
+            @Valid @ModelAttribute ShopRequestDto request,
+            @RequestPart(value = "uploadedImage") MultipartFile uploadedImage
     ) {
-
-        ShopRequestDto request = new ShopRequestDto(name, description, uploadedImage);
+        request.setUploadedImage(uploadedImage);
 
         ShopCreatedResponseDto response = shopService.createShop(request, authHeader);
         ShopResponseDto updatedShop = ShopMapper.toResponseDto(response.shop());
