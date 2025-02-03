@@ -39,7 +39,7 @@ public class ShopController {
         request.setUploadedImage(uploadedImage);
 
         ShopCreatedResponseDto response = shopService.createShop(request, authHeader);
-        ShopResponseDto updatedShop = shopMapper.toResponseDto(response.shop());
+        ShopResponseDto updatedShop = ShopMapper.toResponseDto(response.shop());
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + response.token());

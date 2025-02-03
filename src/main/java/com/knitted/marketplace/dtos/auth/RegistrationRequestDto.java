@@ -117,4 +117,8 @@ public class RegistrationRequestDto {
     public String getPhone() {
         return phone;
     }
+
+    public void setUploadedImage(MultipartFile uploadedImage) {
+        this.uploadedImage = uploadedImage;
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 
@@ -47,7 +48,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<CustomerResponseDto> register(
-            @Valid @ModelAttribute RegistrationRequestDto request) {
+            @Valid @ModelAttribute RegistrationRequestDto request,
+            @RequestPart(value = "uploadedImage") MultipartFile uploadedImage) {
+
+        request.setUploadedImage(uploadedImage);
 
         Customer customer = authService.registerNewUser(request);
         CustomerResponseDto response = CustomerMapper.toResponseDto(customer);
