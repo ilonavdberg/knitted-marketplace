@@ -33,7 +33,7 @@ public class OrderController {
             @PathVariable("id") Long itemId
     ) {
         Customer customer = customerService.getCustomerByAuthHeader(authHeader);
-        Order order = orderService.orderItem(itemId, customer);
+        Order order = orderService.orderItem(itemId, customer, authHeader);
 
         OrderResponseDto response = OrderMapper.toResponseDto(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

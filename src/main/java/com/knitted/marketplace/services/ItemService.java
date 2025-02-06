@@ -6,6 +6,8 @@ import com.knitted.marketplace.exception.exceptions.ItemAlreadySoldException;
 import com.knitted.marketplace.exception.exceptions.ItemPublicationValidationException;
 import com.knitted.marketplace.exception.exceptions.RecordNotFoundException;
 import com.knitted.marketplace.mappers.ItemMapper;
+import com.knitted.marketplace.models.Contact;
+import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
 import com.knitted.marketplace.utils.validation.ItemValidator;
@@ -15,6 +17,7 @@ import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +25,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final UserService userService;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, UserService userService) {
         this.itemRepository = itemRepository;
+        this.userService = userService;
     }
 
-    public Item createItem(ItemRequestDto request) {
+    public Item createItem(ItemRequestDto request, String authHeader) throws AccessDeniedException {
+        if (!isUserShopOwner(authHeader, request.getShop())) {
+            throw new AccessDeniedException("You are not authorized to perform this action.");
+        }
+
         Item item = ItemMapper.toItem(request);
         item.setStatus(ItemStatus.DRAFT); //set initial status
 
@@ -35,7 +44,11 @@ public class ItemService {
     }
 
     @Transactional
-    public Item updateItem(Long id, ItemRequestDto request) {
+    public Item updateItem(Long id, ItemRequestDto request, String authHeader) {
+        if (!isUserShopOwner(authHeader, request.getShop())) {
+            throw new AccessDeniedException("You are not authorized to perform this action.");
+        }
+
         Item item = getItem(id);
         Item updatedItem = ItemMapper.toItem(request);
 
@@ -52,14 +65,20 @@ public class ItemService {
     }
 
     @Transactional
-    public Item updateItemStatus(Long id, ItemStatus newStatus) {
+    public Item updateItemStatus(Long id, ItemStatus newStatus, String authHeader) {
         Item item = getItem(id);
+
         if (item.getStatus() == ItemStatus.SOLD) {
             throw new ItemAlreadySoldException("Item has already been sold. Status cannot be changed.");
         }
 
         switch (newStatus) {
             case PUBLISHED:
+                // Check if the authenticated user is the shop owner
+                if (!isUserShopOwner(authHeader, item.getShop())) {
+                    throw new AccessDeniedException("You are not authorized to perform this action.");
+                }
+
                 // Check if item has the correct status
                 if (!item.getStatus().equals(ItemStatus.DRAFT)) {
                     throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
@@ -75,6 +94,12 @@ public class ItemService {
                 break;
 
             case DRAFT:
+                // Check if the authenticated user is the shop owner
+                if (!isUserShopOwner(authHeader, item.getShop())) {
+                    throw new AccessDeniedException("You are not authorized to perform this action.");
+                }
+
+                // Check if item has the correct status
                 if (!item.getStatus().equals(ItemStatus.PUBLISHED)) {
                     throw new InvalidStatusChangeException(item.getStatus().toString(), newStatus.toString());
                 }
@@ -82,6 +107,11 @@ public class ItemService {
                 break;
 
             case ARCHIVED:
+                // Check if the authenticated user is the shop owner
+                if (!isUserShopOwner(authHeader, item.getShop())) {
+                    throw new AccessDeniedException("You are not authorized to perform this action.");
+                }
+
                 item.setStatus(ItemStatus.ARCHIVED);
                 break;
 
@@ -211,6 +241,12 @@ public class ItemService {
         }
 
         return spec;
+    }
+
+    private boolean isUserShopOwner(String authHeader, Shop shop) {
+        Contact authenticatedContact = userService.getUserByAuthHeader(authHeader).getContact();
+        Contact shopOwner = shop.getOwner();
+        return authenticatedContact.equals(shopOwner);
     }
 
 }

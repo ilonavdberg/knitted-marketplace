@@ -75,6 +75,10 @@ public class Shop {
         return items;
     }
 
+    public Contact getOwner() {
+        return owner;
+    }
+
     public List<String> getItemsToString() {
         return items.stream().map(Object::toString).toList();
     }

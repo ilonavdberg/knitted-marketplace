@@ -26,8 +26,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Order orderItem(Long itemId, Customer customer) {
-        Item item = itemService.updateItemStatus(itemId, ItemStatus.SOLD);
+    public Order orderItem(Long itemId, Customer customer, String authHeader) {
+        Item item = itemService.updateItemStatus(itemId, ItemStatus.SOLD, authHeader);
         return createOrder(item, customer);
     }
 

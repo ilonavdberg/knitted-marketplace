@@ -55,11 +55,12 @@ class OrderServiceTest {
     void canOrderItem() {
         // arrange
         Long itemId = 1L;
-        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD)).thenReturn(item);
+        String authHeader = "someRandomBearerToken";
+        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD, authHeader)).thenReturn(item);
         when(orderRepository.save(any(Order.class))).thenReturn(mockOrders.getFirst());
 
         // act
-        Order savedOrder = orderService.orderItem(itemId, customer);
+        Order savedOrder = orderService.orderItem(itemId, customer, authHeader);
 
         // assert
         assertEquals(mockOrders.getFirst(), savedOrder);
@@ -69,12 +70,13 @@ class OrderServiceTest {
     void canCreateOrderWithCorrectFields() {
         // Arrange
         Long itemId = 1L;
-        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD)).thenReturn(item);
+        String authHeader = "someRandomBearerToken";
+        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD, authHeader)).thenReturn(item);
 
         ArgumentCaptor<Order> orderArgumentCaptor = ArgumentCaptor.forClass(Order.class);
 
         // Act
-        orderService.orderItem(itemId, customer);
+        orderService.orderItem(itemId, customer, authHeader);
 
         verify(orderRepository).save(orderArgumentCaptor.capture());
 

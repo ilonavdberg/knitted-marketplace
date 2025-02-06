@@ -31,8 +31,6 @@ public class ItemDataGenerator {
         String loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 
         for (int i = 0; i < 30; i++) {
-            Long id = (long) (i + 1);
-
             Item item = new Item();
             item.setTitle("Item " + i);
             item.setDescription(loremIpsum);
@@ -50,7 +48,7 @@ public class ItemDataGenerator {
             System.out.println("Images: " + item.getPhotos());
 
             itemRepository.save(item);
-            itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
+//            itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
         }
     }
 
