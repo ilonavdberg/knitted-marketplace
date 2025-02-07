@@ -1,15 +1,16 @@
 package com.knitted.marketplace.integration;
 
-import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
 import com.knitted.marketplace.models.*;
 import com.knitted.marketplace.repositories.ContactRepository;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
+
 import jakarta.transaction.Transactional;
-import org.checkerframework.checker.units.qual.C;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,18 +18,18 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
-import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
