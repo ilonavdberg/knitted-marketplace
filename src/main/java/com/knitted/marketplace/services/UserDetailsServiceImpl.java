@@ -3,6 +3,7 @@ package com.knitted.marketplace.services;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.utils.Parser;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

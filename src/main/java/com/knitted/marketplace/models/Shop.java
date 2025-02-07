@@ -3,6 +3,7 @@ package com.knitted.marketplace.models;
 import com.knitted.marketplace.models.item.Item;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,10 +68,6 @@ public class Shop {
         return shopPicture;
     }
 
-    public String getShopPictureToString() {
-        return (getShopPicture() != null) ? getShopPicture().getFilename() : "Shop has no image";
-    }
-
     public List<Item> getItems() {
         return items;
     }
@@ -96,10 +93,6 @@ public class Shop {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 
     public void setOwner(Contact owner) {

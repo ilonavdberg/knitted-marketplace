@@ -1,12 +1,10 @@
 package com.knitted.marketplace.mappers;
 
-import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
-import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
 import com.knitted.marketplace.dtos.review.ReviewRequestDto;
 import com.knitted.marketplace.dtos.review.ReviewResponseDto;
-import com.knitted.marketplace.models.Reaction;
 import com.knitted.marketplace.models.Review;
 import com.knitted.marketplace.models.order.Order;
+
 import org.springframework.data.domain.Page;
 
 
@@ -15,7 +13,6 @@ public class ReviewMapper {
     public static Review toReview(Order order, ReviewRequestDto request) {
         Review review = new Review();
 
-        //TODO: add author when user is implemented
         review.setOrder(order);
         review.setRating(request.getRating());
         review.setTitle(request.getTitle());

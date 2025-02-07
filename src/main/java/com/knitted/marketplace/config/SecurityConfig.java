@@ -2,6 +2,7 @@ package com.knitted.marketplace.config;
 
 import com.knitted.marketplace.security.JwtRequestFilter;
 import com.knitted.marketplace.security.JwtService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

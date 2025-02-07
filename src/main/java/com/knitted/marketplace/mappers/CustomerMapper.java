@@ -5,6 +5,7 @@ import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.Shop;
 
+
 public class CustomerMapper {
     public static CustomerResponseDto toResponseDto(Customer customer) {
         Shop shop = customer.getShop();

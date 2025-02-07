@@ -8,8 +8,9 @@ import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.CustomerRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.utils.Parser;
+
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class CustomerService {

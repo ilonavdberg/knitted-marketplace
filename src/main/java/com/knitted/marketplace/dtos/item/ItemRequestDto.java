@@ -1,11 +1,8 @@
 package com.knitted.marketplace.dtos.item;
 
-
 import com.knitted.marketplace.models.Shop;
-
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 

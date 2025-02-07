@@ -5,24 +5,23 @@ import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
 import com.knitted.marketplace.repositories.ShopRepository;
-import com.knitted.marketplace.services.ItemService;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+
 @Component
 public class ItemDataGenerator {
 
     private final ItemRepository itemRepository;
     private final ShopRepository shopRepository;
-    private final ItemService itemService;
 
-    public ItemDataGenerator(ItemRepository itemRepository, ShopRepository shopRepository, ItemService itemService) {
+    public ItemDataGenerator(ItemRepository itemRepository, ShopRepository shopRepository) {
         this.itemRepository = itemRepository;
         this.shopRepository = shopRepository;
-        this.itemService = itemService;
     }
 
     @Transactional
@@ -68,7 +67,7 @@ public class ItemDataGenerator {
     private Subcategory pickRandomSubcategory(Category category) {
         List<Subcategory> subcategories = new ArrayList<>(category.getSubcategories());
         if (subcategories.isEmpty()) {
-            return Subcategory.UNSPECIFIED; // Or handle it as needed
+            return Subcategory.UNSPECIFIED;
         }
         return subcategories.get(ThreadLocalRandom.current().nextInt(subcategories.size()));
     }

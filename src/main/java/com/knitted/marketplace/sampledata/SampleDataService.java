@@ -5,14 +5,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SampleDataService {
-    private final ShopDataGenerator shopDataGenerator;
     private final ItemDataGenerator itemDataGenerator;
-    private final ReviewDataGenerator reviewDataGenerator;
 
-    public SampleDataService(ShopDataGenerator shopDataGenerator, ItemDataGenerator itemDataGenerator, ReviewDataGenerator reviewDataGenerator) {
-        this.shopDataGenerator = shopDataGenerator;
+    public SampleDataService(ItemDataGenerator itemDataGenerator) {
         this.itemDataGenerator = itemDataGenerator;
-        this.reviewDataGenerator = reviewDataGenerator;
     }
 
     public void loadSampleData() {
@@ -20,10 +16,7 @@ public class SampleDataService {
 
         System.out.println("Start generating item data");
         itemDataGenerator.generate();
-//        System.out.println("Start generating review data");
-//        reviewDataGenerator.generate();
 
         System.out.println("Finished generating sample data...");
     }
-
 }

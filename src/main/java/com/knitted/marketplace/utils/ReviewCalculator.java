@@ -2,9 +2,12 @@ package com.knitted.marketplace.utils;
 
 import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.item.ItemStatus;
+
 import org.hibernate.Hibernate;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Component
 public class ReviewCalculator {

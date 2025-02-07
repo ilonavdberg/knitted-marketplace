@@ -10,6 +10,7 @@ import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.security.JwtService;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -11,7 +11,9 @@ import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.services.AuthService;
 import com.knitted.marketplace.services.UserService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +57,7 @@ public class AuthController {
 
         Customer customer = authService.registerNewUser(request);
         CustomerResponseDto response = CustomerMapper.toResponseDto(customer);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

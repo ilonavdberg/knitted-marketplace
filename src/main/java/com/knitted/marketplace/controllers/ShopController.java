@@ -9,6 +9,7 @@ import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.services.ShopService;
 
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,7 @@ public class ShopController {
         ShopCreatedResponseDto response = shopService.createShop(request, authHeader);
         ShopResponseDto updatedShop = ShopMapper.toResponseDto(response.shop());
 
+        // send the new token to the client via the headers
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + response.token());
 
@@ -50,10 +52,10 @@ public class ShopController {
     @GetMapping("{id}/profile")
     public ResponseEntity<ShopSummaryResponseDto> getShopSummary(@PathVariable Long id) {
         Shop shop = shopService.getShop(id);
+
         ShopSummaryResponseDto response = shopMapper.toSummaryResponseDto(shop);
         return ResponseEntity.ok(response);
     }
-
 }
 
 

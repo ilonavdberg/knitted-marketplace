@@ -7,8 +7,8 @@ import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
 import com.knitted.marketplace.dtos.item.ShopItemResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.*;
-
 import com.knitted.marketplace.utils.Parser;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 

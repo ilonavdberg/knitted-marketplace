@@ -92,7 +92,6 @@ class OrderServiceTest {
 
         assertNotNull(capturedOrder.getClosedDate());
         assertTrue(capturedOrder.getClosedDate().isAfter(LocalDateTime.now().minusSeconds(5)));
-
     }
 
     @Test
@@ -111,13 +110,13 @@ class OrderServiceTest {
     @Test
     void getOrdersForCustomer() {
         // arrange
-        when(orderRepository.findByCustomerId(customer.getId())).thenReturn(mockOrders.subList(1, 2));
+        when(orderRepository.findByCustomerId(customer.getId())).thenReturn(mockOrders);
 
         // act
         List<Order> fetchedOrders = orderService.getOrdersForCustomer(customer);
 
         // assert
-        assertEquals(mockOrders.subList(1, 2), fetchedOrders);
+        assertEquals(mockOrders, fetchedOrders);
     }
 
 }

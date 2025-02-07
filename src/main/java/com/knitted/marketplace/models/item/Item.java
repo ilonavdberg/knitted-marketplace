@@ -57,6 +57,7 @@ public class Item {
     //Constructors
     public Item() {};
 
+    // user for testing
     public Item(Long id, String title) {
         this.id = id;
         this.title = title;
@@ -76,7 +77,6 @@ public class Item {
     }
 
     // Getters and Setters
-
 
     public Long getId() {
         return id;

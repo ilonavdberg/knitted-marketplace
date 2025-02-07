@@ -1,10 +1,10 @@
 package com.knitted.marketplace.mappers;
 
-import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
 import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.User;
+
 
 public class AuthMapper {
     public static User toUser(RegistrationRequestDto request) {

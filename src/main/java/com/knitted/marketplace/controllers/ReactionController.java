@@ -5,6 +5,7 @@ import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
 import com.knitted.marketplace.mappers.ReactionMapper;
 import com.knitted.marketplace.models.Reaction;
 import com.knitted.marketplace.services.ReactionService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,8 @@ public class ReactionController {
     @PostMapping("reviews/{id}/reaction")
     public ResponseEntity<ReactionResponseDto> createReaction(@PathVariable("id") Long reviewId, @RequestBody ReactionRequestDto request) {
         Reaction savedReaction = reactionService.save(reviewId, request);
-        ReactionResponseDto response = ReactionMapper.toResponseDto(savedReaction);
 
+        ReactionResponseDto response = ReactionMapper.toResponseDto(savedReaction);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

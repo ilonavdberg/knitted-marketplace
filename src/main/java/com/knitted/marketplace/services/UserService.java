@@ -9,8 +9,10 @@ import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
 import com.knitted.marketplace.utils.Parser;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {

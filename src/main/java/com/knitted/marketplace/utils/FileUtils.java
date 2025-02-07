@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
+
 public class FileUtils {
     public static String getFileExtension(MultipartFile file) {
         String originalFileName = file.getOriginalFilename();

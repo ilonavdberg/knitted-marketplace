@@ -3,12 +3,11 @@ package com.knitted.marketplace.controllers;
 import com.knitted.marketplace.dtos.review.ReviewRequestDto;
 import com.knitted.marketplace.dtos.review.ReviewResponseDto;
 import com.knitted.marketplace.mappers.ReviewMapper;
-import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.Review;
-import com.knitted.marketplace.services.CustomerService;
-import com.knitted.marketplace.services.OrderService;
 import com.knitted.marketplace.services.ReviewService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,11 +21,9 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 @RequestMapping(BASE_URL)
 public class ReviewController {
     private final ReviewService reviewService;
-    private final CustomerService customerService;
 
-    public ReviewController(ReviewService reviewService, CustomerService customerService) {
+    public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
-        this.customerService = customerService;
     }
 
     @PostMapping("orders/{id}/review")
@@ -35,9 +32,7 @@ public class ReviewController {
             @Valid @PathVariable("id") Long orderId,
             @RequestBody ReviewRequestDto request
     ) {
-        Customer customer = customerService.getCustomerByAuthHeader(authHeader);
-
-        Review savedReview = reviewService.save(orderId, request, customer);
+        Review savedReview = reviewService.save(orderId, request, authHeader);
 
         ReviewResponseDto response = ReviewMapper.toResponseDto(savedReview);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -49,8 +44,8 @@ public class ReviewController {
             @PageableDefault(size = 12) Pageable pageable
     ) {
         Page<Review> reviewPage = reviewService.getReviewsForShop(shopId, pageable);
-        Page<ReviewResponseDto> response = ReviewMapper.toResponseDtoPage(reviewPage);
 
+        Page<ReviewResponseDto> response = ReviewMapper.toResponseDtoPage(reviewPage);
         return ResponseEntity.ok(response);
     }
 }

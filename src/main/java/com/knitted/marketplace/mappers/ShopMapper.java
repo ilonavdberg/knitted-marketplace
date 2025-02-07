@@ -6,13 +6,10 @@ import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.Shop;
-import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.utils.ReviewCalculator;
-import org.hibernate.Hibernate;
+
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ShopMapper {

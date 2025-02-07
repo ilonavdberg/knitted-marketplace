@@ -7,7 +7,9 @@ import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.models.order.OrderStatus;
 import com.knitted.marketplace.repositories.OrderRepository;
+
 import org.hibernate.Hibernate;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +48,6 @@ public class OrderService {
                 Hibernate.initialize(soldItem.getPhotos());
             }
         }
-
         return orders;
     }
 

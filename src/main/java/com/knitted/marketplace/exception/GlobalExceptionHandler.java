@@ -5,9 +5,11 @@ import com.knitted.marketplace.exception.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.security.core.AuthenticationException;
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -55,6 +57,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RecordAlreadyExistsException.class)
     public ResponseEntity<String> handleRecordAlreadyExistsException(RecordAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
 }

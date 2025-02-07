@@ -5,13 +5,10 @@ import com.knitted.marketplace.dtos.item.ItemRequestDto;
 import com.knitted.marketplace.dtos.item.DetailedItemResponseDto;
 import com.knitted.marketplace.dtos.item.ShopItemResponseDto;
 import com.knitted.marketplace.mappers.ItemMapper;
-import com.knitted.marketplace.models.Contact;
-import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.services.ItemService;
 import com.knitted.marketplace.services.ShopService;
 
-import com.knitted.marketplace.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +83,6 @@ public class ItemController {
             @RequestParam(value = "size", required = false, defaultValue = "") String clothingSize,
             @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
-
         ItemRequestDto request = new ItemRequestDto(
                 itemService.getItem(id).getShop(),
                 title,
@@ -106,7 +101,6 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
-    //TODO: add validation check before publishing
     @PutMapping("items/{id}/publish")
     public ResponseEntity<DetailedItemResponseDto> publishItem(
             @RequestHeader("Authorization") String authHeader,
@@ -160,6 +154,7 @@ public class ItemController {
     @GetMapping("items/{id}")
     public ResponseEntity<DetailedItemResponseDto> getItem(@PathVariable Long id) {
         Item item = itemService.getItem(id);
+
         DetailedItemResponseDto response = itemMapper.toResponseDto(item);
         return ResponseEntity.ok(response);
     }

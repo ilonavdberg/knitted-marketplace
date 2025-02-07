@@ -1,9 +1,9 @@
 package com.knitted.marketplace.dtos.auth;
 
-import com.knitted.marketplace.models.ImageFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class RegistrationRequestDto {

@@ -2,6 +2,7 @@ package com.knitted.marketplace.models;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "contacts")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -35,7 +36,6 @@ public class Contact {
 
 
     //Getters and Setters
-
 
     public Long getId() {
         return id;
@@ -92,10 +92,6 @@ public class Contact {
 
     public void setAddress(String street, String houseNumber, String zipcode, String city) {
         this.address = new Address(street, houseNumber, zipcode, city);
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public void setUser(User user) {
