@@ -29,7 +29,6 @@ public class CustomerService {
 
     public Customer createCustomer(RegistrationRequestDto request, User user) {
         Customer customer = AuthMapper.toCustomer(request);
-
         customer.setUser(user);
 
         return saveCustomer(customer);

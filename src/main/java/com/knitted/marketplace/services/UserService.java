@@ -51,8 +51,11 @@ public class UserService {
     }
 
     public User getUserByAuthHeader(String authHeader) {
+        System.out.println("Auth Header: " + authHeader);
         String token = Parser.toToken(authHeader);
+        System.out.println("Extracted Token: " + token);
         Long userId = jwtService.extractId(token);
+        System.out.println("Extracted User ID: " + userId);
         return getUserById(userId);
     }
 

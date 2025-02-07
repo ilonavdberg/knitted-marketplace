@@ -1,14 +1,13 @@
 package com.knitted.marketplace.integration;
 
-import com.knitted.marketplace.models.Contact;
-import com.knitted.marketplace.models.ImageFile;
-import com.knitted.marketplace.models.Shop;
-import com.knitted.marketplace.models.User;
+import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
+import com.knitted.marketplace.models.*;
 import com.knitted.marketplace.repositories.ContactRepository;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.repositories.UserRepository;
 import com.knitted.marketplace.security.JwtService;
 import jakarta.transaction.Transactional;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,6 +50,9 @@ public class ShopControllerIntegrationTests {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private ImageFile image;
     private Contact contact;
@@ -91,7 +95,7 @@ public class ShopControllerIntegrationTests {
     void testGetShopSummary() throws Exception {
         Shop shop = new Shop();
         shop.setName("Test Shop");
-        shop.setDescription("shop description for the test shop");
+        shop.setDescription("shop description for the test shop that must contain at least 50 characters");
         shop.setOwner(contact);
         shop.setShopPicture(image);
         shop = shopRepository.save(shop);
@@ -99,7 +103,7 @@ public class ShopControllerIntegrationTests {
         mockMvc.perform(get(BASE_URL + "/shops/" + shop.getId() + "/profile"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Test Shop"))
-                .andExpect(jsonPath("$.description").value("shop description for the test shop"))
+                .andExpect(jsonPath("$.description").value("shop description for the test shop that must contain at least 50 characters"))
                 .andExpect(jsonPath("$.shopPicture").exists())
                 .andExpect(jsonPath("$.shopPicture.filename").value(shop.getShopPicture().getFilename()))
                 .andExpect(jsonPath("$.shopPicture.extension").value(shop.getShopPicture().getExtension()))
@@ -118,14 +122,14 @@ public class ShopControllerIntegrationTests {
         );
 
         mockMvc.perform(multipart(BASE_URL + "/shops")
-                .file(mockImage)
-                .param("name", "Test Shop")
-                .param("description", "shop description for the test shop")
-                .header("Authorization", fakeAuthHeader)
-                .contentType(MediaType.MULTIPART_FORM_DATA))
+                        .file(mockImage)
+                        .param("name", "Test Shop")
+                        .param("description", "shop description for the test shop that must contain at least 50 characters")
+                        .header("Authorization", fakeAuthHeader)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Test Shop"))
-                .andExpect(jsonPath("$.description").value("shop description for the test shop"))
+                .andExpect(jsonPath("$.description").value("shop description for the test shop that must contain at least 50 characters"))
                 .andExpect(jsonPath("$.shopPicture").isNotEmpty())
                 .andExpect(jsonPath("$.shopPicture.base64Image").isNotEmpty());
     }
