@@ -1,6 +1,9 @@
 package com.knitted.marketplace.services;
 
+import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
+import com.knitted.marketplace.mappers.AuthMapper;
 import com.knitted.marketplace.models.Customer;
+import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.CustomerRepository;
 import com.knitted.marketplace.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,15 +59,43 @@ class CustomerServiceTest {
 
     @Test
     void canGetCustomerByAuthHeader() {
-        //Arrange
+        // Arrange
         String authHeader = "someRandomBearerToken";
         when(jwtService.extractId(authHeader)).thenReturn(1L);
         when(customerRepository.findById(1L)).thenReturn(Optional.ofNullable(mockCustomers.getFirst()));
 
-        //Act
+        // Act
         Customer fetchedCustomer = customerService.getCustomerByAuthHeader(authHeader);
 
-        //Assert
+        // Assert
         assertEquals(mockCustomers.getFirst(), fetchedCustomer);
+    }
+
+    @Test
+    void canCreateCustomer() {
+        // Arrange
+        Customer customer = new Customer(1L, "John", "Smith");
+        User user = new User();
+        RegistrationRequestDto request = new RegistrationRequestDto(
+                "username",
+                "password",
+                null,
+                "firstName",
+                "lastName",
+                "street",
+                "houseNumber",
+                "door",
+                "zipcode",
+                "city",
+                "email",
+                "phone"
+        );
+        when(customerService.saveCustomer(any(Customer.class))).thenReturn(customer);
+
+        // Act
+        Customer savedCustomer = customerService.createCustomer(request, user);
+
+        // Assert
+        assertEquals(customer, savedCustomer);
     }
 }

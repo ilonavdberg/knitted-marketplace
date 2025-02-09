@@ -11,6 +11,3 @@ public class KnittedApplication {
 	}
 
 }
-
-//TODO: check all relations - bidirectional, cascading, orphanremoval, fetch
-//TODO: add @Valid annotation to the request parameters (in all controllers)

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -36,6 +37,9 @@ class ReviewServiceTest {
     @Mock
     private OrderService orderService;
 
+    @Mock
+    private CustomerService customerService;
+
     @InjectMocks
     private ReviewService reviewService;
 
@@ -52,6 +56,7 @@ class ReviewServiceTest {
     @Test
     void canSaveNewReview() {
         // arrange
+        String authHeader = "someRandomBearerToken";
         Long orderId = 1L;
         Item item = new Item(1L, "socks");
         Customer customer = new Customer(1L, "John", "Doe");
@@ -73,17 +78,45 @@ class ReviewServiceTest {
 
         when(orderService.getOrder(orderId)).thenReturn(order);
         when(reviewRepository.save(any(Review.class))).thenReturn(mockReviews.getFirst());
+        when(customerService.getCustomerByAuthHeader(authHeader)).thenReturn(customer);
 
         // act
-        Review savedReview = reviewService.save(orderId, request);
+        Review savedReview = reviewService.save(orderId, request, authHeader);
 
         // assert
         assertEquals(mockReviews.getFirst(), savedReview);
     }
 
     @Test
-    void canSaveUpdatedReview() {
+    void cannotSaveReviewIfNotAuthorized() {
+        // arrange
+        String authHeader = "someRandomBearerToken";
+        Long orderId = 1L;
+        Item item = new Item(1L, "socks");
+        Customer customer = new Customer(1L, "John", "Doe");
+        Order order = new Order(
+                1L,
+                OrderStatus.CLOSED,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                item,
+                customer,
+                null);
 
+        ReviewRequestDto request = new ReviewRequestDto(
+                order,
+                5,
+                "very nice socks",
+                "these are very nice socks"
+        );
+
+        when(orderService.getOrder(orderId)).thenReturn(order);
+        when(customerService.getCustomerByAuthHeader(authHeader)).thenReturn(new Customer(2L, "Jane", "Doe"));
+
+        // act and assert
+        assertThrowsExactly(AccessDeniedException.class, () -> {
+            reviewService.save(orderId, request, authHeader);
+        });
     }
 
     @Test

@@ -1,12 +1,14 @@
 package com.knitted.marketplace.utils;
 
 import com.knitted.marketplace.models.item.ClothingSize;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 public class Parser {
     public static Double toDouble(String stringInput) throws NumberFormatException {

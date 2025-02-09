@@ -6,7 +6,7 @@ import com.knitted.marketplace.models.item.Item;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "orders")

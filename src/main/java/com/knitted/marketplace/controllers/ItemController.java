@@ -30,15 +30,18 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 public class ItemController {
     private final ItemService itemService;
     private final ShopService shopService;
+    private final ItemMapper itemMapper;
 
-    public ItemController(ItemService itemService, ShopService shopService) {
+    public ItemController(ItemService itemService, ShopService shopService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.shopService = shopService;
+        this.itemMapper = itemMapper;
     }
 
     //TODO: check if shopId can be derived from User token instead of path variable
     @PostMapping("shops/{shopId}/items")
     public ResponseEntity<DetailedItemResponseDto> createItem(
+            @RequestHeader("Authorization") String authHeader,
             @PathVariable Long shopId,
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "description", required = false, defaultValue = "") String description,
@@ -49,7 +52,6 @@ public class ItemController {
             @RequestParam(value = "size", required = false, defaultValue = "") String clothingSize,
             @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
-
         ItemRequestDto request = new ItemRequestDto(
                 shopService.getShop(shopId),
                 title,
@@ -62,14 +64,15 @@ public class ItemController {
                 uploadedPhotos.orElse(Collections.emptyList())
         );
 
-        Item savedItem = itemService.createItem(request);
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        Item savedItem = itemService.createItem(request, authHeader);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("items/{id}")
     public ResponseEntity<DetailedItemResponseDto> updateItem(
+            @RequestHeader("Authorization") String authHeader,
             @PathVariable Long id,
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "description", required = false, defaultValue = "") String description,
@@ -80,7 +83,6 @@ public class ItemController {
             @RequestParam(value = "size", required = false, defaultValue = "") String clothingSize,
             @RequestPart(value = "photos", required = false) Optional<List<MultipartFile>> uploadedPhotos
     ) {
-
         ItemRequestDto request = new ItemRequestDto(
                 itemService.getItem(id).getShop(),
                 title,
@@ -93,34 +95,42 @@ public class ItemController {
                 uploadedPhotos.orElse(Collections.emptyList())
         );
 
-        Item savedItem = itemService.updateItem(id, request);
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        Item savedItem = itemService.updateItem(id, request, authHeader);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
 
         return ResponseEntity.ok(response);
     }
 
-    //TODO: add validation check before publishing
     @PutMapping("items/{id}/publish")
-    public ResponseEntity<DetailedItemResponseDto> publishItem(@PathVariable Long id) {
-        Item savedItem = itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
+    public ResponseEntity<DetailedItemResponseDto> publishItem(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id
+    ) {
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.PUBLISHED, authHeader);
 
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("items/{id}/unpublish")
-    public ResponseEntity<DetailedItemResponseDto> unpublishItem(@PathVariable Long id) {
-        Item savedItem = itemService.updateItemStatus(id, ItemStatus.DRAFT);
+    public ResponseEntity<DetailedItemResponseDto> unpublishItem(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id
+    ) {
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.DRAFT, authHeader);
 
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("items/{id}/archive")
-    public ResponseEntity<DetailedItemResponseDto> archiveItem(@PathVariable Long id) {
-        Item savedItem = itemService.updateItemStatus(id, ItemStatus.ARCHIVED);
+    public ResponseEntity<DetailedItemResponseDto> archiveItem(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id
+    ) {
+        Item savedItem = itemService.updateItemStatus(id, ItemStatus.ARCHIVED, authHeader);
 
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(savedItem);
+        DetailedItemResponseDto response = itemMapper.toResponseDto(savedItem);
         return ResponseEntity.ok(response);
     }
 
@@ -144,7 +154,8 @@ public class ItemController {
     @GetMapping("items/{id}")
     public ResponseEntity<DetailedItemResponseDto> getItem(@PathVariable Long id) {
         Item item = itemService.getItem(id);
-        DetailedItemResponseDto response = ItemMapper.toResponseDto(item);
+
+        DetailedItemResponseDto response = itemMapper.toResponseDto(item);
         return ResponseEntity.ok(response);
     }
 

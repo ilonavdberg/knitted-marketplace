@@ -10,7 +10,7 @@ import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.ShopRepository;
 import com.knitted.marketplace.security.JwtService;
-import com.knitted.marketplace.utils.Parser;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +29,9 @@ public class ShopService {
 
     @Transactional
     public ShopCreatedResponseDto createShop(ShopRequestDto request, String authHeader) {
-        System.out.println("create shop method activated");
 
         // Get user
-        String token = Parser.toToken(authHeader);
-        Long userId = jwtService.extractId(token);
-        User user = userService.getUserById(userId);
+        User user = userService.getUserByAuthHeader(authHeader);
 
         // validate if user has no shop yet
         if (user.getContact().getShop() != null) {
@@ -57,6 +54,7 @@ public class ShopService {
         return new ShopCreatedResponseDto(savedShop, newToken);
     }
 
+    @Transactional
     public Shop getShop(Long id) {
         return shopRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }

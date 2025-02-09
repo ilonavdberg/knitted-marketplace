@@ -6,6 +6,7 @@ import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.services.CustomerService;
 import com.knitted.marketplace.services.OrderService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class OrderController {
             @PathVariable("id") Long itemId
     ) {
         Customer customer = customerService.getCustomerByAuthHeader(authHeader);
-        Order order = orderService.orderItem(itemId, customer);
+        Order order = orderService.orderItem(itemId, customer, authHeader);
 
         OrderResponseDto response = OrderMapper.toResponseDto(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -43,6 +44,7 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDto>> getOrderHistory(@RequestHeader("Authorization") String authHeader) {
         Customer customer = customerService.getCustomerByAuthHeader(authHeader);
         List<Order> orders = orderService.getOrdersForCustomer(customer);
+
         List<OrderResponseDto> response = OrderMapper.toResponseDtoList(orders);
         return ResponseEntity.ok(response);
     }

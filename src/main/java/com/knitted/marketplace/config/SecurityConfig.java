@@ -2,6 +2,7 @@ package com.knitted.marketplace.config;
 
 import com.knitted.marketplace.security.JwtRequestFilter;
 import com.knitted.marketplace.security.JwtService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -53,9 +54,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, BASE_URL + "/shops/*/*").permitAll() // view shop content
 //
 //                                //secure endpoints - all users
-                                .requestMatchers(HttpMethod.GET, BASE_URL + "/customer").hasAuthority("ROLE_USER") // get account details
+                                .requestMatchers(HttpMethod.GET, BASE_URL + "/customer/**").hasAuthority("ROLE_USER") // get account details
                                 .requestMatchers(HttpMethod.POST, BASE_URL + "/items/*/order").hasAuthority("ROLE_USER") // order item
-                                .requestMatchers(HttpMethod.POST, BASE_URL + "/order/*/review").hasAuthority("ROLE_USER") // create review
+                                .requestMatchers(HttpMethod.POST, BASE_URL + "/orders/*/review").hasAuthority("ROLE_USER") // create review
                                 .requestMatchers(HttpMethod.POST, BASE_URL + "/shops").hasAuthority("ROLE_USER") // create shop
 //
 //                                //secure endpoints - shop owners

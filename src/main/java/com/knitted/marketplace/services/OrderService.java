@@ -7,7 +7,9 @@ import com.knitted.marketplace.models.item.ItemStatus;
 import com.knitted.marketplace.models.order.Order;
 import com.knitted.marketplace.models.order.OrderStatus;
 import com.knitted.marketplace.repositories.OrderRepository;
+
 import org.hibernate.Hibernate;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +19,8 @@ import java.util.List;
 
 @Service
 public class OrderService {
-    public final OrderRepository orderRepository;
-    public final ItemService itemService;
+    private final OrderRepository orderRepository;
+    private final ItemService itemService;
 
     public OrderService(OrderRepository orderRepository, ItemService itemService) {
         this.orderRepository = orderRepository;
@@ -26,9 +28,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Order orderItem(Long itemId, Customer customer) {
-        Item item = itemService.updateItemStatus(itemId, ItemStatus.SOLD);
-
+    public Order orderItem(Long itemId, Customer customer, String authHeader) {
+        Item item = itemService.updateItemStatus(itemId, ItemStatus.SOLD, authHeader);
         return createOrder(item, customer);
     }
 
@@ -47,7 +48,6 @@ public class OrderService {
                 Hibernate.initialize(soldItem.getPhotos());
             }
         }
-
         return orders;
     }
 

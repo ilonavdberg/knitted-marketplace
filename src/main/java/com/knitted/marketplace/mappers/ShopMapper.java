@@ -6,14 +6,20 @@ import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.Shop;
-import com.knitted.marketplace.models.item.ItemStatus;
-import org.hibernate.Hibernate;
+import com.knitted.marketplace.utils.ReviewCalculator;
 
-import java.awt.*;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 
+@Component
 public class ShopMapper {
+
+    private final ReviewCalculator reviewCalculator;
+
+    public ShopMapper(ReviewCalculator reviewCalculator) {
+        this.reviewCalculator = reviewCalculator;
+    }
+
     public static Shop toShop(ShopRequestDto request) {
         Shop shop = new Shop();
 
@@ -40,29 +46,10 @@ public class ShopMapper {
         );
     }
 
-    public static ShopSummaryResponseDto toSummaryResponseDto(Shop shop) {
-        Hibernate.initialize(shop.getItems());
-
-        shop.getItems().forEach(item -> {
-            Hibernate.initialize(item.getOrder());
-            if (item.getOrder() != null) {
-                Hibernate.initialize(item.getOrder().getReview());
-            }
-        });
-
-        Long numberOfReviews = shop.getItems().stream()
-                .filter(item -> item.getStatus().equals(ItemStatus.SOLD))
-                .filter(item -> item.getOrder().getReview() != null)
-                .count();
-
-        Double averageRating = shop.getItems().stream()
-                .filter(item -> item.getStatus().equals(ItemStatus.SOLD))
-                .filter(item -> item.getOrder().getReview() != null)
-                .mapToInt(item -> item.getOrder().getReview().getRating())
-                .average()
-                .orElse(0);
-
+    public ShopSummaryResponseDto toSummaryResponseDto(Shop shop) {
         ImageResponseDto image = ImageMapper.toResponseDto(shop.getShopPicture());
+        Long numberOfReviews = reviewCalculator.calculateNumberOfReviews(shop);
+        Double averageRating = reviewCalculator.calculateAverageRating(shop);
 
         return new ShopSummaryResponseDto(
                 shop.getId(),

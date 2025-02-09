@@ -8,6 +8,8 @@ import com.knitted.marketplace.dtos.shop.ShopRequestDto;
 import com.knitted.marketplace.dtos.shop.ShopResponseDto;
 import com.knitted.marketplace.services.ShopService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,26 +22,27 @@ import static com.knitted.marketplace.config.ApiConfig.BASE_URL;
 @RestController
 @RequestMapping(BASE_URL + "/shops")
 public class ShopController {
-    private final ShopService shopService;
 
-    public ShopController(ShopService shopService) {
+    private final ShopService shopService;
+    private final ShopMapper shopMapper;
+
+    public ShopController(ShopService shopService, ShopMapper shopMapper) {
         this.shopService = shopService;
+        this.shopMapper = shopMapper;
     }
 
-
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ShopResponseDto> createShop(
             @RequestHeader("Authorization") String authHeader,
-            @RequestParam("name") String name,
-            @RequestParam("description") String description,
-            @RequestPart(value = "uploadedImage", required = false) MultipartFile uploadedImage
+            @Valid @ModelAttribute ShopRequestDto request,
+            @RequestPart(value = "uploadedImage") MultipartFile uploadedImage
     ) {
-
-        ShopRequestDto request = new ShopRequestDto(name, description, uploadedImage);
+        request.setUploadedImage(uploadedImage);
 
         ShopCreatedResponseDto response = shopService.createShop(request, authHeader);
         ShopResponseDto updatedShop = ShopMapper.toResponseDto(response.shop());
 
+        // send the new token to the client via the headers
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + response.token());
 
@@ -49,10 +52,10 @@ public class ShopController {
     @GetMapping("{id}/profile")
     public ResponseEntity<ShopSummaryResponseDto> getShopSummary(@PathVariable Long id) {
         Shop shop = shopService.getShop(id);
-        ShopSummaryResponseDto response = ShopMapper.toSummaryResponseDto(shop);
+
+        ShopSummaryResponseDto response = shopMapper.toSummaryResponseDto(shop);
         return ResponseEntity.ok(response);
     }
-
 }
 
 

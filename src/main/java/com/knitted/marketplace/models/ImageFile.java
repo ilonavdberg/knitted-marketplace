@@ -2,6 +2,7 @@ package com.knitted.marketplace.models;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "image_files")
 public class ImageFile {

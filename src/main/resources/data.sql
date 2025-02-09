@@ -1,10 +1,10 @@
 -- Users
 INSERT INTO users (id, user_picture_id, password, username)
 VALUES
-    (1, (SELECT id FROM image_files WHERE filename = 'user_avatar_1.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'yarayarn'),
-    (2, (SELECT id FROM image_files WHERE filename = 'user_avatar_2.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'reactahook'),
-    (3, (SELECT id FROM image_files WHERE filename = 'user_avatar_3.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'elizapostman'),
-    (4, (SELECT id FROM image_files WHERE filename = 'user_avatar_4.jpg'), '$2a$10$tVmAhyjMAh2jKpYdINQI0utjWajomdiQbMgu.fbiO.68HbE65EfC.', 'claracould');
+    (1, (SELECT id FROM image_files WHERE filename = 'user_avatar_1.jpg'), '$2a$10$GwzR/kWVeBnoPHGAYyY8.upNqF0s3FysFkp5gs2xQRXY4rDahb0qK', 'yarayarn'),
+    (2, (SELECT id FROM image_files WHERE filename = 'user_avatar_2.jpg'), '$2a$10$GwzR/kWVeBnoPHGAYyY8.upNqF0s3FysFkp5gs2xQRXY4rDahb0qK', 'reactahook'),
+    (3, (SELECT id FROM image_files WHERE filename = 'user_avatar_3.jpg'), '$2a$10$GwzR/kWVeBnoPHGAYyY8.upNqF0s3FysFkp5gs2xQRXY4rDahb0qK', 'elizapostman'),
+    (4, (SELECT id FROM image_files WHERE filename = 'user_avatar_4.jpg'), '$2a$10$GwzR/kWVeBnoPHGAYyY8.upNqF0s3FysFkp5gs2xQRXY4rDahb0qK', 'claracould');
 
 INSERT INTO user_roles (user_id, roles)
 VALUES

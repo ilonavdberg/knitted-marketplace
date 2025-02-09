@@ -2,8 +2,10 @@ package com.knitted.marketplace.models;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name="addresses")
+@SuppressWarnings("unused") // fields are not accessed directly in the backend but are serialized and sent to the client
 public class Address {
 
     @Id
@@ -29,29 +31,8 @@ public class Address {
     public Address(String street, String houseNumber, String zipcode, String city) {
         this.street = street;
         this.houseNumber = houseNumber;
+        this.door = "";
         this.zipcode = zipcode;
         this.city = city;
-    }
-
-    //Getters only (immutable datatype)
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public String getDoor() {
-        return door;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public String getCity() {
-        return city;
     }
 }

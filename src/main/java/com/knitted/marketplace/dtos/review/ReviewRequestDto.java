@@ -1,8 +1,10 @@
 package com.knitted.marketplace.dtos.review;
 
 import com.knitted.marketplace.models.order.Order;
+
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
+
 
 public class ReviewRequestDto {
     @Min(value = 1, message = "Rating must be at least 1")
@@ -10,7 +12,7 @@ public class ReviewRequestDto {
     private int rating;
 
     @NotBlank
-    @Size(min = 6, max = 50, message = "Title must be between 6 and 50 characters.")
+    @Size(min = 3, max = 50, message = "Title must be between 6 and 50 characters.")
     private String title;
 
     @Column(nullable = true)

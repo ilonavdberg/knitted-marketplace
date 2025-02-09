@@ -2,6 +2,7 @@ package com.knitted.marketplace.dtos.shop;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -37,5 +38,9 @@ public class ShopRequestDto {
 
     public MultipartFile getUploadedImage() {
         return uploadedImage;
+    }
+
+    public void setUploadedImage(MultipartFile uploadedImage) {
+        this.uploadedImage = uploadedImage;
     }
 }

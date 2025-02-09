@@ -7,28 +7,33 @@ import com.knitted.marketplace.mappers.AuthMapper;
 import com.knitted.marketplace.models.Shop;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.repositories.UserRepository;
+import com.knitted.marketplace.security.JwtService;
+import com.knitted.marketplace.utils.Parser;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public User createUser(RegistrationRequestDto request) {
         User user = AuthMapper.toUser(request);
+        System.out.println("password: " + user.getPassword());
+
         user.addRole("USER");
-
-        System.out.println("Password in the request: " + request.getPassword());
-
-        // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println("encoded password: " + user.getPassword());
 
         return saveUser(user);
     }
@@ -43,6 +48,15 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+    }
+
+    public User getUserByAuthHeader(String authHeader) {
+        System.out.println("Auth Header: " + authHeader);
+        String token = Parser.toToken(authHeader);
+        System.out.println("Extracted Token: " + token);
+        Long userId = jwtService.extractId(token);
+        System.out.println("Extracted User ID: " + userId);
+        return getUserById(userId);
     }
 
     public Long getShopIdForUser(User user) {

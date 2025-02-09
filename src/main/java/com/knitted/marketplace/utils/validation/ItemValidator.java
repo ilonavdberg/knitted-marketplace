@@ -1,6 +1,5 @@
 package com.knitted.marketplace.utils.validation;
 
-
 import com.knitted.marketplace.models.ImageFile;
 import com.knitted.marketplace.models.item.*;
 
@@ -10,9 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 public class ItemValidator {
 
-    // Field validation rules
+    // Validation values
     private static final int TITLE_MIN_LENGTH = 6;
     private static final int TITLE_MAX_LENGTH = 30;
     private static final int DESCRIPTION_MIN_LENGTH = 30;

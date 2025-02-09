@@ -4,8 +4,10 @@ import com.knitted.marketplace.dtos.review.ReviewRequestDto;
 import com.knitted.marketplace.dtos.review.ReviewResponseDto;
 import com.knitted.marketplace.mappers.ReviewMapper;
 import com.knitted.marketplace.models.Review;
-import com.knitted.marketplace.services.OrderService;
 import com.knitted.marketplace.services.ReviewService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,8 +27,12 @@ public class ReviewController {
     }
 
     @PostMapping("orders/{id}/review")
-    public ResponseEntity<ReviewResponseDto> createReview(@PathVariable("id") Long orderId, @RequestBody ReviewRequestDto request) {
-        Review savedReview = reviewService.save(orderId, request);
+    public ResponseEntity<ReviewResponseDto> createReview(
+            @RequestHeader("Authorization") String authHeader,
+            @Valid @PathVariable("id") Long orderId,
+            @RequestBody ReviewRequestDto request
+    ) {
+        Review savedReview = reviewService.save(orderId, request, authHeader);
 
         ReviewResponseDto response = ReviewMapper.toResponseDto(savedReview);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -38,8 +44,8 @@ public class ReviewController {
             @PageableDefault(size = 12) Pageable pageable
     ) {
         Page<Review> reviewPage = reviewService.getReviewsForShop(shopId, pageable);
-        Page<ReviewResponseDto> response = ReviewMapper.toResponseDtoPage(reviewPage);
 
+        Page<ReviewResponseDto> response = ReviewMapper.toResponseDtoPage(reviewPage);
         return ResponseEntity.ok(response);
     }
 }

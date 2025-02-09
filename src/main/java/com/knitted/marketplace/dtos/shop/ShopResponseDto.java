@@ -4,6 +4,7 @@ import com.knitted.marketplace.dtos.ImageResponseDto;
 
 import java.util.List;
 
+
 public record ShopResponseDto(
         Long id,
         String name,

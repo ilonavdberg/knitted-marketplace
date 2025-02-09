@@ -5,12 +5,12 @@ import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
 import com.knitted.marketplace.models.Reaction;
 import com.knitted.marketplace.models.Review;
 
+
 public class ReactionMapper {
 
     public static Reaction toReaction(Review review, ReactionRequestDto request) {
         Reaction reaction = new Reaction();
 
-        //TODO: add author when user is implemented
         reaction.setReview(review);
         reaction.setComment(request.getComment());
 

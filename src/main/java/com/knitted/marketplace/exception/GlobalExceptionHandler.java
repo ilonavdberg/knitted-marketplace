@@ -5,9 +5,11 @@ import com.knitted.marketplace.exception.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.security.core.AuthenticationException;
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,17 +30,17 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(ItemAlreadySoldException.class)
     public ResponseEntity<String> handleItemAlreadySoldException(ItemAlreadySoldException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler(InvalidStatusChangeException.class)
     public ResponseEntity<String> handleInvalidStatusChangeException(InvalidStatusChangeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler(ItemPublicationValidationException.class)
     public ResponseEntity<String> handleItemPublicationValidationException(ItemPublicationValidationException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -49,12 +51,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         String message = (e.getRootCause() != null) ? e.getRootCause().getMessage() : "Unknown cause";
-        return new ResponseEntity<>("Data integrity violation: " + message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Data integrity violation: " + message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(RecordAlreadyExistsException.class)
     public ResponseEntity<String> handleRecordAlreadyExistsException(RecordAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
 }

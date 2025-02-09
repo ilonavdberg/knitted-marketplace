@@ -55,11 +55,12 @@ class OrderServiceTest {
     void canOrderItem() {
         // arrange
         Long itemId = 1L;
-        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD)).thenReturn(item);
+        String authHeader = "someRandomBearerToken";
+        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD, authHeader)).thenReturn(item);
         when(orderRepository.save(any(Order.class))).thenReturn(mockOrders.getFirst());
 
         // act
-        Order savedOrder = orderService.orderItem(itemId, customer);
+        Order savedOrder = orderService.orderItem(itemId, customer, authHeader);
 
         // assert
         assertEquals(mockOrders.getFirst(), savedOrder);
@@ -69,12 +70,13 @@ class OrderServiceTest {
     void canCreateOrderWithCorrectFields() {
         // Arrange
         Long itemId = 1L;
-        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD)).thenReturn(item);
+        String authHeader = "someRandomBearerToken";
+        when(itemService.updateItemStatus(itemId, ItemStatus.SOLD, authHeader)).thenReturn(item);
 
         ArgumentCaptor<Order> orderArgumentCaptor = ArgumentCaptor.forClass(Order.class);
 
         // Act
-        orderService.orderItem(itemId, customer);
+        orderService.orderItem(itemId, customer, authHeader);
 
         verify(orderRepository).save(orderArgumentCaptor.capture());
 
@@ -90,7 +92,6 @@ class OrderServiceTest {
 
         assertNotNull(capturedOrder.getClosedDate());
         assertTrue(capturedOrder.getClosedDate().isAfter(LocalDateTime.now().minusSeconds(5)));
-
     }
 
     @Test
@@ -109,13 +110,13 @@ class OrderServiceTest {
     @Test
     void getOrdersForCustomer() {
         // arrange
-        when(orderRepository.findByCustomerId(customer.getId())).thenReturn(mockOrders.subList(1, 2));
+        when(orderRepository.findByCustomerId(customer.getId())).thenReturn(mockOrders);
 
         // act
         List<Order> fetchedOrders = orderService.getOrdersForCustomer(customer);
 
         // assert
-        assertEquals(mockOrders.subList(1, 2), fetchedOrders);
+        assertEquals(mockOrders, fetchedOrders);
     }
 
 }

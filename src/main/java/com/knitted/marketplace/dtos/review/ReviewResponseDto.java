@@ -1,10 +1,10 @@
 package com.knitted.marketplace.dtos.review;
 
-import com.knitted.marketplace.dtos.reaction.ReactionResponseDto;
+import com.knitted.marketplace.dtos.auth.CustomerResponseDto;
 
 import java.time.LocalDateTime;
 
-//TODO: add customer when it is implemented
+
 public record ReviewResponseDto(
         Long id,
         int rating,
@@ -14,6 +14,6 @@ public record ReviewResponseDto(
         LocalDateTime lastModifiedDate,
         Long orderId,
         String itemName,
-        ReactionResponseDto reaction
+        CustomerResponseDto customer
 ) {
 }

@@ -2,16 +2,17 @@ package com.knitted.marketplace.services;
 
 import com.knitted.marketplace.dtos.auth.LoginRequestDto;
 import com.knitted.marketplace.dtos.auth.RegistrationRequestDto;
-import com.knitted.marketplace.mappers.AuthMapper;
 import com.knitted.marketplace.models.Customer;
 import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.security.JwtService;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class AuthService {
@@ -47,8 +48,6 @@ public class AuthService {
     @Transactional
     public Customer registerNewUser(RegistrationRequestDto request) {
         User user = userService.createUser(request);
-        Customer customer = AuthMapper.toCustomer(request);
-        customer.setUser(user);
-        return customerService.saveCustomer(customer);
+        return customerService.createCustomer(request, user);
     }
 }

@@ -5,7 +5,7 @@ import com.knitted.marketplace.dtos.shop.ShopSummaryResponseDto;
 
 import java.util.List;
 
-//TODO: add OrderResponseDto in this response
+
 public record DetailedItemResponseDto(
         Long id,
         String title,
