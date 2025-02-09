@@ -2,10 +2,14 @@ package com.knitted.marketplace.sampledata;
 
 import com.knitted.marketplace.mappers.ImageMapper;
 import com.knitted.marketplace.models.Shop;
+import com.knitted.marketplace.models.User;
 import com.knitted.marketplace.models.item.*;
 import com.knitted.marketplace.repositories.ItemRepository;
 import com.knitted.marketplace.repositories.ShopRepository;
 
+import com.knitted.marketplace.security.JwtService;
+import com.knitted.marketplace.services.ItemService;
+import com.knitted.marketplace.services.UserService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,25 +20,41 @@ import java.util.concurrent.ThreadLocalRandom;
 @Component
 public class ItemDataGenerator {
 
+    private final ItemService itemService;
     private final ItemRepository itemRepository;
-    private final ShopRepository shopRepository;
+    private final UserService userService;
+    private final JwtService jwtService;
 
-    public ItemDataGenerator(ItemRepository itemRepository, ShopRepository shopRepository) {
+    public ItemDataGenerator(ItemService itemService, ItemRepository itemRepository, UserService userService, JwtService jwtService) {
+        this.itemService = itemService;
         this.itemRepository = itemRepository;
-        this.shopRepository = shopRepository;
+        this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @Transactional
     public void generate() {
-        List<Shop> shops = shopRepository.findAll();
         String loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 
-        for (int i = 0; i < 30; i++) {
+        List<User> users = List.of(
+                userService.getUserById(1L),
+                userService.getUserById(2L)
+        );
+
+        List<String> tokens = List.of(
+                jwtService.generateToken(users.getFirst(), users.getFirst().getRoles()),
+                jwtService.generateToken(users.getLast(), users.getLast().getRoles())
+        );
+
+        for (int i = 1; i < 51; i++) {
+            User user = (i % 2 == 0) ? users.getLast() : users.getFirst();
+            String token = (i % 2 == 0) ? tokens.getLast() : tokens.getFirst();
+
             Item item = new Item();
             item.setTitle("Item " + i);
             item.setDescription(loremIpsum);
             item.setPrice(generateRandomPrice(10.0, 50.0));
-            item.setShop(shops.get(i % shops.size()));
+            item.setShop(user.getContact().getShop());
 
             Category category = pickRandomEnum(Category.class);
             item.setCategory(category);
@@ -44,10 +64,9 @@ public class ItemDataGenerator {
                 item.setClothingSize(pickRandomEnum(ClothingSize.class));
             }
             item.addPhotos(Collections.singletonList(ImageMapper.toImage("static/sampledata/images/item_photo_default.png")));
-            System.out.println("Images: " + item.getPhotos());
 
-            itemRepository.save(item);
-//            itemService.updateItemStatus(id, ItemStatus.PUBLISHED);
+            Item savedItem = itemRepository.save(item);
+            itemService.updateItemStatus(savedItem.getId(), ItemStatus.PUBLISHED, "Bearer " + token);
         }
     }
 
