@@ -1,6 +1,7 @@
 package com.knitted.marketplace.sampledata;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -26,8 +27,9 @@ public class SampleDataInitializer {
         }
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void initializeSampleData() {
-//        sampleDataService.loadSampleData(); // This runs AFTER data.sql is loaded
-//    }
+    @EventListener(ApplicationReadyEvent.class)
+    @ConditionalOnProperty(name = "app.load-sample-data", havingValue = "true")
+    public void initializeSampleData() {
+        sampleDataService.loadSampleData(); // This runs AFTER data.sql is loaded
+    }
 }
